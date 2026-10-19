@@ -1,0 +1,24 @@
+# dữ liệu tạo lại được bằng scripts/prepare_data.py và scripts/segment_data.py
+data/processed/
+data/raw/
+
+# công cụ và mô hình tải về
+tools/
+checkpoints/
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+wandb/
+runs/
+
+# Python / notebook
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+.env
+
+# hệ điều hành
+.DS_Store
+Thumbs.db
