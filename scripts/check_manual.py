@@ -6,6 +6,7 @@ Chạy: python scripts/check_manual.py
 - Cohen's kappa giữa nhãn tự gán (gan_nhan_doc_lap_A/B.csv) và nhãn gốc, nếu đã điền
 """
 
+import re
 import sys
 from pathlib import Path
 
@@ -24,7 +25,7 @@ TAGS = ["LEX", "PARA", "ANT", "NEG", "NUM", "QUANT", "ROLE", "COREF", "WORLD", "
 def split_tags(value) -> list[str]:
     if pd.isna(value) or not str(value).strip():
         return []
-    return [t.strip().upper() for t in str(value).split(";") if t.strip()]
+    return [t.strip().upper() for t in re.split(r"[;,]", str(value)) if t.strip()]
 
 
 def check_analysis(df: pd.DataFrame) -> None:
