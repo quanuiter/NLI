@@ -124,6 +124,6 @@ P: Sự cố từng gây 5 vụ cháy nhưng không ảnh hưởng đến con ng
 
 1. **Gán nhãn độc lập trước** (W2-03): mở `gan_nhan_doc_lap_A.csv` (Quang) hoặc `gan_nhan_doc_lap_B.csv` (Quân), điền `nhan_tu_gan`.
    **Không mở `50_mau.csv`** trước khi gán xong, vì file đó có nhãn gốc.
-2. Phân tích phần của mình trong `50_mau.csv` (W2-01, W2-02): XNLI do A, ViANLI do B.
+2. Phân tích phần của mình trong `50_mau.csv` (W2-01, W2-02): XNLI do B (Quân), ViANLI do A (Quang).
 3. Chạy kiểm tra: `python scripts/check_manual.py`. Script báo thẻ sai chính tả, ô còn trống, tần suất thẻ, và Cohen's kappa khi đã có nhãn tự gán.
 4. Muốn thêm/bớt thẻ: sửa bảng ở mục 2 và **báo người kia trước** khi phân tích tiếp. Nhớ sửa luôn `TAGS` trong `scripts/check_manual.py`.

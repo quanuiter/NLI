@@ -1,6 +1,6 @@
 """Chọn 50 mẫu để phân tích thủ công (task W1-06).
 
-25 mẫu XNLI-vi (A phân tích) + 25 mẫu ViANLI (B phân tích), lấy từ tập TRAIN,
+25 mẫu XNLI-vi (B phân tích) + 25 mẫu ViANLI (A phân tích), lấy từ tập TRAIN,
 mỗi bộ chia đều 3 nhãn (9/8/8). Cố định seed để tái lập.
 
 Chạy: python scripts/sample_manual.py
@@ -22,7 +22,9 @@ from src.data import LABELS, ROOT, load_split  # noqa: E402
 SEED = 42
 PER_DATASET = 25
 OUT_DIR = ROOT / "data" / "manual"
-ANALYST = {"xnli": "A", "vianli": "B"}
+# Phân công (đã đổi ngày 19/10: Quân làm XNLI, Quang làm ViANLI). Người gán nhãn độc lập giữ nguyên.
+ANALYST = {"xnli": "B", "vianli": "A"}
+BLIND_LABELER = {"xnli": "B", "vianli": "A"}
 
 
 def pick(df: pd.DataFrame, n: int, seed: int) -> pd.DataFrame:
@@ -35,11 +37,16 @@ def pick(df: pd.DataFrame, n: int, seed: int) -> pd.DataFrame:
 
 
 def main():
+    out_file = OUT_DIR / "50_mau.csv"
+    if out_file.exists() and "--force" not in sys.argv:
+        filled = pd.read_csv(out_file)["the_hien_tuong"].notna().sum()
+        if filled:
+            sys.exit(f"{out_file} đã có {filled} dòng được phân tích. Chạy lại sẽ xóa hết; thêm --force nếu chắc chắn.")
     rows = []
     for dataset in ("xnli", "vianli"):
         df = pick(load_split(dataset, "train"), PER_DATASET, SEED)
         df["nguoi_phan_tich"] = ANALYST[dataset]
-        df["nguoi_gan_doc_lap"] = "B" if ANALYST[dataset] == "A" else "A"
+        df["nguoi_gan_doc_lap"] = BLIND_LABELER[dataset]
         rows.append(df)
     out = pd.concat(rows).reset_index(drop=True)
     out.insert(0, "stt", range(1, len(out) + 1))
