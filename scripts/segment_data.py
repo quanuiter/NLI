@@ -11,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.data import DATASETS, SPLITS, load_split, processed_path, save_jsonl  # noqa: E402
+from src.data import DATASET_SPLITS, load_split, processed_path, save_jsonl  # noqa: E402
 from src.segment import Segmenter  # noqa: E402
 
 
@@ -23,8 +23,8 @@ def main():
     args = ap.parse_args()
 
     seg = Segmenter(args.backend)
-    for dataset in DATASETS:
-        for split in SPLITS:
+    for dataset, splits in DATASET_SPLITS.items():
+        for split in splits:
             subset = dataset == "xnli" and split == "train"
             out = processed_path(dataset, split, segmented=True, subset=subset)
             if out.exists() and not args.overwrite:

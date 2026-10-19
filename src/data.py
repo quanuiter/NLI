@@ -1,4 +1,4 @@
-"""Load, chuẩn hóa và lưu dữ liệu NLI tiếng Việt (XNLI-vi, ViANLI).
+"""Load, chuẩn hóa và lưu dữ liệu NLI tiếng Việt (XNLI-vi, ViANLI, ViNLI test).
 
 Mọi mô hình trong đồ án đọc dữ liệu qua module này để dùng chung một cách
 tiền xử lý và cùng một tập con XNLI 100k.
@@ -21,8 +21,10 @@ LABELS = ["entailment", "neutral", "contradiction"]
 LABEL2ID = {label: i for i, label in enumerate(LABELS)}
 ID2LABEL = {i: label for i, label in enumerate(LABELS)}
 
-DATASETS = ("xnli", "vianli")
+DATASETS = ("xnli", "vianli", "vinli")
 SPLITS = ("train", "dev", "test")
+# ViNLI chỉ dùng làm tập test phụ (không huấn luyện)
+DATASET_SPLITS = {"xnli": SPLITS, "vianli": SPLITS, "vinli": ("test",)}
 COLUMNS = ["id", "premise", "hypothesis", "label", "source", "split"]
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,6 +36,9 @@ XNLI_SUBSET_SEED = 42
 _VIANLI_REPO = "uitnlp/ViANLI"
 _VIANLI_FILES = {"train": "vianli_train.jsonl", "dev": "vianli_dev.jsonl", "test": "vianli_test.jsonl"}
 _XNLI_SPLITS = {"train": "train", "dev": "validation", "test": "test"}
+# Bản đăng lại trên Hugging Face, số mẫu khớp bài báo ViNLI (COLING 2022).
+# Bản chính thức: nhóm UIT NLP (https://nlp.uit.edu.vn/).
+_VINLI_REPO = "presencesw/vinli_4_label"
 
 
 # ---------------------------------------------------------------- chuẩn hóa
@@ -111,6 +116,23 @@ def load_vianli_raw(split: str) -> pd.DataFrame:
     return _finalize(df, "vianli", split)
 
 
+def load_vinli_raw(split: str = "test") -> pd.DataFrame:
+    """Tải ViNLI (Huynh et al., COLING 2022) và bỏ nhãn "other" để về dạng 3 nhãn.
+
+    ViNLI có 4 nhãn; "other" là cặp câu không liên quan nhau, không có trong XNLI/ViANLI.
+    id giữ theo thứ tự trong file gốc (vinli_test_<i>) để tra lại được.
+    """
+    from datasets import load_dataset
+
+    if split not in DATASET_SPLITS["vinli"]:
+        raise ValueError("ViNLI chỉ dùng split test")
+    df = load_dataset(_VINLI_REPO, split=split).to_pandas()
+    df = df.rename(columns={"sentence1": "premise", "sentence2": "hypothesis", "gold_label": "label"})
+    df.insert(0, "id", [f"vinli_{split}_{i}" for i in range(len(df))])
+    df = df[df["label"].str.strip().str.lower() != "other"]
+    return _finalize(df, "vinli", split)
+
+
 def stratified_subset(df: pd.DataFrame, n: int, seed: int) -> pd.DataFrame:
     """Lấy n mẫu, giữ nguyên tỉ lệ nhãn, cố định seed."""
     if n >= len(df):
@@ -157,7 +179,8 @@ def load_split(dataset: str, split: str, segmented: bool = False, subset: bool |
     """
     if dataset not in DATASETS:
         raise ValueError(f"dataset phải là một trong {DATASETS}")
-    _check_split(split)
+    if split not in DATASET_SPLITS[dataset]:
+        raise ValueError(f"{dataset} chỉ có các split {DATASET_SPLITS[dataset]}")
     if subset is None:
         subset = dataset == "xnli" and split == "train"
     path = processed_path(dataset, split, segmented=segmented, subset=subset)
@@ -165,7 +188,8 @@ def load_split(dataset: str, split: str, segmented: bool = False, subset: bool |
         return read_jsonl(path)
     if segmented:
         raise FileNotFoundError(f"Chưa có {path}. Chạy: python scripts/segment_data.py")
-    df = load_xnli_raw(split) if dataset == "xnli" else load_vianli_raw(split)
+    loader = {"xnli": load_xnli_raw, "vianli": load_vianli_raw, "vinli": load_vinli_raw}[dataset]
+    df = loader(split)
     if subset:
         df = stratified_subset(df, XNLI_SUBSET_SIZE, XNLI_SUBSET_SEED)
     save_jsonl(df, path)
@@ -174,27 +198,32 @@ def load_split(dataset: str, split: str, segmented: bool = False, subset: bool |
 
 # ---------------------------------------------------------------- kịch bản thí nghiệm
 
-def load_scenario(scenario: str, segmented: bool = False) -> dict:
+def load_scenario(scenario: str, segmented: bool = False, include_vinli: bool = True) -> dict:
     """Trả về dữ liệu cho một kịch bản.
 
     S1: train XNLI-vi 100k, dev XNLI-vi, test XNLI-vi + ViANLI.
     S2: train ViANLI, dev ViANLI, test ViANLI.
     S3: train_stage1 XNLI-vi 100k -> train ViANLI (fine-tune tiếp), dev ViANLI, test ViANLI.
+    include_vinli=True: mọi kịch bản có thêm tập test phụ "vinli_test" (tiếng Việt gốc, không đối kháng).
 
     Kết quả: {"train": df, "dev": df, "test": {tên_tập_test: df}, ("train_stage1": df với S3)}.
     """
     scenario = scenario.upper()
     ld = lambda d, s: load_split(d, s, segmented=segmented)  # noqa: E731
     if scenario == "S1":
-        return {"train": ld("xnli", "train"), "dev": ld("xnli", "dev"),
-                "test": {"xnli_test": ld("xnli", "test"), "vianli_test": ld("vianli", "test")}}
-    if scenario == "S2":
-        return {"train": ld("vianli", "train"), "dev": ld("vianli", "dev"),
-                "test": {"vianli_test": ld("vianli", "test")}}
-    if scenario == "S3":
-        return {"train_stage1": ld("xnli", "train"), "train": ld("vianli", "train"),
-                "dev": ld("vianli", "dev"), "test": {"vianli_test": ld("vianli", "test")}}
-    raise ValueError("scenario phải là S1, S2 hoặc S3")
+        out = {"train": ld("xnli", "train"), "dev": ld("xnli", "dev"),
+               "test": {"xnli_test": ld("xnli", "test"), "vianli_test": ld("vianli", "test")}}
+    elif scenario == "S2":
+        out = {"train": ld("vianli", "train"), "dev": ld("vianli", "dev"),
+               "test": {"vianli_test": ld("vianli", "test")}}
+    elif scenario == "S3":
+        out = {"train_stage1": ld("xnli", "train"), "train": ld("vianli", "train"),
+               "dev": ld("vianli", "dev"), "test": {"vianli_test": ld("vianli", "test")}}
+    else:
+        raise ValueError("scenario phải là S1, S2 hoặc S3")
+    if include_vinli:
+        out["test"]["vinli_test"] = ld("vinli", "test")
+    return out
 
 
 def _check_split(split: str) -> None:
