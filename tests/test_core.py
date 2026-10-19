@@ -10,6 +10,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data import normalize_label, normalize_text, stratified_subset  # noqa: E402
+from src.embeddings import old_style_tone, tokenize  # noqa: E402
 from src.evaluate import compute_metrics, evaluate_and_save, summarize  # noqa: E402
 
 
@@ -19,6 +20,12 @@ def test_normalize_text():
     assert normalize_text("&quot;x&quot;") == '"x"'
     decomposed = "Hoà"  # "Hoà" viết bằng dấu tổ hợp (NFD)
     assert normalize_text(decomposed) == "Hoà"
+
+
+def test_tokenize_and_old_style_tone():
+    assert tokenize("Hà Nội, ngày 3/4.") == ["Hà", "Nội", "ngày", "3", "4"]
+    assert [old_style_tone(w) for w in ["hóa", "Hòa", "khỏe", "thủy"]] == ["hoá", "Hoà", "khoẻ", "thuỷ"]
+    assert [old_style_tone(w) for w in ["hoàng", "quý", "khoa"]] == ["hoàng", "quý", "khoa"]
 
 
 def test_normalize_label():

@@ -1,0 +1,152 @@
+{
+  "scenario": "S2",
+  "seed": 42,
+  "grid": {
+    "layers": [
+      1,
+      2
+    ],
+    "hidden": [
+      256,
+      512
+    ],
+    "dropout": [
+      0.3,
+      0.5
+    ],
+    "lr": [
+      0.001,
+      0.0003
+    ]
+  },
+  "results": [
+    {
+      "layers": 2,
+      "hidden": 512,
+      "dropout": 0.5,
+      "lr": 0.0003,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3864
+    },
+    {
+      "layers": 2,
+      "hidden": 512,
+      "dropout": 0.3,
+      "lr": 0.0003,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3721
+    },
+    {
+      "layers": 1,
+      "hidden": 256,
+      "dropout": 0.5,
+      "lr": 0.0003,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3659
+    },
+    {
+      "layers": 1,
+      "hidden": 512,
+      "dropout": 0.5,
+      "lr": 0.0003,
+      "best_epoch": 1,
+      "dev_macro_f1": 0.3646
+    },
+    {
+      "layers": 1,
+      "hidden": 512,
+      "dropout": 0.5,
+      "lr": 0.001,
+      "best_epoch": 1,
+      "dev_macro_f1": 0.3614
+    },
+    {
+      "layers": 1,
+      "hidden": 512,
+      "dropout": 0.3,
+      "lr": 0.001,
+      "best_epoch": 1,
+      "dev_macro_f1": 0.3588
+    },
+    {
+      "layers": 2,
+      "hidden": 256,
+      "dropout": 0.5,
+      "lr": 0.0003,
+      "best_epoch": 1,
+      "dev_macro_f1": 0.3586
+    },
+    {
+      "layers": 2,
+      "hidden": 512,
+      "dropout": 0.3,
+      "lr": 0.001,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3566
+    },
+    {
+      "layers": 1,
+      "hidden": 256,
+      "dropout": 0.3,
+      "lr": 0.0003,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3565
+    },
+    {
+      "layers": 2,
+      "hidden": 256,
+      "dropout": 0.3,
+      "lr": 0.0003,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3545
+    },
+    {
+      "layers": 1,
+      "hidden": 256,
+      "dropout": 0.5,
+      "lr": 0.001,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3541
+    },
+    {
+      "layers": 1,
+      "hidden": 512,
+      "dropout": 0.3,
+      "lr": 0.0003,
+      "best_epoch": 1,
+      "dev_macro_f1": 0.3538
+    },
+    {
+      "layers": 2,
+      "hidden": 512,
+      "dropout": 0.5,
+      "lr": 0.001,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3531
+    },
+    {
+      "layers": 1,
+      "hidden": 256,
+      "dropout": 0.3,
+      "lr": 0.001,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3515
+    },
+    {
+      "layers": 2,
+      "hidden": 256,
+      "dropout": 0.3,
+      "lr": 0.001,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3513
+    },
+    {
+      "layers": 2,
+      "hidden": 256,
+      "dropout": 0.5,
+      "lr": 0.001,
+      "best_epoch": 2,
+      "dev_macro_f1": 0.3494
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "xnli_train": {
+    "tokens": 4103200,
+    "oov_token_rate": 0.0099,
+    "types": 36566,
+    "oov_type_rate": 0.3802,
+    "oov_examples": [
+      "lsc",
+      "inglethorp",
+      "poirot",
+      "Adrin",
+      "adrin",
+      "Lsc",
+      "grantees",
+      "fgd",
+      "lewinsky",
+      "newsweek",
+      "vandemeyer",
+      "cios",
+      "cazar",
+      "rennie",
+      "karf"
+    ]
+  },
+  "xnli_dev": {
+    "tokens": 94103,
+    "oov_token_rate": 0.0046,
+    "types": 3742,
+    "oov_type_rate": 0.031,
+    "oov_examples": [
+      "Wolverstone",
+      "Prudie",
+      "Khallad",
+      "moradas",
+      "Lipstadt",
+      "Relajo",
+      "Weltkugelbrunnen",
+      "Palapas",
+      "Nichupte",
+      "Komische",
+      "12HEI",
+      "__",
+      "Maennerchor",
+      "Dannels",
+      "Milosevics"
+    ]
+  },
+  "xnli_test": {
+    "tokens": 189562,
+    "oov_token_rate": 0.0042,
+    "types": 5067,
+    "oov_type_rate": 0.0446,
+    "oov_examples": [
+      "Wolverstone",
+      "Binalshibh",
+      "PAPD",
+      "pachuco",
+      "Allenbrand",
+      "Khallad",
+      "Bepko",
+      "Prudie",
+      "Rababah",
+      "Pachucas",
+      "Gruyare",
+      "hawaladar",
+      "Flono",
+      "pachucos",
+      "ojo"
+    ]
+  },
+  "vianli_train": {
+    "tokens": 370430,
+    "oov_token_rate": 0.0055,
+    "types": 7411,
+    "oov_type_rate": 0.037,
+    "oov_examples": [
+      "Covid",
+      "nCoV",
+      "HCDC",
+      "Seltos",
+      "Tourneo",
+      "VinFast",
+      "Eilish",
+      "SHIB",
+      "Ellwanda",
+      "covid",
+      "N7X",
+      "Sherrell",
+      "Pavasovic",
+      "765LT",
+      "Llew"
+    ]
+  },
+  "vianli_dev": {
+    "tokens": 46830,
+    "oov_token_rate": 0.0057,
+    "types": 4033,
+    "oov_type_rate": 0.0203,
+    "oov_examples": [
+      "Covid",
+      "nCoV",
+      "Seltos",
+      "5h24",
+      "Davidovich",
+      "Fokina",
+      "Eilish",
+      "Yamatosaurus",
+      "Solterra",
+      "Sleepbuds",
+      "Talagon",
+      "MOXIE",
+      "YSES",
+      "SN15",
+      "izanagii"
+    ]
+  },
+  "vianli_test": {
+    "tokens": 46975,
+    "oov_token_rate": 0.0056,
+    "types": 4045,
+    "oov_type_rate": 0.0227,
+    "oov_examples": [
+      "Covid",
+      "nCoV",
+      "Sinopharm",
+      "BioNTech",
+      "SHIB",
+      "IRGCN",
+      "Alojz",
+      "Tourneo",
+      "HCDC",
+      "Menefeeceratops",
+      "sealeyi",
+      "Jannik",
+      "Seltos",
+      "LeoLabs",
+      "Ruijin"
+    ]
+  },
+  "vinli_test": {
+    "tokens": 109892,
+    "oov_token_rate": 0.0063,
+    "types": 3387,
+    "oov_type_rate": 0.0165,
+    "oov_examples": [
+      "Covid",
+      "nCoV",
+      "Dianka",
+      "Zakhidova",
+      "Serrasolses",
+      "Bolsonaro",
+      "Zhangpu",
+      "HCDC",
+      "Grenon",
+      "Htun",
+      "Edinson",
+      "Ayushi",
+      "NIGPAS",
+      "Ulfa",
+      "Stefanos"
+    ]
+  }
+}
