@@ -61,24 +61,24 @@ def check_analysis(df: pd.DataFrame) -> None:
         print("\nTần suất thẻ theo nhãn gốc:")
         print(tags.pivot_table(index="the", columns="nhan_goc", aggfunc="size", fill_value=0)
               .reindex(index=TAGS, columns=LABELS, fill_value=0))
-        n_flag = df["ghi_chu"].astype(str).str.contains("nghi_sai_nhan").sum()
+        n_flag = df["ghi_chu"].fillna("").astype(str).str.contains("nghi_sai_nhan").sum()
         print(f"\nSố mẫu nghi sai nhãn: {n_flag}")
 
 
 def check_agreement(df: pd.DataFrame) -> None:
-    gold = df.set_index("id")["nhan_goc"]
+    gold = df.set_index("stt")["nhan_goc"]
     for person in ("A", "B"):
         path = MANUAL_DIR / f"gan_nhan_doc_lap_{person}.csv"
         blind = pd.read_csv(path)
-        blind["nhan_tu_gan"] = blind["nhan_tu_gan"].astype(str).str.strip().str.lower()
+        blind["nhan_tu_gan"] = blind["nhan_tu_gan"].fillna("").astype(str).str.strip().str.lower()
         filled = blind[blind["nhan_tu_gan"].isin(LABELS)]
-        invalid = blind[~blind["nhan_tu_gan"].isin(LABELS + ["", "nan"])]
+        invalid = blind[~blind["nhan_tu_gan"].isin(LABELS + [""])]
         print(f"\nGán nhãn độc lập {person}: {len(filled)}/{len(blind)} mẫu hợp lệ")
         for _, r in invalid.iterrows():
             print(f"  - stt {r['stt']}: nhãn không hợp lệ {r['nhan_tu_gan']!r}")
         if len(filled) < 2:
             continue
-        y_gold = gold.loc[filled["id"]].tolist()
+        y_gold = gold.loc[filled["stt"]].tolist()
         y_self = filled["nhan_tu_gan"].tolist()
         acc = sum(a == b for a, b in zip(y_gold, y_self)) / len(filled)
         print(f"  Trùng nhãn gốc: {acc:.1%}   Cohen's kappa: {cohen_kappa_score(y_gold, y_self, labels=LABELS):.3f}")

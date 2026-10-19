@@ -6,8 +6,8 @@ mỗi bộ chia đều 3 nhãn (9/8/8). Cố định seed để tái lập.
 Chạy: python scripts/sample_manual.py
 Kết quả trong data/manual/:
     50_mau.csv                   file phân tích chính (có nhãn gốc)
-    gan_nhan_doc_lap_A.csv       25 mẫu ViANLI cho A tự gán nhãn, KHÔNG có nhãn gốc
-    gan_nhan_doc_lap_B.csv       25 mẫu XNLI-vi cho B tự gán nhãn, KHÔNG có nhãn gốc
+    gan_nhan_doc_lap_A.csv       25 mẫu ViANLI cho A tự gán nhãn, KHÔNG có nhãn gốc và id
+    gan_nhan_doc_lap_B.csv       25 mẫu XNLI-vi cho B tự gán nhãn, KHÔNG có nhãn gốc và id
 """
 
 import sys
@@ -52,7 +52,9 @@ def main():
     # utf-8-sig để mở bằng Excel không lỗi font tiếng Việt
     out.to_csv(OUT_DIR / "50_mau.csv", index=False, encoding="utf-8-sig")
     for person in ("A", "B"):
-        blind = out[out["nguoi_gan_doc_lap"] == person][["stt", "id", "premise", "hypothesis"]].copy()
+        # Không đưa id vào file gán nhãn độc lập: uid của ViANLI chứa mã nhãn (…_11_… = entailment,
+        # …_21_… = contradiction, …_31_… = neutral), nhìn id là đoán được đáp án. Ghép lại bằng stt.
+        blind = out[out["nguoi_gan_doc_lap"] == person][["stt", "premise", "hypothesis"]].copy()
         blind["nhan_tu_gan"] = ""
         blind.to_csv(OUT_DIR / f"gan_nhan_doc_lap_{person}.csv", index=False, encoding="utf-8-sig")
 
