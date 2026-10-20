@@ -1,31 +1,43 @@
 # Hướng dẫn từng task
 
-Mỗi file là hướng dẫn **từng bước** cho một task trong kế hoạch (Google Trang tính, cột **Hướng dẫn**).
-Cấu trúc chung: **Mục tiêu → Cần có trước → Các bước → Tự kiểm tra → Ghi vào báo cáo → Khi xong**.
+Mỗi file là hướng dẫn **từng bước** cho một task trong kế hoạch. Trong Google Trang tính, m bấm cột **Hướng dẫn** là mở được.
+File nào cũng theo thứ tự: **Làm để làm gì → Cần có trước → Các bước → Tự kiểm tra → Ghi gì vào báo cáo → Xong rồi thì sao**.
 
-Mở notebook trên Colab: bấm link "Mở trên Colab" trong từng hướng dẫn, hoặc vào
-`https://colab.research.google.com/github/quanuiter/nli/blob/main/notebooks/<tên notebook>`.
-Mỗi notebook có **ô 0** chuẩn bị môi trường (mount Drive, clone repo, cài thư viện), luôn chạy ô này trước.
+## Việc phải làm 1 lần trước tiên (Quang)
+1. **Vào repo GitHub:** làm theo [W1-02.md](W1-02.md).
+2. **Thêm Drive chung vào Drive của m** (để dùng chung dữ liệu và kết quả với t):
+   - Mở link **Drive Chung** ở sheet *Hướng dẫn* trong kế hoạch. Đó là thư mục tên `NLI`.
+   - Bấm chuột phải vào thư mục `NLI` → **Sắp xếp** → **Thêm lối tắt** → chọn **Drive của tôi** → **Thêm**.
+   - Kiểm tra: trong *Drive của tôi* phải thấy `NLI` (có hình mũi tên nhỏ). **Không** tự tạo thư mục khác tên `NLI`, kẻo bị trùng.
+3. **Cách mở notebook:** bấm link "Mở trên Colab" trong từng hướng dẫn. Mỗi notebook có **ô 0** ở đầu, lúc nào cũng chạy ô này trước
+   (Colab sẽ hỏi quyền vào Drive, m cứ bấm cho phép).
 
-| Task | Người làm | Hướng dẫn |
+## Danh sách
+| Task | Ai làm | Hướng dẫn |
 |---|---|---|
-| W1-02 Repo GitHub (chấp nhận lời mời, push thử) | A | [W1-02.md](W1-02.md) |
-| W1-03, W1-04, W1-11 Khung code chung | B (xong) | [README repo – Quy ước dùng chung](../../README.md) |
-| W1-05 Tách từ | B (xong) | [ghi_chu_tach_tu.md](../../data/manual/ghi_chu_tach_tu.md) |
-| W1-07 Thống kê mô tả (EDA) | A | [W1-07.md](W1-07.md) |
-| W1-08 Kiểm tra chất lượng dữ liệu | A | [W1-08.md](W1-08.md) |
-| W1-06, W1-09, W2-01 Phân tích thủ công | B (xong) | [huong_dan_gan_the.md](../../data/manual/huong_dan_gan_the.md) |
-| W1-10 Đọc bài báo (phần A) | A | [W1-10.md](W1-10.md) |
-| W2-02 Phân tích 25 mẫu ViANLI | A | [W2-02.md](W2-02.md) |
-| W2-03 Gán nhãn độc lập | A (B xong) | [W2-03.md](W2-03.md) |
-| W2-04 Kappa và tổng hợp | A+B | [W2-04.md](W2-04.md) |
-| W2-05 M0 | A | [W2-05.md](W2-05.md) |
-| W2-06 M1 | A | [W2-06.md](W2-06.md) |
-| W2-07 M1-h | A | [W2-07.md](W2-07.md) |
-| W2-08, W2-09 Embedding, M2 | B (xong) | [ket_qua_m2.md](../ket_qua_m2.md) |
-| W3-01 M3 – BiLSTM | B | [W3-01.md](W3-01.md) |
-| W3-02 Thiết lập PhoBERT | B | [W3-02.md](W3-02.md) |
-| W3-03 PhoBERT – S2 | B | [W3-03.md](W3-03.md) |
-| W3-07 Review code chéo | A+B | [W3-07.md](W3-07.md) |
+| W1-02 Vào repo GitHub, push thử | Quang | [W1-02.md](W1-02.md) |
+| W1-07 Thống kê dữ liệu (EDA) | Quang | [W1-07.md](W1-07.md) |
+| W1-08 Kiểm tra lỗi dữ liệu | Quang | [W1-08.md](W1-08.md) |
+| W1-10 Đọc bài báo (phần của Quang) | Quang | [W1-10.md](W1-10.md) |
+| W2-03 Tự gán nhãn 25 câu ViANLI | Quang | [W2-03.md](W2-03.md) |
+| W2-02 Phân tích 25 câu ViANLI | Quang | [W2-02.md](W2-02.md) |
+| W2-04 Tính kappa và tổng hợp | Cả hai | [W2-04.md](W2-04.md) |
+| W2-05 M0 | Quang | [W2-05.md](W2-05.md) |
+| W2-06 M1 | Quang | [W2-06.md](W2-06.md) |
+| W2-07 M1-h | Quang | [W2-07.md](W2-07.md) |
+| W3-07 Đọc chéo code của nhau | Cả hai | [W3-07.md](W3-07.md) |
+| W3-01, W3-02, W3-03 M3, PhoBERT | Quân | [W3-01.md](W3-01.md), [W3-02.md](W3-02.md), [W3-03.md](W3-03.md) |
 
-Tuần 4–6: hướng dẫn sẽ viết khi tới gần, vì cần code của các tuần trước.
+Task đã xong thì cột Hướng dẫn trỏ tới tài liệu có sẵn: README repo, `data/manual/huong_dan_gan_the.md`, `docs/ket_qua_m2.md`.
+Tuần 4–6 t sẽ viết sau, khi xong phần code trước đó.
+
+## Mấy từ hay gặp
+| Từ | Nghĩa |
+|---|---|
+| train | phần dữ liệu cho mô hình **học** |
+| dev | phần dữ liệu để **chọn cấu hình** (thử nhiều kiểu, giữ kiểu điểm cao nhất) |
+| test | phần dữ liệu **thi cuối cùng**, chỉ dùng 1 lần để báo điểm, không được nhìn vào khi chọn cấu hình |
+| accuracy | % câu đoán đúng |
+| macro-F1 | điểm trung bình của 3 nhãn, phạt mô hình chỉ đoán 1 nhãn. Nhóm mình dùng điểm này là chính |
+| S1, S2 | kiểu thí nghiệm: S1 = học trên XNLI, S2 = học trên ViANLI |
+| commit / push | lưu thay đổi và đẩy lên GitHub |
