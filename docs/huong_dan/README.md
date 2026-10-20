@@ -25,8 +25,16 @@ File nào cũng theo thứ tự: **Mục tiêu → Cần có trước → Các b
 | W2-05 M0 – baseline nhãn đa số | Quang | [W2-05.md](W2-05.md) |
 | W2-06 M1 – TF-IDF + Logistic Regression / Naive Bayes | Quang | [W2-06.md](W2-06.md) |
 | W2-07 M1-h – mô hình chỉ dùng hypothesis | Quang | [W2-07.md](W2-07.md) |
+| W3-04 Báo cáo mục 1 – Giới thiệu bài toán | Quang | [W3-04.md](W3-04.md) |
+| W3-08 Báo cáo mục 1.4 – Công trình liên quan | Quang | [W3-08.md](W3-08.md) |
+| W3-05 Báo cáo mục 2 – Ngữ liệu | Quang | [W3-05.md](W3-05.md) |
+| W3-06 Script tổng hợp bảng kết quả | Quang | [W3-06.md](W3-06.md) |
+| W3-09 Phân tích loại bỏ đặc trưng (ablation) cho M1 | Quang | [W3-09.md](W3-09.md) |
 | W3-07 Review code chéo | Cả hai | [W3-07.md](W3-07.md) |
 | W3-01, W3-02, W3-03 M3, PhoBERT | Quân | [W3-01.md](W3-01.md), [W3-02.md](W3-02.md), [W3-03.md](W3-03.md) |
+
+**Viết báo cáo:** file [BaoCao_NLI](https://docs.google.com/document/d/18YITvVSJsknPPMx1jKBdgYH-KRHvJM6_ZrPv2tcTIok/edit)
+trong Drive chung. Quy ước chung (thuật ngữ, số liệu, bảng, trích dẫn): [quy_uoc_bao_cao.md](quy_uoc_bao_cao.md).
 
 Task đã xong thì cột Hướng dẫn trỏ tới tài liệu có sẵn: README repo, `data/manual/huong_dan_gan_the.md`, `docs/ket_qua_m2.md`.
 Tuần 4–6 t sẽ viết sau, khi xong phần code trước đó.
