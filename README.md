@@ -27,6 +27,7 @@ scripts/
   check_manual.py   kiểm tra file phân tích thủ công, tính kappa
   prepare_embeddings.py, tune_m2.py, run_m2.py   embedding và M2
 docs/           tóm tắt bài báo, kết quả và nhận xét từng mô hình
+docs/huong_dan/ hướng dẫn từng bước cho từng task trong kế hoạch
 notebooks/      mỗi mô hình một notebook (chạy trên Colab)
 data/manual/    50 mẫu phân tích thủ công, hướng dẫn gắn thẻ
 results/        kết quả từng lần chạy (json), figures/ (confusion matrix), preds/ (dự đoán)
