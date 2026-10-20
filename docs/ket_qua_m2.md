@@ -45,7 +45,7 @@ hypothesis → âm tiết → vector fastText → trung bình → v (300)
 | 2 lớp × 512, dropout 0,5, lr 1e-4 | 0,369 ± 0,005 | – |
 
   Ở S2 các cấu hình chênh nhau trong phạm vi nhiễu (dev 1.000 câu). Chọn cấu hình tốt nhất ở S1 và dùng chung cho cả hai kịch bản.
-  ViANLI dừng ở epoch 1–3 (mô hình học thuộc train rất nhanh), XNLI dừng ở epoch khoảng 11.
+  ViANLI dừng ở epoch 1–3 (mô hình quá khớp tập train rất nhanh), XNLI dừng ở epoch khoảng 11.
 
 ## 3. Kết quả test (seed 42)
 
@@ -57,11 +57,11 @@ hypothesis → âm tiết → vector fastText → trung bình → v (300)
 | S2 (học ViANLI) | ViANLI test | 39,7 | 37,5 | 48,9 / 41,8 / 21,9 |
 | S2 | ViNLI test | 32,6 | 30,2 | 33,8 / 39,2 / 17,7 |
 
-Mức đoán bừa: 33,3%. Đối chiếu: PhoBERT-base trên ViANLI test (S2) đạt 44,3% (bài ViANLI, Bảng 10).
+Mức ngẫu nhiên: 33,3%. Đối chiếu: PhoBERT-base trên ViANLI test (S2) đạt 44,3% (bài ViANLI, Bảng 10).
 
 ## 4. Nhận xét (dùng cho mục 5 báo cáo)
 
-1. **S1 → ViANLI thấp hơn đoán bừa (27,5%) vì mô hình học được mẹo "trùng từ nhiều = entailment", và ViANLI bị đảo ngược quy luật này.**
+1. **S1 → ViANLI thấp hơn mức ngẫu nhiên (27,5%) vì mô hình học được quy luật bề mặt "độ trùng lặp từ cao → entailment", và ViANLI bị đảo ngược quy luật này.**
    Độ trùng từ Jaccard (%) giữa premise và hypothesis, theo nhãn:
 
    | Nhãn | XNLI train | XNLI test | ViANLI train | ViANLI test | ViNLI test |
@@ -74,7 +74,7 @@ Mức đoán bừa: 33,3%. Đối chiếu: PhoBERT-base trên ViANLI test (S2) �
    - Confusion matrix S1 → ViANLI: 201/333 câu neutral bị đoán là entailment, 145/334 câu entailment bị đoán là neutral.
    - Đây chính là hiện tượng ANLI mô tả: mô hình học từ dữ liệu thường bị dữ liệu đối kháng đánh bại (RoBERTa học SNLI + MNLI chỉ đạt 31% trên ANLI).
 2. **Contradiction là nhãn yếu nhất ở hầu hết các lần chạy** (F1 18–37% ngoài XNLI). Lấy trung bình vector làm "không" chỉ còn là 1 trong khoảng 20 vector bị cộng trung bình, nên tín hiệu phủ định gần như mất. Đây là căn cứ để kỳ vọng M3 (BiLSTM, giữ thứ tự từ) và PhoBERT làm tốt hơn ở nhãn này.
-3. **S2 không chuyển sang ViNLI (32,6%, bằng đoán bừa).** 8.000 câu đối kháng không đủ để mô hình đơn giản học được quy luật chung.
+3. **S2 không chuyển sang ViNLI (32,6%, ngang mức ngẫu nhiên).** 8.000 câu đối kháng không đủ để mô hình đơn giản học được quy luật chung.
    Ngược lại, S1 (100.000 câu dịch) chuyển sang ViNLI được 48,4%.
 4. **M2 ở S2 (39,7%) kém PhoBERT công bố (44,3%) khoảng 5 điểm.** Đây là khoảng cách nhỏ hơn mong đợi giữa mô hình chỉ lấy trung bình embedding và mô hình Transformer, cho thấy ViANLI khó với cả hai.
 

@@ -14,7 +14,7 @@ báo cáo được gom vào **bảng cuối file**.
 Nie, Williams, Dinan, Bansal, Weston, Kiela. *Adversarial NLI: A New Benchmark for Natural Language Understanding*. ACL 2020.
 arXiv: <https://arxiv.org/abs/1910.14599>
 
-- **Bài toán:** Các benchmark NLI (SNLI, MNLI) bị mô hình "giải" quá nhanh, một phần vì mô hình học được mẹo thống kê
+- **Bài toán:** Các benchmark NLI (SNLI, MNLI) bị mô hình "giải" quá nhanh, một phần vì mô hình học được quy luật thống kê bề mặt
   (ví dụ lộ nhãn qua hypothesis) chứ không thật sự hiểu. Cần một bộ dữ liệu khó hơn và có thể làm khó mãi.
 - **Dữ liệu:** Thu thập theo kiểu **human-and-model-in-the-loop** qua 3 vòng (Bảng 2):
 
@@ -30,7 +30,7 @@ arXiv: <https://arxiv.org/abs/1910.14599>
   nên dữ liệu ngày càng khó.
 - **Phương pháp:** Không đề xuất mô hình mới. Đánh giá BERT, XLNet, RoBERTa với nhiều tổ hợp dữ liệu huấn luyện.
 - **Kết quả chính:**
-  - RoBERTa học trên SNLI + MNLI (không có ANLI) chỉ đạt **31,1%** trên ANLI test, tức gần mức đoán bừa 33%.
+  - RoBERTa học trên SNLI + MNLI (không có ANLI) chỉ đạt **31,1%** trên ANLI test, tức gần mức ngẫu nhiên 33%.
     Học thêm toàn bộ dữ liệu (S + M + FEVER + ANLI) thì đạt **53,7%** (A1 73,8 · A2 48,9 · A3 44,4) (Bảng 3).
   - Mô hình **chỉ đọc hypothesis** đạt khoảng 71% trên SNLI nhưng chỉ khoảng 42–51% trên các vòng ANLI (Bảng 6):
     dữ liệu đối kháng ít "lộ nhãn" hơn.
@@ -63,7 +63,7 @@ Language Inference in Vietnamese*. Expert Systems with Applications, 2025. arXiv
   - Độ trùng từ (Jaccard) của entailment thấp nhất (21,9%), ngược với ViNLI (29,9%).
     Tức người viết cố ý *không* chép từ của premise khi viết câu entailment (Bảng 6).
   - 7 kiểu suy luận (Bảng 8, trên tập dev; một mẫu có thể nhiều kiểu): logic chuẩn (phủ định, nhân quả, so sánh) **72,5%**,
-    kiến thức ngoài 43,0%, số học/định lượng 24,7%, từ vựng (đồng/trái nghĩa) 21,7%, mẹo ngôn ngữ 11,3%,
+    kiến thức ngoài 43,0%, số học/định lượng 24,7%, từ vựng (đồng/trái nghĩa) 21,7%, thủ thuật ngôn ngữ 11,3%,
     văn hóa – ngữ cảnh 10,1%, tham chiếu – tên riêng 10,0%.
 - **Phương pháp:** Đề xuất **NLIMoE**: đặt một tầng Mixture-of-Experts (7 "chuyên gia", chọn số chuyên gia động theo độ khó
   của câu) lên trên bộ mã hóa XLM-R.
@@ -83,7 +83,7 @@ Language Inference in Vietnamese*. Expert Systems with Applications, 2025. arXiv
   - **Kịch bản S2 của nhóm = đúng thiết lập của Bảng 10** (train ViANLI train, test ViANLI test), nên **so sánh trực tiếp được**
     với PhoBERT-base 44,3% và XLM-R-base 44,8%.
   - Siêu tham số của bài (lr 1e-5, batch 16, 7 epoch) khác kế hoạch hiện tại (lr 2e-5, 3 epoch). Nên thử cả hai ở task W3-02.
-  - Kỳ vọng cho M1-h trên ViANLI: gần mức đoán bừa (khoảng 33–42%). Nếu M1-h cao hơn hẳn thì phải kiểm tra lại code.
+  - Kỳ vọng cho M1-h trên ViANLI: gần mức ngẫu nhiên (khoảng 33–42%). Nếu M1-h cao hơn hẳn thì phải kiểm tra lại code.
   - Bộ 7 kiểu suy luận gần với bộ thẻ của nhóm: logic chuẩn ↔ `NEG`; từ vựng ↔ `PARA`/`ANT`; số học ↔ `NUM`/`QUANT`;
     tham chiếu ↔ `COREF`/`ROLE`; kiến thức ngoài, văn hóa ↔ `WORLD`. Có thể so tỉ lệ thẻ của 25 mẫu ViANLI với Bảng 8.
 - **Phát hiện của nhóm khi đọc bài + dữ liệu:** `uid` của ViANLI chứa **mã nhãn yêu cầu** (rL) khi người viết tạo câu.

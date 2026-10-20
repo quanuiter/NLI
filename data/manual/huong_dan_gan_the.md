@@ -78,7 +78,7 @@ Chỉ gắn hiện tượng **cần để ra nhãn**, không gắn mọi thứ x
 **ROLE**
 - `uit_Adver_982_2_21_05` · contradiction · `ROLE;LEX`
   P: …**Phan Văn Thịnh**, sinh viên năm 4 Đại học **Duy Tân**… — H: …**Duy Tân** sinh viên năm 4 Đại học **Phan Văn Thịnh**…
-  → Trùng gần 100% từ nhưng đổi chỗ tên người và tên trường. Mô hình đếm từ (M1) rất dễ sai kiểu này.
+  → Trùng gần 100% từ nhưng đổi chỗ tên người và tên trường. Mô hình dựa trên từ vựng như M1 (TF-IDF) rất dễ dự đoán sai trường hợp này.
 
 **COREF**
 - `uit_Adver_2187_3_11_11` · entailment · `COREF;LEX`
