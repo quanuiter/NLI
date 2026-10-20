@@ -25,6 +25,7 @@ scripts/
   segment_data.py   tách từ -> data/processed/*_seg.jsonl
   sample_manual.py  chọn 50 mẫu phân tích thủ công -> data/manual/
   check_manual.py   kiểm tra file phân tích thủ công, tính kappa
+  check_tasks.py    kiểm tra sản phẩm từng task (kết quả, notebook, ablation)
   prepare_embeddings.py, tune_m2.py, run_m2.py   embedding và M2
 docs/           tóm tắt bài báo, kết quả và nhận xét từng mô hình
 docs/huong_dan/ hướng dẫn từng bước cho từng task trong kế hoạch

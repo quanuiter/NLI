@@ -12,6 +12,26 @@ File nào cũng theo thứ tự: **Mục tiêu → Cần có trước → Các b
 3. **Cách mở notebook:** bấm link "Mở trên Colab" trong từng hướng dẫn. Mỗi notebook có **ô 0** ở đầu, lúc nào cũng chạy ô này trước
    (Colab hỏi quyền truy cập Drive thì m bấm cho phép).
 
+## Làm xong thì lưu ở đâu (Quang)
+Mỗi hướng dẫn có mục **Lưu và nộp** ghi rõ từng file. Quy tắc chung:
+
+| Loại | Lưu ở đâu | Cách lưu |
+|---|---|---|
+| Notebook (code + kết quả chạy) | GitHub, `notebooks/` | Colab: **Tệp → Lưu bản sao trong GitHub**, lưu **sau khi chạy hết các ô** |
+| File kết quả `results/*.json`, hình, file dự đoán | Drive chung `NLI/results/` | Tự lưu khi chạy `evaluate_and_save` |
+| File CSV phân tích thủ công | GitHub, `data/manual/` | GitHub: **Add file → Upload files**, giữ nguyên tên file |
+| Script, file `.md` | GitHub | Sửa hoặc tạo trên GitHub, **Commit changes** |
+| Báo cáo | Google Tài liệu BaoCao_NLI | Tự lưu |
+
+- **Thông điệp commit luôn bắt đầu bằng mã task**, ví dụ `W2-06: thêm đặc trưng phủ định`. T tìm commit theo mã task để kiểm tra.
+- **Mỗi lần làm, mở notebook từ link "Mở trên Colab"** để lấy bản mới nhất trên GitHub. Không dùng lại tab Colab cũ,
+  vì khi lưu, bản cũ sẽ ghi đè lên những gì t vừa cập nhật.
+- Lần đầu lưu lên GitHub, Colab hỏi quyền truy cập GitHub thì bấm cho phép. Trong hộp thoại lưu, bỏ chọn
+  *Include a link to Colaboratory* cho gọn.
+- Kết quả chạy phải được lưu cùng notebook. Nếu GitHub không hiện kết quả, vào **Chỉnh sửa → Cài đặt sổ tay**
+  (Edit → Notebook settings) và bỏ chọn ô *bỏ qua kết quả của ô mã khi lưu* (Omit code cell output when saving).
+- Lưu xong thì đổi trạng thái task sang **Đang review**. T kiểm tra đạt thì t đổi sang **Hoàn thành**.
+
 ## Danh sách
 | Task | Người làm | Hướng dẫn |
 |---|---|---|
@@ -32,6 +52,7 @@ File nào cũng theo thứ tự: **Mục tiêu → Cần có trước → Các b
 | W3-09 Phân tích loại bỏ đặc trưng (ablation) cho M1 | Quang | [W3-09.md](W3-09.md) |
 | W3-07 Review code chéo | Cả hai | [W3-07.md](W3-07.md) |
 | W3-01, W3-02, W3-03 M3, PhoBERT | Quân | [W3-01.md](W3-01.md), [W3-02.md](W3-02.md), [W3-03.md](W3-03.md) |
+| Kiểm tra sản phẩm task của Quang | Quân | [kiem_tra_ket_qua.md](kiem_tra_ket_qua.md) |
 
 **Viết báo cáo:** file [BaoCao_NLI](https://docs.google.com/document/d/18YITvVSJsknPPMx1jKBdgYH-KRHvJM6_ZrPv2tcTIok/edit)
 trong Drive chung. Quy ước chung (thuật ngữ, số liệu, bảng, trích dẫn): [quy_uoc_bao_cao.md](quy_uoc_bao_cao.md).
