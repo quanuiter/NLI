@@ -22,3 +22,6 @@ __pycache__/
 # hệ điều hành
 .DS_Store
 Thumbs.db
+
+# kết quả chạy thử (W3-02)
+results/smoke/

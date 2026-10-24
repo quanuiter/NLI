@@ -21,6 +21,7 @@ src/
   embeddings.py fastText cc.vi.300 qua Gensim, lọc theo vocab, báo cáo OOV
   m2.py         M2: embedding trung bình + FFNN
   m3.py         M3: BiLSTM + max-pooling
+  transformer.py M4 (PhoBERT), M5 (XLM-R): fine-tune cặp câu bằng Hugging Face Trainer
 scripts/
   prepare_data.py   tải + chuẩn hóa -> data/processed/*.jsonl
   segment_data.py   tách từ -> data/processed/*_seg.jsonl
@@ -29,6 +30,7 @@ scripts/
   check_tasks.py    kiểm tra sản phẩm từng task (kết quả, notebook, ablation)
   prepare_embeddings.py, tune_m2.py, run_m2.py   embedding và M2
   tune_m3.py, run_m3.py   M3
+  run_transformer.py      M4, M5 (--smoke: chạy thử; --token-lengths: đo độ dài token)
 docs/           tóm tắt bài báo, kết quả và nhận xét từng mô hình
 docs/huong_dan/ hướng dẫn từng bước cho từng task trong kế hoạch
 notebooks/      mỗi mô hình một notebook (chạy trên Colab)
