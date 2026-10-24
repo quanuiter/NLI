@@ -1,0 +1,117 @@
+{
+  "model": "M3",
+  "scenario": "S2",
+  "test_set": "vianli_test",
+  "seed": 42,
+  "created_at": "2026-10-24T10:20:41",
+  "config": {
+    "embedding": "fasttext",
+    "max_len": 64,
+    "hidden": 128,
+    "fc_hidden": 512,
+    "dropout": 0.3,
+    "freeze_embedding": true,
+    "lr": 0.001,
+    "batch_size": 64,
+    "max_epochs": 15,
+    "patience": 3,
+    "grad_clip": 5.0,
+    "train_seconds": 26.18,
+    "checkpoint": "checkpoints/M3_S2_seed42.pt",
+    "predict_seconds_vianli_test": 0.08,
+    "best_epoch": 5,
+    "dev_macro_f1": 0.3897,
+    "n_params": 8968259,
+    "n_trainable_params": 966659,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 1.0943,
+        "dev_macro_f1": 0.2166
+      },
+      {
+        "epoch": 2,
+        "train_loss": 1.0739,
+        "dev_macro_f1": 0.3167
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.0535,
+        "dev_macro_f1": 0.3544
+      },
+      {
+        "epoch": 4,
+        "train_loss": 1.0304,
+        "dev_macro_f1": 0.3405
+      },
+      {
+        "epoch": 5,
+        "train_loss": 1.006,
+        "dev_macro_f1": 0.3897
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.9873,
+        "dev_macro_f1": 0.3685
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.9526,
+        "dev_macro_f1": 0.3732
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.9261,
+        "dev_macro_f1": 0.37
+      }
+    ],
+    "device": "cuda"
+  },
+  "n": 1000,
+  "accuracy": 0.38,
+  "macro_f1": 0.3713866361050753,
+  "per_class": {
+    "entailment": {
+      "precision": 0.3978260869565217,
+      "recall": 0.5479041916167665,
+      "f1": 0.4609571788413098,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.36964980544747084,
+      "recall": 0.2852852852852853,
+      "f1": 0.3220338983050847,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.36042402826855124,
+      "recall": 0.3063063063063063,
+      "f1": 0.33116883116883117,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        183,
+        77,
+        74
+      ],
+      [
+        131,
+        95,
+        107
+      ],
+      [
+        146,
+        85,
+        102
+      ]
+    ]
+  }
+}

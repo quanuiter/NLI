@@ -1,0 +1,118 @@
+{
+  "model": "M3",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 42,
+  "created_at": "2026-10-24T10:20:42",
+  "config": {
+    "embedding": "fasttext",
+    "max_len": 64,
+    "hidden": 128,
+    "fc_hidden": 512,
+    "dropout": 0.3,
+    "freeze_embedding": true,
+    "lr": 0.001,
+    "batch_size": 64,
+    "max_epochs": 15,
+    "patience": 3,
+    "grad_clip": 5.0,
+    "train_seconds": 26.18,
+    "checkpoint": "checkpoints/M3_S2_seed42.pt",
+    "predict_seconds_vianli_test": 0.08,
+    "predict_seconds_vinli_test": 0.18,
+    "best_epoch": 5,
+    "dev_macro_f1": 0.3897,
+    "n_params": 8968259,
+    "n_trainable_params": 966659,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 1.0943,
+        "dev_macro_f1": 0.2166
+      },
+      {
+        "epoch": 2,
+        "train_loss": 1.0739,
+        "dev_macro_f1": 0.3167
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.0535,
+        "dev_macro_f1": 0.3544
+      },
+      {
+        "epoch": 4,
+        "train_loss": 1.0304,
+        "dev_macro_f1": 0.3405
+      },
+      {
+        "epoch": 5,
+        "train_loss": 1.006,
+        "dev_macro_f1": 0.3897
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.9873,
+        "dev_macro_f1": 0.3685
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.9526,
+        "dev_macro_f1": 0.3732
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.9261,
+        "dev_macro_f1": 0.37
+      }
+    ],
+    "device": "cuda"
+  },
+  "n": 2264,
+  "accuracy": 0.37279151943462896,
+  "macro_f1": 0.3654052403428842,
+  "per_class": {
+    "entailment": {
+      "precision": 0.3389513108614232,
+      "recall": 0.4826666666666667,
+      "f1": 0.39823982398239827,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.4207650273224044,
+      "recall": 0.3963963963963964,
+      "f1": 0.40821736249171636,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.375,
+      "recall": 0.23609226594301222,
+      "f1": 0.28975853455453787,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        362,
+        219,
+        169
+      ],
+      [
+        348,
+        308,
+        121
+      ],
+      [
+        358,
+        205,
+        174
+      ]
+    ]
+  }
+}
