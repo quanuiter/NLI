@@ -28,11 +28,11 @@ from .utils import get_device, set_seed, timer
 
 CHECKPOINT_DIR = ROOT / "checkpoints"
 
-# Chọn trên dev bằng scripts/tune_m3.py (xem docs/ket_qua_m3.md)
+# Chọn trên dev bằng scripts/tune_m3.py rồi kiểm tra lại 3 seed (S2 dev 0,382 ± 0,006), xem docs/ket_qua_m3.md
 DEFAULT_CONFIG = {
     "embedding": "fasttext",
     "max_len": 64,
-    "hidden": 256,
+    "hidden": 128,
     "fc_hidden": 512,
     "dropout": 0.3,
     "freeze_embedding": True,
