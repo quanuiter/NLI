@@ -31,13 +31,16 @@ MODELS = {
 
 # max_len 256: phủ gần hết cặp câu (PhoBERT: chỉ 17/100.000 cặp XNLI train dài hơn, xem results/analysis/token_lengths.json).
 # Mỗi batch chỉ đệm tới câu dài nhất trong batch, nên max_len lớn không làm chậm.
+# hidden_dropout: dropout bên trong 12 lớp Transformer, giữ đúng giá trị lúc huấn luyện trước (0,1).
+# classifier_dropout: dropout của lớp phân loại đặt lên trên. "Dropout 0,4" của bài ViANLI được hiểu là dropout này;
+# đặt 0,4 cho cả 12 lớp làm mô hình học rất chậm (lần chạy 24/10: dev macro-F1 chỉ 0,34 sau 7 epoch).
 CONFIGS = {
     # A: cấu hình thường dùng khi fine-tune BERT
     "A": {"lr": 2e-5, "batch_size": 32, "epochs": 3, "max_len": 256, "weight_decay": 0.01, "warmup_ratio": 0.1,
-          "dropout": 0.1},
+          "hidden_dropout": 0.1, "classifier_dropout": 0.1},
     # B: cấu hình của bài ViANLI (mục 6.2): lr 1e-5, batch 16, 7 epoch, max_len 256, dropout 0,4
     "B": {"lr": 1e-5, "batch_size": 16, "epochs": 7, "max_len": 256, "weight_decay": 0.01, "warmup_ratio": 0.1,
-          "dropout": 0.4},
+          "hidden_dropout": 0.1, "classifier_dropout": 0.4},
 }
 
 
@@ -92,7 +95,8 @@ def _training_args(out_dir: Path, cfg: dict, seed: int, fp16: bool):
 def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: dict | None = None,
         train_limit: int | None = None, dev_limit: int | None = None, test_limit: int | None = None,
         init_from: str | Path | None = None,
-        out_dir: Path = RESULTS_DIR, keep_checkpoint: bool = True, verbose: bool = True) -> list[dict]:
+        out_dir: Path = RESULTS_DIR, keep_checkpoint: bool = True, ckpt_suffix: str = "",
+        verbose: bool = True) -> list[dict]:
     """Fine-tune M4/M5 cho một kịch bản, đánh giá mọi tập test qua evaluate_and_save.
 
     config: "A" hoặc "B" (CONFIGS), cfg ghi đè từng giá trị.
@@ -119,10 +123,10 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
     tokenizer = AutoTokenizer.from_pretrained(spec["name"])
     model = AutoModelForSequenceClassification.from_pretrained(
         source, num_labels=len(LABELS), id2label=ID2LABEL, label2id=LABEL2ID,
-        hidden_dropout_prob=cfg["dropout"], attention_probs_dropout_prob=0.1)
+        hidden_dropout_prob=cfg["hidden_dropout"], classifier_dropout=cfg["classifier_dropout"])
     fp16 = torch.cuda.is_available()
 
-    tag = f"{model_key}_{scenario}_seed{seed}" + ("_smoke" if train_limit else "")
+    tag = f"{model_key}_{scenario}_seed{seed}" + ("_smoke" if train_limit else "") + (f"_{ckpt_suffix}" if ckpt_suffix else "")
     work_dir = CHECKPOINT_DIR / f"_{tag}_tmp"
     trainer = Trainer(
         model=model, args=_training_args(work_dir, cfg, seed, fp16),
@@ -152,7 +156,7 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
     if keep_checkpoint:
         final_dir = CHECKPOINT_DIR / tag
         trainer.save_model(str(final_dir))
-        info["checkpoint"] = str(final_dir.relative_to(ROOT) if final_dir.is_relative_to(ROOT) else final_dir)
+        info["checkpoint"] = _rel(final_dir)
     shutil.rmtree(work_dir, ignore_errors=True)
 
     results = []
@@ -166,6 +170,56 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
                                          seed=seed, config={**cfg, **info}, ids=df["id"], premise=df["premise"],
                                          hypothesis=df["hypothesis"], out_dir=out_dir, verbose=verbose))
     return results
+
+
+def _rel(path: Path) -> str:
+    return str(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
+
+
+def tune(model_key: str, scenario: str, configs: list[str], seed: int = 42, init_from: str | Path | None = None,
+         verbose: bool = True, **run_kwargs) -> dict:
+    """So nhiều cấu hình trên dev rồi giữ cấu hình tốt nhất (W3-03).
+
+    Mỗi cấu hình lưu kết quả riêng ở results/tuning/<mô hình>_<kịch bản>_seed<seed>_<cấu hình>/.
+    Cấu hình có macro-F1 dev cao nhất được chép ra results/ (kết quả chính) và giữ checkpoint;
+    checkpoint của cấu hình còn lại bị xóa. Việc chọn chỉ dựa trên dev, không nhìn tập test.
+    Bảng so sánh: results/analysis/<mô hình>_tuning_<kịch bản>_seed<seed>.json
+    """
+    scenario = scenario.upper()
+    rows = []
+    for config in configs:
+        sub = RESULTS_DIR / "tuning" / f"{model_key}_{scenario}_seed{seed}_{config}"
+        res = run(model_key, scenario, seed, config=config, init_from=init_from, out_dir=sub, ckpt_suffix=config,
+                  verbose=verbose, **run_kwargs)
+        c = res[0]["config"]
+        rows.append({"config": config, "dev_macro_f1": c["dev_macro_f1"], "best_epoch": c["best_epoch"],
+                     "train_seconds": c["train_seconds"], "history": c["history"], "dir": sub,
+                     "checkpoint": c.get("checkpoint"), "settings": {k: c[k] for k in CONFIGS[config]}})
+    best = max(rows, key=lambda r: r["dev_macro_f1"])
+    for path in best["dir"].rglob("*"):
+        if path.is_file():
+            target = RESULTS_DIR / path.relative_to(best["dir"])
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(path, target)
+    final_dir = CHECKPOINT_DIR / f"{model_key}_{scenario}_seed{seed}"
+    for r in rows:
+        ckpt = (ROOT / r["checkpoint"]) if r["checkpoint"] else None
+        if ckpt is None or not ckpt.exists():
+            continue
+        if r is best:
+            shutil.rmtree(final_dir, ignore_errors=True)
+            ckpt.rename(final_dir)
+        else:
+            shutil.rmtree(ckpt, ignore_errors=True)
+    report = {"model": model_key, "scenario": scenario, "seed": seed, "chosen": best["config"],
+              "rule": "chọn cấu hình có macro-F1 dev cao nhất",
+              "results": [{k: (_rel(v) if isinstance(v, Path) else v) for k, v in r.items()} for r in rows]}
+    save_json(report, RESULTS_DIR / "analysis" / f"{model_key}_tuning_{scenario}_seed{seed}.json")
+    if verbose:
+        for r in rows:
+            print(f"cấu hình {r['config']}: dev macro-F1 {r['dev_macro_f1']:.4f} (epoch {r['best_epoch']})")
+        print(f"→ chọn {best['config']}, kết quả chép ra {RESULTS_DIR}, checkpoint {final_dir}")
+    return report
 
 
 def save_token_lengths(out=RESULTS_DIR / "analysis" / "token_lengths.json") -> dict:

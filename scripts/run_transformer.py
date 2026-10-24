@@ -2,7 +2,7 @@
 
 Ví dụ:
     python scripts/run_transformer.py --model M4 --scenario S2 --smoke          # chạy thử 1.000 mẫu, 1 epoch (W3-02)
-    python scripts/run_transformer.py --model M4 --scenario S2 --config A B     # W3-03: so 2 cấu hình trên dev
+    python scripts/run_transformer.py --model M4 --scenario S2 --config A B     # W3-03: so 2 cấu hình trên dev, giữ cấu hình tốt hơn
     python scripts/run_transformer.py --model M4 --scenario S3 --init-from checkpoints/M4_S1_seed42   # W4-02
     python scripts/run_transformer.py --token-lengths                           # đo độ dài token để chọn max_len
 Cần GPU (Colab T4). PhoBERT dùng dữ liệu đã tách từ: chạy scripts/segment_data.py trước.
@@ -40,9 +40,13 @@ def main():
     for scenario in args.scenario:
         if scenario == "S3" and not args.init_from:
             sys.exit("Kịch bản S3 cần --init-from <checkpoint S1>")
-        for config in args.config:
-            for seed in args.seeds:
-                transformer.run(args.model, scenario, seed, config=config, init_from=args.init_from, **smoke)
+        for seed in args.seeds:
+            if len(args.config) > 1 and not args.smoke:
+                # nhiều cấu hình: so trên dev, giữ cấu hình tốt nhất (xem transformer.tune)
+                transformer.tune(args.model, scenario, args.config, seed, init_from=args.init_from)
+            else:
+                for config in args.config:
+                    transformer.run(args.model, scenario, seed, config=config, init_from=args.init_from, **smoke)
 
     if not args.smoke:
         table = summarize()
