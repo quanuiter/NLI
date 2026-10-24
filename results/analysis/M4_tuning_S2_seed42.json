@@ -1,0 +1,109 @@
+{
+  "model": "M4",
+  "scenario": "S2",
+  "seed": 42,
+  "chosen": "B",
+  "rule": "chọn cấu hình có macro-F1 dev cao nhất",
+  "results": [
+    {
+      "config": "A",
+      "dev_macro_f1": 0.4435,
+      "best_epoch": 3,
+      "train_seconds": 135.3,
+      "history": [
+        {
+          "epoch": 1,
+          "dev_macro_f1": 0.4056,
+          "dev_accuracy": 0.45,
+          "train_loss": 1.0785
+        },
+        {
+          "epoch": 2,
+          "dev_macro_f1": 0.4359,
+          "dev_accuracy": 0.451,
+          "train_loss": 0.9661
+        },
+        {
+          "epoch": 3,
+          "dev_macro_f1": 0.4435,
+          "dev_accuracy": 0.447,
+          "train_loss": 0.8441
+        }
+      ],
+      "dir": "results/tuning/M4_S2_seed42_A",
+      "checkpoint": "checkpoints/M4_S2_seed42_A",
+      "settings": {
+        "lr": 2e-05,
+        "batch_size": 32,
+        "epochs": 3,
+        "max_len": 256,
+        "weight_decay": 0.01,
+        "warmup_ratio": 0.1,
+        "hidden_dropout": 0.1,
+        "classifier_dropout": 0.1
+      }
+    },
+    {
+      "config": "B",
+      "dev_macro_f1": 0.4476,
+      "best_epoch": 3,
+      "train_seconds": 408.84,
+      "history": [
+        {
+          "epoch": 1,
+          "dev_macro_f1": 0.3068,
+          "dev_accuracy": 0.385,
+          "train_loss": 1.1004
+        },
+        {
+          "epoch": 2,
+          "dev_macro_f1": 0.4164,
+          "dev_accuracy": 0.447,
+          "train_loss": 1.0372
+        },
+        {
+          "epoch": 3,
+          "dev_macro_f1": 0.4476,
+          "dev_accuracy": 0.448,
+          "train_loss": 0.9213
+        },
+        {
+          "epoch": 4,
+          "dev_macro_f1": 0.4336,
+          "dev_accuracy": 0.434,
+          "train_loss": 0.8005
+        },
+        {
+          "epoch": 5,
+          "dev_macro_f1": 0.4366,
+          "dev_accuracy": 0.449,
+          "train_loss": 0.6953
+        },
+        {
+          "epoch": 6,
+          "dev_macro_f1": 0.4461,
+          "dev_accuracy": 0.45,
+          "train_loss": 0.622
+        },
+        {
+          "epoch": 7,
+          "dev_macro_f1": 0.437,
+          "dev_accuracy": 0.44,
+          "train_loss": 0.574
+        }
+      ],
+      "dir": "results/tuning/M4_S2_seed42_B",
+      "checkpoint": "checkpoints/M4_S2_seed42_B",
+      "settings": {
+        "lr": 1e-05,
+        "batch_size": 16,
+        "epochs": 7,
+        "max_len": 256,
+        "weight_decay": 0.01,
+        "warmup_ratio": 0.1,
+        "hidden_dropout": 0.1,
+        "classifier_dropout": 0.4
+      }
+    }
+  ]
+}

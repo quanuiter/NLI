@@ -20,7 +20,7 @@ from sklearn.metrics import f1_score
 
 from .data import ID2LABEL, LABEL2ID, LABELS, ROOT, load_scenario
 from .evaluate import RESULTS_DIR, evaluate_and_save
-from .utils import save_json, set_seed, timer
+from .utils import load_json, save_json, set_seed, timer
 
 CHECKPOINT_DIR = ROOT / "checkpoints"
 
@@ -196,12 +196,16 @@ def tune(model_key: str, scenario: str, configs: list[str], seed: int = 42, init
                      "train_seconds": c["train_seconds"], "history": c["history"], "dir": sub,
                      "checkpoint": c.get("checkpoint"), "settings": {k: c[k] for k in CONFIGS[config]}})
     best = max(rows, key=lambda r: r["dev_macro_f1"])
+    final_dir = CHECKPOINT_DIR / f"{model_key}_{scenario}_seed{seed}"
     for path in best["dir"].rglob("*"):
         if path.is_file():
             target = RESULTS_DIR / path.relative_to(best["dir"])
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(path, target)
-    final_dir = CHECKPOINT_DIR / f"{model_key}_{scenario}_seed{seed}"
+            if target.suffix == ".json" and target.parent == RESULTS_DIR and best["checkpoint"]:
+                result = load_json(target)
+                result["config"]["checkpoint"] = _rel(final_dir)   # checkpoint được đổi tên ở dưới
+                save_json(result, target)
     for r in rows:
         ckpt = (ROOT / r["checkpoint"]) if r["checkpoint"] else None
         if ckpt is None or not ckpt.exists():
