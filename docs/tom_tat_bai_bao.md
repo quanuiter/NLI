@@ -98,60 +98,60 @@ Language Inference in Vietnamese*. Expert Systems with Applications, 2025. arXiv
 ## Phần của A (Quang): điền theo 5 mục như trên
 
 ### SNLI – Bowman et al., EMNLP 2015
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính:
-- Áp dụng cho đồ án:
+- **Bài toán.** Xây dựng bộ dữ liệu lớn để huấn luyện và đánh giá mô hình NLI ba nhãn.
+- **Dữ liệu.** 570.152 cặp câu tiếng Anh. Tiền đề lấy từ chú thích ảnh, giả thuyết do người tham gia viết.
+- **Phương pháp.** Với mỗi tiền đề, người tham gia viết giả thuyết tương ứng với ba nhãn kéo theo, trung lập và mâu thuẫn.
+- **Kết quả chính.** LSTM đạt 77,6% accuracy trên SNLI test. [Bảng 6](https://aclanthology.org/D15-1075.pdf#page=7)
+- **Áp dụng cho đồ án.** Dùng để giới thiệu ba nhãn NLI và cách tạo câu giả thuyết.
 
 ### MultiNLI – Williams et al., NAACL 2018
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính:
-- Áp dụng cho đồ án:
+- **Bài toán.** Đánh giá khả năng suy luận trên nhiều thể loại văn bản.
+- **Dữ liệu.** Khoảng 433.000 cặp câu từ 10 thể loại tiếng Anh nói và viết.
+- **Phương pháp.** Đánh giá riêng trên thể loại có trong tập huấn luyện (matched) và thể loại chưa thấy khi huấn luyện (mismatched).
+- **Kết quả chính.** ESIM đạt 72,3% accuracy trên matched và 72,1% trên mismatched. [Bảng 4](https://aclanthology.org/N18-1101.pdf#page=6)
+- **Áp dụng cho đồ án.** MultiNLI là nguồn tiếng Anh dùng để xây dựng XNLI.
 
 ### XNLI – Conneau et al., EMNLP 2018
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính: *(ghi kết quả tiếng Việt)*
-- Áp dụng cho đồ án:
+- **Bài toán.** Đánh giá khả năng chuyển mô hình NLI giữa các ngôn ngữ.
+- **Dữ liệu.** XNLI có 15 ngôn ngữ. Với tiếng Việt, dev và test do người dịch, còn tập train được dịch máy từ MultiNLI.
+- **Phương pháp.** So sánh huấn luyện trên dữ liệu đã dịch, dịch dữ liệu khi kiểm tra và dùng bộ mã hóa đa ngữ.
+- **Kết quả chính.** BiLSTM-max đạt 66,0% accuracy trên XNLI-vi test theo thiết lập TRANSLATE TRAIN. [Bảng 4, cột vi](https://aclanthology.org/D18-1269.pdf#page=8)
+- **Áp dụng cho đồ án.** XNLI-vi là dữ liệu huấn luyện cho S1. Nguồn dịch máy của tập train là lý do nhóm phân tích các mẫu có thẻ TRANS.
 
 ### Hypothesis-only – Poliak et al., *SEM 2018; Gururangan et al., NAACL 2018
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính:
-- Áp dụng cho đồ án: *(cơ sở cho M1-h)*
+- **Bài toán.** Kiểm tra xem mô hình có thể đoán nhãn chỉ từ câu giả thuyết hay không.
+- **Dữ liệu.** Poliak et al. khảo sát 10 bộ NLI. Gururangan et al. phân tích SNLI và MultiNLI.
+- **Phương pháp.** Poliak et al. dùng BiLSTM để mã hóa giả thuyết. Gururangan et al. dùng fastText. Cả hai đối chiếu với mô hình đoán nhãn đa số.
+- **Kết quả chính.** Trên SNLI test, Poliak et al. đạt 69,0% và Gururangan et al. đạt 67,0% accuracy khi chỉ đọc giả thuyết. [Poliak, Bảng 2](https://aclanthology.org/S18-2023.pdf#page=5) · [Gururangan, Bảng 2](https://aclanthology.org/N18-2017.pdf#page=2)
+- **Áp dụng cho đồ án.** So sánh M1-h với M0 trên cùng tập test để kiểm tra xem câu giả thuyết có chứa dấu hiệu giúp đoán nhãn hay không.
 
 ### InferSent – Conneau et al., EMNLP 2017
-- Bài toán:
-- Dữ liệu:
-- Phương pháp: *(đặc trưng [u, v, |u−v|, u*v], cơ sở cho M2, M3)*
-- Kết quả chính:
-- Áp dụng cho đồ án:
+- **Bài toán.** Kiểm tra xem biểu diễn câu học từ NLI có hữu ích cho các tác vụ ngôn ngữ khác hay không.
+- **Dữ liệu.** Tác giả huấn luyện trên SNLI và khảo sát thêm việc kết hợp SNLI với MultiNLI.
+- **Phương pháp.** Dùng chung bộ mã hóa để tạo hai vector câu. Bộ phân loại nhận hai vector, hiệu tuyệt đối và tích theo từng chiều của chúng.
+- **Kết quả chính.** BiLSTM kết hợp max-pooling đạt 84,5% accuracy trên SNLI test. [Bảng 3](https://aclanthology.org/D17-1070.pdf#page=6)
+- **Áp dụng cho đồ án.** M2 và M3 dùng cách ghép đặc trưng cặp câu này. M3 cũng dùng BiLSTM kết hợp max-pooling.
 
 ### PhoBERT – Nguyen & Nguyen, Findings of EMNLP 2020
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính: *(ghi accuracy XNLI-vi của PhoBERT và XLM-R trong bảng của bài)*
-- Áp dụng cho đồ án:
+- **Bài toán.** Xây dựng mô hình tiền huấn luyện chuyên cho tiếng Việt, có xét đến việc một từ có thể gồm nhiều âm tiết.
+- **Dữ liệu.** Mô hình được tiền huấn luyện trên khoảng 20 GB văn bản Wikipedia và tin tức tiếng Việt. Thí nghiệm NLI dùng 392.702 cặp XNLI-vi để fine-tune. [Bảng 1](https://aclanthology.org/2020.findings-emnlp.92.pdf#page=2)
+- **Phương pháp.** Tiền huấn luyện theo RoBERTa. Dùng RDRSegmenter để tách từ tiếng Việt trước khi áp dụng BPE.
+- **Kết quả chính.** PhoBERT-base đạt 78,5% và PhoBERT-large đạt 80,0% accuracy trên XNLI-vi test. Bảng này cũng dẫn lại mức 75,4% của XLM-R-base từ bản preprint. [Bảng 3](https://aclanthology.org/2020.findings-emnlp.92.pdf#page=4)
+- **Áp dụng cho đồ án.** Dùng PhoBERT-base cho M4 và tách từ trước khi đưa dữ liệu vào mô hình. Khi đối chiếu điểm S1 với bài báo, ghi rõ nhóm dùng 100.000 cặp huấn luyện.
 
 ### XLM-R – Conneau et al., ACL 2020
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính: *(ghi accuracy XNLI tiếng Việt)*
-- Áp dụng cho đồ án:
+- **Bài toán.** Đánh giá khả năng chuyển mô hình giữa các ngôn ngữ sau khi tiền huấn luyện đa ngữ.
+- **Dữ liệu.** Mô hình được tiền huấn luyện trên văn bản Common Crawl đã lọc từ 100 ngôn ngữ. Tác giả dùng XNLI để đánh giá khả năng suy luận đa ngữ.
+- **Phương pháp.** Tiền huấn luyện Transformer bằng cách dự đoán các token bị che. Dùng SentencePiece để phân tách văn bản.
+- **Kết quả chính.** Trên XNLI-vi test, XLM-R-base đạt 76,5% accuracy khi fine-tune trên tiếng Anh và 79,7% khi fine-tune trên dữ liệu gộp nhiều ngôn ngữ. [Bảng 1, cột vi](https://aclanthology.org/2020.acl-main.747.pdf#page=7)
+- **Áp dụng cho đồ án.** Dùng XLM-R-base cho M5 để so sánh với PhoBERT-base. Hai điểm công bố là mốc tham khảo vì M5–S1 của nhóm fine-tune trên 100.000 cặp tiếng Việt.
 
 ### ViNLI – Huynh, Nguyen & Nguyen, COLING 2022
-- Bài toán:
-- Dữ liệu:
-- Phương pháp:
-- Kết quả chính: *(một số số liệu đã có ở bảng dưới, A kiểm tra lại trong bài gốc)*
-- Áp dụng cho đồ án:
+- **Bài toán.** Xây dựng bộ dữ liệu NLI tiếng Việt gốc để đánh giá khả năng suy luận trên nhiều chủ đề.
+- **Dữ liệu.** Hơn 30.000 cặp câu được gán nhãn thủ công. Các câu tiền đề lấy từ hơn 800 bài báo thuộc 13 chủ đề.
+- **Phương pháp.** Tác giả đánh giá mô hình với cả bộ ba nhãn và bộ bốn nhãn. Nhãn OTHER dành cho các cặp câu không liên quan về nội dung.
+- **Kết quả chính.** Khi huấn luyện trên ViNLI, PhoBERT-base đạt 72,87% và XLM-R-base đạt 71,59% accuracy trên ViNLI test ba nhãn. [Bảng 6](https://aclanthology.org/2022.coling-1.339.pdf#page=9)
+- **Áp dụng cho đồ án.** Nhóm bỏ nhãn OTHER và chỉ dùng ViNLI làm tập test phụ để đo khả năng chuyển từ XNLI-vi hoặc ViANLI sang ViNLI.
 
 ---
 
@@ -174,8 +174,8 @@ Language Inference in Vietnamese*. Expert Systems with Applications, 2025. arXiv
 | ViNLI | Chỉ hypothesis | ViNLI train | ~58 | – | ViANLI mục 7.6 (trích ViNLI) | |
 | ANLI test | RoBERTa-large | SNLI + MNLI | 31,1 | – | ANLI, Bảng 3 | Giống hiện tượng S1 → ViANLI |
 | ANLI test | RoBERTa-large | S + M + FEVER + ANLI | 53,7 | – | ANLI, Bảng 3 | |
-| XNLI-vi test | PhoBERT-base | *(A điền)* | | | PhoBERT, bảng … | **M4 – S1** |
-| XNLI-vi test | XLM-R-base | *(A điền)* | | | XLM-R / PhoBERT, bảng … | **M5 – S1** |
+| XNLI-vi test | PhoBERT-base | XNLI-vi train (392.702 cặp) | 78,50 | – | [PhoBERT, Bảng 3](https://aclanthology.org/2020.findings-emnlp.92.pdf#page=4) | M4–S1 (nhóm dùng 100.000 cặp) |
+| XNLI-vi test | XLM-R-base | XNLI train tiếng Anh | 76,50 | – | [XLM-R, Bảng 1, cột vi](https://aclanthology.org/2020.acl-main.747.pdf#page=7) | Tham khảo cho M5–S1 vì khác ngôn ngữ fine-tune |
 
 \* Nhóm **không huấn luyện trên ViNLI**, nên điểm của nhóm trên ViNLI test (học từ XNLI hoặc ViANLI) đo khả năng
 *chuyển sang bộ dữ liệu khác*. Kỳ vọng thấp hơn các số trên. Khi viết báo cáo phải nói rõ điểm khác này.
