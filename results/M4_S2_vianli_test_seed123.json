@@ -1,0 +1,120 @@
+{
+  "model": "M4",
+  "scenario": "S2",
+  "test_set": "vianli_test",
+  "seed": 123,
+  "created_at": "2026-11-08T10:10:58",
+  "config": {
+    "lr": 1e-05,
+    "batch_size": 16,
+    "epochs": 7,
+    "max_len": 256,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "hidden_dropout": 0.1,
+    "classifier_dropout": 0.4,
+    "config_name": "B",
+    "pretrained": "vinai/phobert-base",
+    "n_train": 8012,
+    "n_dev": 1000,
+    "init_from": null,
+    "fp16": true,
+    "device": "cuda",
+    "train_seconds": 410.96,
+    "best_epoch": 4,
+    "dev_macro_f1": 0.4482,
+    "history": [
+      {
+        "epoch": 1,
+        "dev_macro_f1": 0.41,
+        "dev_accuracy": 0.439,
+        "train_loss": 1.0963
+      },
+      {
+        "epoch": 2,
+        "dev_macro_f1": 0.4235,
+        "dev_accuracy": 0.442,
+        "train_loss": 1.0321
+      },
+      {
+        "epoch": 3,
+        "dev_macro_f1": 0.4409,
+        "dev_accuracy": 0.449,
+        "train_loss": 0.9283
+      },
+      {
+        "epoch": 4,
+        "dev_macro_f1": 0.4482,
+        "dev_accuracy": 0.451,
+        "train_loss": 0.8223
+      },
+      {
+        "epoch": 5,
+        "dev_macro_f1": 0.4439,
+        "dev_accuracy": 0.445,
+        "train_loss": 0.7208
+      },
+      {
+        "epoch": 6,
+        "dev_macro_f1": 0.4377,
+        "dev_accuracy": 0.441,
+        "train_loss": 0.6499
+      },
+      {
+        "epoch": 7,
+        "dev_macro_f1": 0.4414,
+        "dev_accuracy": 0.444,
+        "train_loss": 0.6085
+      }
+    ],
+    "n_params": 135000579,
+    "predict_seconds_vianli_test": 2.13
+  },
+  "n": 1000,
+  "accuracy": 0.428,
+  "macro_f1": 0.4242421481076484,
+  "per_class": {
+    "entailment": {
+      "precision": 0.48663101604278075,
+      "recall": 0.5449101796407185,
+      "f1": 0.5141242937853108,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.3693379790940767,
+      "recall": 0.3183183183183183,
+      "f1": 0.3419354838709677,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.41297935103244837,
+      "recall": 0.42042042042042044,
+      "f1": 0.4166666666666667,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        182,
+        81,
+        71
+      ],
+      [
+        99,
+        106,
+        128
+      ],
+      [
+        93,
+        100,
+        140
+      ]
+    ]
+  }
+}

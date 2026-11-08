@@ -1,0 +1,99 @@
+{
+  "model": "M5",
+  "scenario": "S1",
+  "test_set": "vinli_test",
+  "seed": 42,
+  "created_at": "2026-11-08T11:09:52",
+  "config": {
+    "lr": 2e-05,
+    "batch_size": 32,
+    "epochs": 3,
+    "max_len": 256,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "hidden_dropout": 0.1,
+    "classifier_dropout": 0.1,
+    "config_name": "A",
+    "pretrained": "xlm-roberta-base",
+    "n_train": 100000,
+    "n_dev": 2490,
+    "init_from": null,
+    "fp16": true,
+    "device": "cuda",
+    "train_seconds": 2012.32,
+    "best_epoch": 3,
+    "dev_macro_f1": 0.7466,
+    "history": [
+      {
+        "epoch": 1,
+        "dev_macro_f1": 0.7155,
+        "dev_accuracy": 0.7161,
+        "train_loss": 0.8341
+      },
+      {
+        "epoch": 2,
+        "dev_macro_f1": 0.7465,
+        "dev_accuracy": 0.7462,
+        "train_loss": 0.6251
+      },
+      {
+        "epoch": 3,
+        "dev_macro_f1": 0.7466,
+        "dev_accuracy": 0.7458,
+        "train_loss": 0.5205
+      }
+    ],
+    "n_params": 278045955,
+    "checkpoint": "checkpoints/M5_S1_seed42",
+    "predict_seconds_xnli_test": 7.62,
+    "predict_seconds_vianli_test": 1.75,
+    "predict_seconds_vinli_test": 4.55
+  },
+  "n": 2264,
+  "accuracy": 0.6784452296819788,
+  "macro_f1": 0.674197842411813,
+  "per_class": {
+    "entailment": {
+      "precision": 0.7649122807017544,
+      "recall": 0.5813333333333334,
+      "f1": 0.6606060606060606,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.5998209489704566,
+      "recall": 0.8622908622908623,
+      "f1": 0.7074973600844773,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.7452339688041595,
+      "recall": 0.5834464043419267,
+      "f1": 0.654490106544901,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        436,
+        227,
+        87
+      ],
+      [
+        47,
+        670,
+        60
+      ],
+      [
+        87,
+        220,
+        430
+      ]
+    ]
+  }
+}

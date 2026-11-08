@@ -1,0 +1,97 @@
+{
+  "model": "M4",
+  "scenario": "S1",
+  "test_set": "xnli_test",
+  "seed": 42,
+  "created_at": "2026-11-08T09:49:49",
+  "config": {
+    "lr": 2e-05,
+    "batch_size": 32,
+    "epochs": 3,
+    "max_len": 256,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "hidden_dropout": 0.1,
+    "classifier_dropout": 0.1,
+    "config_name": "A",
+    "pretrained": "vinai/phobert-base",
+    "n_train": 100000,
+    "n_dev": 2490,
+    "init_from": null,
+    "fp16": true,
+    "device": "cuda",
+    "train_seconds": 1471.67,
+    "best_epoch": 2,
+    "dev_macro_f1": 0.7718,
+    "history": [
+      {
+        "epoch": 1,
+        "dev_macro_f1": 0.7441,
+        "dev_accuracy": 0.7442,
+        "train_loss": 0.7705
+      },
+      {
+        "epoch": 2,
+        "dev_macro_f1": 0.7718,
+        "dev_accuracy": 0.7707,
+        "train_loss": 0.5686
+      },
+      {
+        "epoch": 3,
+        "dev_macro_f1": 0.7616,
+        "dev_accuracy": 0.761,
+        "train_loss": 0.4569
+      }
+    ],
+    "n_params": 135000579,
+    "checkpoint": "checkpoints/M4_S1_seed42",
+    "predict_seconds_xnli_test": 5.99
+  },
+  "n": 5010,
+  "accuracy": 0.7714570858283433,
+  "macro_f1": 0.7723697847187819,
+  "per_class": {
+    "entailment": {
+      "precision": 0.820615796519411,
+      "recall": 0.7341317365269461,
+      "f1": 0.7749683944374209,
+      "support": 1670
+    },
+    "neutral": {
+      "precision": 0.6965408805031447,
+      "recall": 0.795808383233533,
+      "f1": 0.742873113471213,
+      "support": 1670
+    },
+    "contradiction": {
+      "precision": 0.8146766169154229,
+      "recall": 0.7844311377245509,
+      "f1": 0.799267846247712,
+      "support": 1670
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        1226,
+        292,
+        152
+      ],
+      [
+        195,
+        1329,
+        146
+      ],
+      [
+        73,
+        287,
+        1310
+      ]
+    ]
+  }
+}

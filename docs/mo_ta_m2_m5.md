@@ -170,7 +170,7 @@ tách văn bản bằng SentencePiece (bộ từ vựng 250.000), **nhận thẳ
 (bộ từ vựng lớn làm ma trận embedding lớn; phần Transformer bằng PhoBERT).
 
 **Ví dụ:** cũng 31 token, nhưng chia khác: `<s> ▁" 10 ▁năm ▁nữa ▁ ư , ▁chắc ▁là ▁không ", ▁Tim ▁Cook ▁đáp . </s></s> ▁Ông ▁Cook …`
-(▁ đánh dấu đầu một từ). Dự đoán: *(điền sau khi chạy W4-04)*.
+(▁ đánh dấu đầu một từ). M5 (S2) đoán *neutral*, sai: không nhận ra quan hệ mâu thuẫn như PhoBERT.
 
 **Lý do chọn:** so sánh mô hình **đơn ngữ** (PhoBERT, chỉ học tiếng Việt) với mô hình **đa ngữ** (XLM-R). Bài ViANLI cho thấy hai loại
 đạt mức gần nhau trên ViANLI (PhoBERT-base 44,3%, XLM-R-base 44,8%, Bảng 10).
@@ -187,8 +187,8 @@ tách văn bản bằng SentencePiece (bộ từ vựng 250.000), **nhận thẳ
 | So sánh hai câu | [u; v; \|u−v\|; u⊙v; cos] | [u; v; \|u−v\|; u⊙v] | attention giữa hai câu | như M4 |
 | Kiến thức có sẵn | fastText | fastText | huấn luyện trước trên 20 GB tiếng Việt | 2,5 TB, 100 ngôn ngữ |
 | Số tham số | 0,88 triệu | 8,97 triệu (0,97 triệu huấn luyện) | 135 triệu | 278 triệu |
-| Thời gian huấn luyện S2 | khoảng 2 giây (CPU) | khoảng 26 giây (GPU T4) | khoảng 7 phút (GPU T4) | *(sau W4-04)* |
-| ViANLI test, S2, seed 42 | 39,7% | 38,0% | 46,0% | *(sau W4-04)* |
+| Thời gian huấn luyện S2 | khoảng 2 giây (CPU) | khoảng 26 giây (GPU T4) | khoảng 7 phút (GPU T4) | khoảng 11 phút (GPU T4) |
+| ViANLI test, S2, seed 42 | 39,7% | 38,0% | 46,0% (3 seed: 44,4 ± 1,6) | 43,6% |
 
 ## Tài liệu cần trích dẫn
 Conneau và cộng sự 2017 (InferSent); Grave và cộng sự 2018 (fastText 157 ngôn ngữ); Hochreiter & Schmidhuber 1997 (LSTM);

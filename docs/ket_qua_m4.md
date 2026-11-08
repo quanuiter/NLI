@@ -63,12 +63,41 @@ So sánh trên ViANLI test (S2):
 4. **Học trên ViANLI rồi kiểm tra trên ViNLI được 52,7%**, cao hơn hẳn M2 (32,6%) và M3 (37,3%).
    Phần lớn khả năng này đến từ việc PhoBERT đã được huấn luyện trước trên văn bản tiếng Việt lớn.
 
-## 5. Chạy lại
+## 5. Tuần 4: kịch bản S1, S3 và 3 seed (W4-01 → W4-03)
+
+Chạy trên Colab T4 ngày 08/11 (`notebooks/06_tuan4.ipynb`). S1 dùng cấu hình A (100.000 cặp, 3 epoch, 25 phút);
+S3 bắt đầu từ checkpoint S1 seed 42 rồi học tiếp ViANLI với cấu hình B (khoảng 7 phút). Seed 42, 123, 2024 cho S2 và S3.
+
+| Kịch bản | XNLI test | ViANLI test | ViNLI test |
+|---|---|---|---|
+| S1 (học XNLI 100k), seed 42 | **77,1** | 27,8 | 70,9 |
+| S2 (học ViANLI), 3 seed | – | 44,4 ± 1,6 | 54,4 ± 1,6 |
+| S3 (XNLI → ViANLI), 3 seed | – | 44,6 ± 0,5 | **69,9 ± 1,4** |
+
+Accuracy (%). Macro-F1 gần bằng accuracy ở mọi dòng (S2 ViANLI 44,1 ± 1,7; S3 ViANLI 44,3 ± 0,5).
+3 seed của S2 trên ViANLI: 46,0 / 42,8 / 44,3. Dev macro-F1 của S3 (0,488–0,490) cao hơn S2 (0,448–0,469).
+
+**Nhận xét:**
+1. **S2 trung bình 3 seed (44,4%) trùng gần như tuyệt đối với số công bố của bài ViANLI (44,3%).** Seed 42 (46,0%) chỉ là lần may;
+   báo cáo nên dùng trung bình ± độ lệch chuẩn. Dao động giữa các seed là 3,2 điểm, nên chênh lệch nhỏ hơn mức này giữa các mô hình
+   không có ý nghĩa.
+2. **S1 trên XNLI đạt 77,1%**, gần số công bố 78,5% dù chỉ dùng 100.000/392.702 cặp (bài PhoBERT, Bảng 3).
+3. **S1 → ViANLI chỉ 27,8%, thấp hơn mức ngẫu nhiên, giống M2 (27,5%) và M3 (25,7%).** Kể cả mô hình mạnh nhất cũng học quy luật
+   "trùng nhiều từ → entailment" của XNLI, và quy luật này bị đảo trên ViANLI. Đây là bằng chứng rõ nhất cho câu hỏi nghiên cứu 1.
+4. **Học chuyển tiếp (S3) không giúp trên ViANLI** (44,6% so với 44,4%, trong phạm vi nhiễu), dù dev cao hơn, **nhưng giữ được
+   khả năng tổng quát sang ViNLI** (69,9% so với 54,4%). Học thêm 8.000 cặp đối kháng sau XNLI không làm mất kiến thức từ XNLI
+   (ViNLI 70,9% → 69,9%), nhưng cũng chưa đủ để vượt qua dữ liệu đối kháng. Trả lời câu hỏi nghiên cứu 3.
+5. Câu ví dụ Tim Cook (`docs/mo_ta_m2_m5.md`): M4 S3 vẫn đoán đúng *contradiction*.
+
+## 6. Chạy lại
 
 ```bash
 python scripts/run_transformer.py --token-lengths                         # đo độ dài token (chọn max_len)
 python scripts/run_transformer.py --model M4 --scenario S2 --smoke        # chạy thử (W3-02)
 python scripts/run_transformer.py --model M4 --scenario S2 --config A B   # W3-03: so A, B trên dev, giữ cấu hình tốt hơn
+python scripts/run_transformer.py --model M4 --scenario S1 --config A     # W4-01
+python scripts/run_transformer.py --model M4 --scenario S3 --config B     # W4-02 (từ checkpoint S1)
+python scripts/run_transformer.py --model M4 --scenario S2 S3 --config B --seeds 123 2024   # W4-03
 ```
 Trên Colab: `notebooks/05_phobert.ipynb` (bắt buộc GPU). Checkpoint ở Drive chung `NLI/checkpoints/M4_S2_seed42/`
 (khoảng 0,5 GB), không đưa lên GitHub.

@@ -1,0 +1,97 @@
+{
+  "model": "M5",
+  "scenario": "S1",
+  "test_set": "xnli_test",
+  "seed": 42,
+  "created_at": "2026-11-08T11:09:44",
+  "config": {
+    "lr": 2e-05,
+    "batch_size": 32,
+    "epochs": 3,
+    "max_len": 256,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "hidden_dropout": 0.1,
+    "classifier_dropout": 0.1,
+    "config_name": "A",
+    "pretrained": "xlm-roberta-base",
+    "n_train": 100000,
+    "n_dev": 2490,
+    "init_from": null,
+    "fp16": true,
+    "device": "cuda",
+    "train_seconds": 2012.32,
+    "best_epoch": 3,
+    "dev_macro_f1": 0.7466,
+    "history": [
+      {
+        "epoch": 1,
+        "dev_macro_f1": 0.7155,
+        "dev_accuracy": 0.7161,
+        "train_loss": 0.8341
+      },
+      {
+        "epoch": 2,
+        "dev_macro_f1": 0.7465,
+        "dev_accuracy": 0.7462,
+        "train_loss": 0.6251
+      },
+      {
+        "epoch": 3,
+        "dev_macro_f1": 0.7466,
+        "dev_accuracy": 0.7458,
+        "train_loss": 0.5205
+      }
+    ],
+    "n_params": 278045955,
+    "checkpoint": "checkpoints/M5_S1_seed42",
+    "predict_seconds_xnli_test": 7.62
+  },
+  "n": 5010,
+  "accuracy": 0.7524950099800399,
+  "macro_f1": 0.7523403982173268,
+  "per_class": {
+    "entailment": {
+      "precision": 0.8181818181818182,
+      "recall": 0.6844311377245509,
+      "f1": 0.7453537658950115,
+      "support": 1670
+    },
+    "neutral": {
+      "precision": 0.7004357298474946,
+      "recall": 0.770059880239521,
+      "f1": 0.7335995436394752,
+      "support": 1670
+    },
+    "contradiction": {
+      "precision": 0.7546426561620709,
+      "recall": 0.8029940119760479,
+      "f1": 0.7780678851174935,
+      "support": 1670
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        1143,
+        308,
+        219
+      ],
+      [
+        167,
+        1286,
+        217
+      ],
+      [
+        87,
+        242,
+        1341
+      ]
+    ]
+  }
+}
