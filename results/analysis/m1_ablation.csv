@@ -1,0 +1,19 @@
+﻿kich_ban,cau_hinh,dev_macro_f1,chenh_lech
+S2,(đủ đặc trưng),0.3871,0.0
+S2,bỏ tfidf_p,0.3911,0.004
+S2,bỏ tfidf_h,0.3827,-0.0044
+S2,bỏ overlap,0.3083,-0.0788
+S2,bỏ phu_dinh,0.3471,-0.04
+S2,bỏ do_dai,0.3863,-0.0008
+S2,bỏ so,0.3802,-0.0069
+S2,chỉ TF-IDF,0.1665,-0.2206
+S2,chỉ đặc trưng so sánh,0.3912,0.0041
+S1,(đủ đặc trưng),0.5933,0.0
+S1,bỏ tfidf_p,0.5916,-0.0017
+S1,bỏ tfidf_h,0.5233,-0.07
+S1,bỏ overlap,0.5398,-0.0535
+S1,bỏ phu_dinh,0.5903,-0.003
+S1,bỏ do_dai,0.5903,-0.003
+S1,bỏ so,0.587,-0.0063
+S1,chỉ TF-IDF,0.5364,-0.0569
+S1,chỉ đặc trưng so sánh,0.5231,-0.0702

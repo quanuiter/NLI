@@ -1,9 +1,10 @@
 # Phân tích lỗi PhoBERT và XLM-R (task W5-02, gửi Quang cho mục 5 báo cáo)
 
-Số liệu tạo bằng `python scripts/error_analysis.py` (chạy lại được; M1 tự được thêm vào bảng khi Quang có kết quả).
+Số liệu tạo bằng `python scripts/error_analysis.py` (chạy lại được).
 File kết quả: `results/analysis/loi_nhom_cau.csv`, `loi_theo_nhan.csv`, `loi_mau_*.csv`; hình `results/figures/loi_confusion_transformer.png`.
 
-**Cách đọc:** PhoBERT S2, S3 là trung bình 3 seed (42, 123, 2024); các mô hình khác 1 seed (42).
+**Cách đọc:** M2 S2, M3 S2, PhoBERT S2, S3 là trung bình 3 seed (42, 123, 2024); M1 và các mô hình khác 1 seed (42).
+Cập nhật 12/11: đã có M1 (Quang chạy), M2, M3 thêm 2 seed.
 Nhóm câu được gắn **tự động bằng luật** trên cả tập test (khác phân tích thủ công 50 mẫu):
 phủ định = có "không, chưa, chẳng, chả, đâu có"; từ chỉ lượng = "tất cả, mọi, hầu hết, một số, chỉ, nhiều…";
 độ trùng lặp từ = Jaccard giữa tập âm tiết của premise và hypothesis.
@@ -12,23 +13,23 @@ phủ định = có "không, chưa, chẳng, chả, đâu có"; từ chỉ lư�
 
 **ViANLI test**
 
-| Nhóm câu | Số mẫu (E/N/C) | M2 S2 | M3 S2 | PhoBERT S1 | PhoBERT S2 | PhoBERT S3 | XLM-R S2 | XLM-R S3 |
-|---|---|---|---|---|---|---|---|---|
-| Tất cả | 334/333/333 | 39,7 | 38,0 | 27,8 | 44,4 | 44,6 | 43,6 | 43,5 |
-| Phủ định trong H | 59/45/57 | 38,5 | 37,9 | 30,4 | **36,4** | 43,3 | 35,4 | 45,3 |
-| Phủ định chỉ ở P | 31/29/31 | 34,1 | 36,3 | 29,7 | 48,0 | 44,3 | 44,0 | 36,3 |
-| Có số trong H | 134/119/124 | 35,8 | 36,3 | 27,6 | 42,2 | 43,5 | 43,0 | 44,6 |
-| Trùng từ cao (J ≥ 0,4) | 33/103/83 | 41,6 | 39,3 | **19,6** | 44,3 | **49,9** | 41,1 | 45,7 |
-| Trùng từ thấp (J < 0,15) | 129/35/58 | 52,3 | 51,8 | 23,9 | 52,1 | 47,1 | 55,0 | 47,3 |
+| Nhóm câu | Số mẫu (E/N/C) | M1 S2 | M2 S2 | M3 S2 | PhoBERT S1 | PhoBERT S2 | PhoBERT S3 | XLM-R S2 | XLM-R S3 |
+|---|---|---|---|---|---|---|---|---|---|
+| Tất cả | 334/333/333 | **45,1** | 37,0 | 36,8 | 27,8 | 44,4 | 44,6 | 43,6 | 43,5 |
+| Phủ định trong H | 59/45/57 | 36,0 | 36,9 | 33,5 | 30,4 | **36,4** | 43,3 | 35,4 | 45,3 |
+| Phủ định chỉ ở P | 31/29/31 | 39,6 | 27,8 | 27,5 | 29,7 | 48,0 | 44,3 | 44,0 | 36,3 |
+| Có số trong H | 134/119/124 | 46,7 | 33,5 | 37,7 | 27,6 | 42,2 | 43,5 | 43,0 | 44,6 |
+| Trùng từ cao (J ≥ 0,4) | 33/103/83 | 44,7 | 38,7 | 39,7 | **19,6** | 44,3 | **49,9** | 41,1 | 45,7 |
+| Trùng từ thấp (J < 0,15) | 129/35/58 | **57,7** | 45,0 | 44,6 | 23,9 | 52,1 | 47,1 | 55,0 | 47,3 |
 
 **ViNLI test**
 
-| Nhóm câu | Số mẫu (E/N/C) | M2 S2 | M3 S2 | PhoBERT S1 | PhoBERT S2 | PhoBERT S3 | XLM-R S2 | XLM-R S3 |
-|---|---|---|---|---|---|---|---|---|
-| Tất cả | 750/777/737 | 32,6 | 37,3 | 70,9 | 54,4 | 69,9 | 32,5 | 63,3 |
-| Phủ định trong H | 121/115/226 | 26,0 | 32,5 | 72,1 | 63,9 | 74,6 | 25,3 | 69,5 |
-| Trùng từ cao (J ≥ 0,4) | 178/68/79 | 25,5 | 33,2 | **76,0** | **40,1** | 54,7 | 28,6 | 54,8 |
-| Trùng từ thấp (J < 0,15) | 99/263/184 | 25,8 | 28,6 | 69,0 | 56,8 | 74,8 | 25,6 | 61,4 |
+| Nhóm câu | Số mẫu (E/N/C) | M1 S2 | M2 S2 | M3 S2 | PhoBERT S1 | PhoBERT S2 | PhoBERT S3 | XLM-R S2 | XLM-R S3 |
+|---|---|---|---|---|---|---|---|---|---|
+| Tất cả | 750/777/737 | **27,9** | 33,7 | 38,5 | 70,9 | 54,4 | 69,9 | 32,5 | 63,3 |
+| Phủ định trong H | 121/115/226 | 34,4 | 28,8 | 34,3 | 72,1 | 63,9 | 74,6 | 25,3 | 69,5 |
+| Trùng từ cao (J ≥ 0,4) | 178/68/79 | 23,7 | 24,6 | 33,7 | **76,0** | **40,1** | 54,7 | 28,6 | 54,8 |
+| Trùng từ thấp (J < 0,15) | 99/263/184 | 19,4 | 30,4 | 32,9 | 69,0 | 56,8 | 74,8 | 25,6 | 61,4 |
 
 Bảng đầy đủ (thêm nhóm từ chỉ lượng, XLM-R S1): `results/analysis/loi_nhom_cau.csv`.
 
@@ -40,7 +41,7 @@ Bảng đầy đủ (thêm nhóm từ chỉ lượng, XLM-R S1): `results/analys
 - PhoBERT học trên XNLI (S1) chỉ đúng **19,6%** ở nhóm trùng nhiều từ của ViANLI: nó đoán entailment cho 160/333 câu neutral và 148/333 câu
   contradiction (confusion matrix). Đây là mẹo "trùng nhiều từ → entailment" học từ XNLI.
 - PhoBERT học trên ViANLI (S2) lại học **mẹo ngược**: sang ViNLI, nhóm trùng nhiều từ chỉ đúng **40,1%**, thấp hơn hẳn nhóm trùng ít từ (56,8%).
-- M2, M3 (S2) đúng nhiều nhất ở nhóm trùng ít từ của ViANLI (52%) nhờ đoán entailment, nghĩa là chúng cũng dựa vào mẹo này chứ không thật sự suy luận.
+- Mô hình cổ điển học trên ViANLI đúng nhiều nhất ở nhóm trùng ít từ (M1 57,7%, M2 45,0%, M3 44,6%) nhờ đoán entailment, nghĩa là chúng cũng dựa vào mẹo này chứ không thật sự suy luận.
 - **Kết luận:** cả mô hình cổ điển lẫn Transformer đều học quy luật bề mặt của bộ dữ liệu huấn luyện; mô hình chỉ "đúng" khi quy luật đó trùng hợp
   với bộ dữ liệu kiểm tra.
 
@@ -61,11 +62,23 @@ Bảng đầy đủ (thêm nhóm từ chỉ lượng, XLM-R S1): `results/analys
   nhưng chỉ khoảng 27% trên ViANLI.
 - Vậy mô hình **không gặp khó với tiếng Việt gốc**; cái khó là **câu đối kháng**: hypothesis được viết để phá các mẹo bề mặt.
 
-**(e) Mô hình cổ điển và PhoBERT** (sẽ cập nhật khi có M1).
-- 96 câu M2 và M3 đều sai nhưng PhoBERT S2 đúng ở cả 3 seed; 157 câu PhoBERT sai ở cả 3 seed nhưng ít nhất một trong M2, M3 đúng.
-  Con số thứ hai lớn hơn chủ yếu vì "M2 hoặc M3 đúng" dễ xảy ra hơn "cả hai sai"; nhiều câu M2, M3 đúng là nhờ mẹo trùng ít từ → entailment
+**(e) Mô hình cổ điển và PhoBERT.**
+- **M1 (TF-IDF + Logistic Regression) đạt accuracy 45,1% trên ViANLI, ngang PhoBERT (44,4%)**, nhưng macro-F1 thấp hơn (41,1 so với 44,1)
+  vì gần như không đoán *contradiction* (F1 17,3). Sang ViNLI, M1 chỉ còn **27,9%, thấp hơn mức ngẫu nhiên**, còn PhoBERT S2 đạt 54,4%.
+  M1 "thắng" trên ViANLI nhờ học các quy luật riêng của bộ này (nhóm trùng ít từ: 57,7%), không tổng quát được.
+  Accuracy cao trên một bộ dữ liệu không chứng minh mô hình hiểu ngôn ngữ.
+- 35 câu mọi mô hình cổ điển (M1, M2, M3) đều sai nhưng PhoBERT S2 đúng ở cả 3 seed; 168 câu PhoBERT sai ở cả 3 seed nhưng ít nhất một mô hình cổ điển đúng.
+  Con số thứ hai lớn hơn chủ yếu vì "ít nhất một trong ba đúng" dễ xảy ra hơn "cả ba sai"; nhiều câu mô hình cổ điển đúng là nhờ mẹo trùng ít từ → entailment
   (ví dụ 5 ở dưới).
-- 129 câu (13%) **mọi mô hình đều sai**: phần lớn cần tính toán (đổi đơn vị, cộng trừ tuổi) hoặc kiến thức nền.
+- 94 câu (9%) **mọi mô hình đều sai**: phần lớn cần tính toán (đổi đơn vị, cộng trừ tuổi) hoặc kiến thức nền.
+
+**(f) Lỗ hổng trong cách chia dữ liệu của ViANLI** (phát hiện khi duyệt M1, 12/11).
+- 963/1.000 cặp dev và 956/1.000 cặp test có premise đã xuất hiện trong train, nhưng **chỉ 5,0% (dev) và 4,5% (test)** có nhãn trùng với một nhãn
+  mà premise đó từng có trong train: người viết tạo nhiều nhãn cho cùng một premise, rồi các cặp được chia sao cho nhãn ở dev/test là nhãn "còn lại".
+- Hệ quả: mô hình học thuộc "premise → nhãn" sẽ đoán **ngược**. Đây là lý do Naive Bayes của M1 trên dev S2 chỉ đạt macro-F1 0,08–0,13,
+  thấp hơn cả đoán toàn một nhãn (0,17), và vì sao bỏ TF-IDF của premise lại làm M1 tốt hơn (ablation W3-09).
+- Ngược lại, một mẹo không cần đọc hypothesis — "đoán nhãn mà premise đó chưa có trong train" — đúng **96,3%** trên 564 cặp test chỉ còn đúng 1 nhãn chưa thấy.
+  Nhóm **không** dùng mẹo này; cần nêu trong báo cáo (mục 2 và mục 5) như một hạn chế của bộ dữ liệu.
 
 ## 3. Ví dụ để diễn giải ở mục 5
 
@@ -84,4 +97,3 @@ Dự đoán ghi theo seed 42. Đầy đủ trong `results/analysis/loi_mau_*.csv
 ## 4. Gợi ý dùng cho báo cáo
 - Mục 5 nên có: bảng nhóm câu ở trên (ít nhất 4 dòng của ViANLI), hình confusion matrix, 5–7 ví dụ trong bảng mục 3.
 - Trả lời câu hỏi nghiên cứu: CH1 dùng nhận xét (a), (d); CH2 dùng (a), (e) và kết quả M1-h của Quang; CH3 dùng (b), (c).
-- Khi có M1: chạy lại `python scripts/error_analysis.py`, cột M1 S2 tự xuất hiện; cập nhật nhận xét (e).
