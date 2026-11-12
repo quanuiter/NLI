@@ -1,0 +1,60 @@
+{
+  "model": "M1h",
+  "scenario": "S1",
+  "test_set": "xnli_test",
+  "seed": 42,
+  "created_at": "2026-11-12T08:34:48",
+  "config": {
+    "clf": "LR",
+    "C": 1,
+    "features": "tfidf_h",
+    "dev_macro_f1": 0.5311
+  },
+  "n": 5010,
+  "accuracy": 0.5379241516966068,
+  "macro_f1": 0.5373496930866982,
+  "per_class": {
+    "entailment": {
+      "precision": 0.5094917330067361,
+      "recall": 0.49820359281437127,
+      "f1": 0.5037844383893431,
+      "support": 1670
+    },
+    "neutral": {
+      "precision": 0.49426674713337354,
+      "recall": 0.49041916167664673,
+      "f1": 0.49233543733092877,
+      "support": 1670
+    },
+    "contradiction": {
+      "precision": 0.6069767441860465,
+      "recall": 0.6251497005988024,
+      "f1": 0.6159292035398231,
+      "support": 1670
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        832,
+        504,
+        334
+      ],
+      [
+        509,
+        819,
+        342
+      ],
+      [
+        292,
+        334,
+        1044
+      ]
+    ]
+  }
+}

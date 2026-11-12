@@ -1,0 +1,57 @@
+{
+  "model": "M0",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 42,
+  "created_at": "2026-11-12T08:22:12",
+  "config": {
+    "majority_label": "neutral"
+  },
+  "n": 2264,
+  "accuracy": 0.34319787985865724,
+  "macro_f1": 0.17033870437356133,
+  "per_class": {
+    "entailment": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.34319787985865724,
+      "recall": 1.0,
+      "f1": 0.511016113120684,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        0,
+        750,
+        0
+      ],
+      [
+        0,
+        777,
+        0
+      ],
+      [
+        0,
+        737,
+        0
+      ]
+    ]
+  }
+}

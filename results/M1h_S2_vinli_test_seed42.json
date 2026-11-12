@@ -1,0 +1,60 @@
+{
+  "model": "M1h",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 42,
+  "created_at": "2026-11-12T08:33:30",
+  "config": {
+    "clf": "LR",
+    "C": 1,
+    "features": "tfidf_h",
+    "dev_macro_f1": 0.3236
+  },
+  "n": 2264,
+  "accuracy": 0.428886925795053,
+  "macro_f1": 0.42176935265044646,
+  "per_class": {
+    "entailment": {
+      "precision": 0.42458808618504434,
+      "recall": 0.44666666666666666,
+      "f1": 0.43534762833008445,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.4213709677419355,
+      "recall": 0.5379665379665379,
+      "f1": 0.47258338044092707,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.45134575569358176,
+      "recall": 0.29579375848032563,
+      "f1": 0.35737704918032787,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        335,
+        273,
+        142
+      ],
+      [
+        236,
+        418,
+        123
+      ],
+      [
+        218,
+        301,
+        218
+      ]
+    ]
+  }
+}

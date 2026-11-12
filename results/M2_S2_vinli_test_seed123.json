@@ -1,0 +1,105 @@
+{
+  "model": "M2",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 123,
+  "created_at": "2026-11-12T10:02:42",
+  "config": {
+    "embedding": "fasttext",
+    "hidden": 512,
+    "layers": 2,
+    "dropout": 0.5,
+    "lr": 0.0003,
+    "weight_decay": 0.0,
+    "batch_size": 128,
+    "max_epochs": 30,
+    "patience": 3,
+    "feature_seconds": 0.67,
+    "train_seconds": 8.34,
+    "predict_seconds_vianli_test": 0.08,
+    "predict_seconds_vinli_test": 0.17,
+    "best_epoch": 3,
+    "dev_macro_f1": 0.3516,
+    "n_params": 879619,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 1.0895,
+        "dev_macro_f1": 0.3076
+      },
+      {
+        "epoch": 2,
+        "train_loss": 1.0524,
+        "dev_macro_f1": 0.3267
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.0128,
+        "dev_macro_f1": 0.3516
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.9692,
+        "dev_macro_f1": 0.3326
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.9176,
+        "dev_macro_f1": 0.3483
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.8606,
+        "dev_macro_f1": 0.3235
+      }
+    ],
+    "device": "cuda"
+  },
+  "n": 2264,
+  "accuracy": 0.33524734982332155,
+  "macro_f1": 0.316633038914172,
+  "per_class": {
+    "entailment": {
+      "precision": 0.2875536480686695,
+      "recall": 0.268,
+      "f1": 0.2774327122153209,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.36551724137931035,
+      "recall": 0.5456885456885456,
+      "f1": 0.43779039752194115,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.3308641975308642,
+      "recall": 0.18181818181818182,
+      "f1": 0.23467600700525393,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        201,
+        369,
+        180
+      ],
+      [
+        262,
+        424,
+        91
+      ],
+      [
+        236,
+        367,
+        134
+      ]
+    ]
+  }
+}

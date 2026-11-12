@@ -1,0 +1,60 @@
+{
+  "model": "M1h",
+  "scenario": "S2",
+  "test_set": "vianli_test",
+  "seed": 42,
+  "created_at": "2026-11-12T08:33:30",
+  "config": {
+    "clf": "LR",
+    "C": 1,
+    "features": "tfidf_h",
+    "dev_macro_f1": 0.3236
+  },
+  "n": 1000,
+  "accuracy": 0.317,
+  "macro_f1": 0.3090761825371641,
+  "per_class": {
+    "entailment": {
+      "precision": 0.3517915309446254,
+      "recall": 0.32335329341317365,
+      "f1": 0.3369734789391576,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.31063829787234043,
+      "recall": 0.43843843843843844,
+      "f1": 0.36363636363636365,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.2825112107623318,
+      "recall": 0.1891891891891892,
+      "f1": 0.22661870503597123,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        108,
+        156,
+        70
+      ],
+      [
+        97,
+        146,
+        90
+      ],
+      [
+        102,
+        168,
+        63
+      ]
+    ]
+  }
+}

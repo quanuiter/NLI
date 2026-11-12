@@ -1,0 +1,110 @@
+{
+  "model": "M2",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 2024,
+  "created_at": "2026-11-12T10:02:45",
+  "config": {
+    "embedding": "fasttext",
+    "hidden": 512,
+    "layers": 2,
+    "dropout": 0.5,
+    "lr": 0.0003,
+    "weight_decay": 0.0,
+    "batch_size": 128,
+    "max_epochs": 30,
+    "patience": 3,
+    "feature_seconds": 0.63,
+    "train_seconds": 1.17,
+    "predict_seconds_vianli_test": 0.08,
+    "predict_seconds_vinli_test": 0.17,
+    "best_epoch": 4,
+    "dev_macro_f1": 0.3574,
+    "n_params": 879619,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 1.0943,
+        "dev_macro_f1": 0.3456
+      },
+      {
+        "epoch": 2,
+        "train_loss": 1.0537,
+        "dev_macro_f1": 0.3508
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.0181,
+        "dev_macro_f1": 0.3479
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.966,
+        "dev_macro_f1": 0.3574
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.9246,
+        "dev_macro_f1": 0.3339
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.8687,
+        "dev_macro_f1": 0.3308
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.8095,
+        "dev_macro_f1": 0.3222
+      }
+    ],
+    "device": "cuda"
+  },
+  "n": 2264,
+  "accuracy": 0.35114840989399293,
+  "macro_f1": 0.3413007143758892,
+  "per_class": {
+    "entailment": {
+      "precision": 0.3155893536121673,
+      "recall": 0.332,
+      "f1": 0.3235867446393762,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.37414299706170423,
+      "recall": 0.49163449163449163,
+      "f1": 0.42491657397107896,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.36123348017621143,
+      "recall": 0.2225237449118046,
+      "f1": 0.2753988245172124,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        249,
+        329,
+        172
+      ],
+      [
+        277,
+        382,
+        118
+      ],
+      [
+        263,
+        310,
+        164
+      ]
+    ]
+  }
+}

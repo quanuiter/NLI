@@ -1,0 +1,112 @@
+{
+  "model": "M3",
+  "scenario": "S2",
+  "test_set": "vianli_test",
+  "seed": 123,
+  "created_at": "2026-11-12T10:03:53",
+  "config": {
+    "embedding": "fasttext",
+    "max_len": 64,
+    "hidden": 128,
+    "fc_hidden": 512,
+    "dropout": 0.3,
+    "freeze_embedding": true,
+    "lr": 0.001,
+    "batch_size": 64,
+    "max_epochs": 15,
+    "patience": 3,
+    "grad_clip": 5.0,
+    "train_seconds": 29.35,
+    "checkpoint": "checkpoints/M3_S2_seed123.pt",
+    "predict_seconds_vianli_test": 0.09,
+    "best_epoch": 4,
+    "dev_macro_f1": 0.3801,
+    "n_params": 8968259,
+    "n_trainable_params": 966659,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 1.0916,
+        "dev_macro_f1": 0.3569
+      },
+      {
+        "epoch": 2,
+        "train_loss": 1.0721,
+        "dev_macro_f1": 0.327
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.05,
+        "dev_macro_f1": 0.3281
+      },
+      {
+        "epoch": 4,
+        "train_loss": 1.0272,
+        "dev_macro_f1": 0.3801
+      },
+      {
+        "epoch": 5,
+        "train_loss": 1.0048,
+        "dev_macro_f1": 0.3525
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.9804,
+        "dev_macro_f1": 0.366
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.9481,
+        "dev_macro_f1": 0.367
+      }
+    ],
+    "device": "cuda"
+  },
+  "n": 1000,
+  "accuracy": 0.387,
+  "macro_f1": 0.37540302084361166,
+  "per_class": {
+    "entailment": {
+      "precision": 0.39901477832512317,
+      "recall": 0.48502994011976047,
+      "f1": 0.43783783783783786,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.38461538461538464,
+      "recall": 0.46546546546546547,
+      "f1": 0.421195652173913,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.36649214659685864,
+      "recall": 0.21021021021021022,
+      "f1": 0.26717557251908397,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        162,
+        116,
+        56
+      ],
+      [
+        113,
+        155,
+        65
+      ],
+      [
+        131,
+        132,
+        70
+      ]
+    ]
+  }
+}
