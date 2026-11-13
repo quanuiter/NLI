@@ -1,4 +1,4 @@
-"""M4 (PhoBERT) và M5 (XLM-R): fine-tune mô hình Transformer cho cặp câu (task W3-02, dùng lại ở W3-03, W4-01–04).
+"""M4 (PhoBERT), M5 (XLM-R), M6 (mDeBERTa đã học NLI): fine-tune Transformer cho cặp câu (W3-02, W3-03, W4-01–04, W4-10).
 
 1. Tokenizer ghép cặp câu thành <s> premise </s></s> hypothesis </s>. Mô hình đọc hai câu cùng lúc
    (self-attention giữa mọi token của hai câu), khác M2, M3 vốn mã hóa từng câu riêng rồi mới so sánh.
@@ -6,6 +6,10 @@
    Đánh giá trên dev sau mỗi epoch, giữ checkpoint có macro-F1 dev cao nhất.
 3. PhoBERT học trên văn bản đã tách từ (VnCoreNLP) nên đầu vào phải là bản đã tách từ (segmented=True).
    XLM-R dùng SentencePiece, nhận thẳng văn bản thô (segmented=False).
+4. M6 bắt đầu từ mDeBERTa-v3-base đã được huấn luyện NLI trên khoảng 2,7 triệu cặp câu ở 27 ngôn ngữ (có tiếng Việt;
+   gồm MNLI, ANLI, WANLI... dịch máy và XNLI dev), nên lớp phân loại 3 nhãn đã có sẵn. Ta giữ lớp đó (sắp lại thứ tự nhãn
+   cho khớp LABELS) rồi fine-tune thêm trên ViANLI (S2), hoặc đánh giá thẳng không fine-tune (S0).
+   Tập test XNLI không nằm trong dữ liệu huấn luyện của checkpoint này (theo model card), nên so được với M4, M5.
 """
 
 from __future__ import annotations
@@ -27,6 +31,7 @@ CHECKPOINT_DIR = ROOT / "checkpoints"
 MODELS = {
     "M4": {"name": "vinai/phobert-base", "segmented": True},
     "M5": {"name": "xlm-roberta-base", "segmented": False},
+    "M6": {"name": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7", "segmented": False, "nli_head": True},
 }
 
 # max_len 256: phủ gần hết cặp câu (PhoBERT: chỉ 17/100.000 cặp XNLI train dài hơn, xem results/analysis/token_lengths.json).
@@ -92,18 +97,88 @@ def _training_args(out_dir: Path, cfg: dict, seed: int, fp16: bool):
     return TrainingArguments(**kwargs)
 
 
+def _classifier_layer(model):
+    """Lớp Linear cuối cùng ra 3 nhãn (RoBERTa: classifier.out_proj, DeBERTa: classifier)."""
+    layers = [m for m in model.modules() if isinstance(m, torch.nn.Linear) and m.out_features == len(LABELS)]
+    return layers[-1]
+
+
+def load_model(model_key: str, source: str | Path | None = None, cfg: dict | None = None):
+    """Tạo mô hình phân loại 3 nhãn theo thứ tự LABELS.
+
+    source: checkpoint để học tiếp (mặc định là mô hình huấn luyện trước của model_key).
+    Mô hình đã có lớp phân loại NLI (M6): giữ trọng số lớp đó, chỉ sắp lại hàng cho đúng thứ tự nhãn của nhóm.
+    """
+    from transformers import AutoConfig, AutoModelForSequenceClassification
+
+    spec = MODELS[model_key]
+    cfg = cfg or {}
+    source = str(source or spec["name"])
+    config = AutoConfig.from_pretrained(source)
+    own = {k.lower(): int(v) for k, v in config.label2id.items()}
+    if "hidden_dropout" in cfg:
+        # dropout lớp phân loại: classifier_dropout ở RoBERTa (M4, M5), cls_dropout ở DeBERTa (M6)
+        config.hidden_dropout_prob = cfg["hidden_dropout"]
+        config.cls_dropout = config.classifier_dropout = cfg["classifier_dropout"]
+    if spec.get("nli_head") and set(own) == set(LABELS):
+        model = AutoModelForSequenceClassification.from_pretrained(source, config=config)
+        order = [own[label] for label in LABELS]
+        if order != list(range(len(LABELS))):
+            layer = _classifier_layer(model)
+            with torch.no_grad():
+                layer.weight.copy_(layer.weight[order].clone())
+                layer.bias.copy_(layer.bias[order].clone())
+        model.config.id2label, model.config.label2id = dict(ID2LABEL), dict(LABEL2ID)
+        return model
+    config.num_labels, config.id2label, config.label2id = len(LABELS), dict(ID2LABEL), dict(LABEL2ID)
+    return AutoModelForSequenceClassification.from_pretrained(source, config=config)
+
+
+def zero_shot(model_key: str = "M6", seed: int = 42, test_limit: int | None = None, out_dir: Path = RESULTS_DIR,
+              verbose: bool = True) -> list[dict]:
+    """Kịch bản S0: đánh giá thẳng mô hình đã học NLI sẵn trên mọi tập test, không fine-tune thêm."""
+    from transformers import AutoTokenizer, DataCollatorWithPadding, Trainer, TrainingArguments
+
+    spec = MODELS[model_key]
+    if not spec.get("nli_head"):
+        raise ValueError(f"{model_key} chưa học NLI, không đánh giá thẳng được")
+    set_seed(seed)
+    tokenizer = AutoTokenizer.from_pretrained(spec["name"])
+    model = load_model(model_key)
+    fp16 = torch.cuda.is_available()
+    args = TrainingArguments(output_dir=str(CHECKPOINT_DIR / "_zero_shot_tmp"), per_device_eval_batch_size=64,
+                             fp16=fp16, report_to="none")
+    trainer = Trainer(model=model, args=args, data_collator=DataCollatorWithPadding(tokenizer))
+    info = {"pretrained": spec["name"], "fine_tuned": False, "fp16": fp16,
+            "device": "cuda" if torch.cuda.is_available() else "cpu",
+            "n_params": sum(p.numel() for p in model.parameters())}
+    results = []
+    for test_name, df in load_scenario("S1", segmented=spec["segmented"])["test"].items():
+        if test_limit:
+            df = df.sample(min(test_limit, len(df)), random_state=seed)
+        with timer(info, f"predict_seconds_{test_name}"):
+            logits = trainer.predict(PairDataset(df, tokenizer, 256)).predictions
+        pred = [ID2LABEL[int(i)] for i in np.argmax(logits, axis=-1)]
+        results.append(evaluate_and_save(df["label"], pred, model=model_key, scenario="S0", test_set=test_name,
+                                         seed=seed, config=dict(info), ids=df["id"], premise=df["premise"],
+                                         hypothesis=df["hypothesis"], out_dir=out_dir, verbose=verbose))
+    shutil.rmtree(CHECKPOINT_DIR / "_zero_shot_tmp", ignore_errors=True)
+    return results
+
+
 def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: dict | None = None,
         train_limit: int | None = None, dev_limit: int | None = None, test_limit: int | None = None,
         init_from: str | Path | None = None,
         out_dir: Path = RESULTS_DIR, keep_checkpoint: bool = True, ckpt_suffix: str = "",
-        verbose: bool = True) -> list[dict]:
+        fp16: bool | None = None, verbose: bool = True) -> list[dict]:
     """Fine-tune M4/M5 cho một kịch bản, đánh giá mọi tập test qua evaluate_and_save.
 
     config: "A" hoặc "B" (CONFIGS), cfg ghi đè từng giá trị.
     train_limit / dev_limit / test_limit: chỉ lấy một phần dữ liệu để chạy thử (out_dir nên là results/smoke).
     init_from: thư mục checkpoint để học tiếp (kịch bản S3: từ checkpoint S1, tiếp tục trên ViANLI).
+    fp16: mặc định bật khi có GPU; tắt (--no-fp16) nếu loss bị nan.
     """
-    from transformers import AutoModelForSequenceClassification, AutoTokenizer, DataCollatorWithPadding, Trainer
+    from transformers import AutoTokenizer, DataCollatorWithPadding, Trainer
 
     if model_key not in MODELS:
         raise ValueError(f"model_key phải là một trong {list(MODELS)}")
@@ -119,12 +194,9 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
     if dev_limit:
         dev_df = dev_df.sample(min(dev_limit, len(dev_df)), random_state=seed)
 
-    source = str(init_from) if init_from else spec["name"]
     tokenizer = AutoTokenizer.from_pretrained(spec["name"])
-    model = AutoModelForSequenceClassification.from_pretrained(
-        source, num_labels=len(LABELS), id2label=ID2LABEL, label2id=LABEL2ID,
-        hidden_dropout_prob=cfg["hidden_dropout"], classifier_dropout=cfg["classifier_dropout"])
-    fp16 = torch.cuda.is_available()
+    model = load_model(model_key, init_from, cfg)
+    fp16 = torch.cuda.is_available() if fp16 is None else (fp16 and torch.cuda.is_available())
 
     tag = f"{model_key}_{scenario}_seed{seed}" + ("_smoke" if train_limit else "") + (f"_{ckpt_suffix}" if ckpt_suffix else "")
     work_dir = CHECKPOINT_DIR / f"_{tag}_tmp"
@@ -149,6 +221,8 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
     losses = {round(h["epoch"]): round(h["loss"], 4) for h in trainer.state.log_history if "loss" in h}
     for h in history:
         h["train_loss"] = losses.get(h["epoch"])
+    if any(h["train_loss"] is None or not np.isfinite(h["train_loss"]) for h in history):
+        print("CẢNH BÁO: loss bị nan/không ghi được. Nếu đang dùng fp16, chạy lại với --no-fp16.", flush=True)
     best = max(history, key=lambda h: h["dev_macro_f1"])
     info.update({"best_epoch": best["epoch"], "dev_macro_f1": best["dev_macro_f1"], "history": history,
                  "n_params": sum(p.numel() for p in trainer.model.parameters())})

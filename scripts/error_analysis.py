@@ -28,7 +28,8 @@ TEST_SETS = ["vianli_test", "vinli_test"]
 # (tên hiển thị, mô hình, kịch bản)
 RUNS = [("M1 S2", "M1", "S2"), ("M2 S2", "M2", "S2"), ("M3 S2", "M3", "S2"),
         ("PhoBERT S1", "M4", "S1"), ("PhoBERT S2", "M4", "S2"), ("PhoBERT S3", "M4", "S3"),
-        ("XLM-R S1", "M5", "S1"), ("XLM-R S2", "M5", "S2"), ("XLM-R S3", "M5", "S3")]
+        ("XLM-R S1", "M5", "S1"), ("XLM-R S2", "M5", "S2"), ("XLM-R S3", "M5", "S3"),
+        ("M6 S0", "M6", "S0"), ("M6 S2", "M6", "S2")]   # M6 tự được thêm khi có kết quả
 
 NEG = re.compile(r"\b(?:không|chưa|chẳng|chả|đâu có)\b", re.IGNORECASE)
 QUANT = re.compile(r"\b(?:tất cả|mọi|hầu hết|đa số|một số|chỉ|duy nhất|nhiều|ít|toàn bộ)\b", re.IGNORECASE)

@@ -51,6 +51,7 @@ Mỗi hướng dẫn có mục **Lưu và nộp** ghi rõ từng file. Quy tắc
 | W3-06 Script tổng hợp bảng kết quả | Quang | [W3-06.md](W3-06.md) |
 | W3-09 Phân tích loại bỏ đặc trưng (ablation) cho M1 | Quang | [W3-09.md](W3-09.md) |
 | W3-07 Review code chéo | Cả hai | [W3-07.md](W3-07.md) |
+| W4-10 Chạy M6 (mDeBERTa đã học NLI) trên Colab | Quang | [W4-10.md](W4-10.md) |
 | W3-01, W3-02, W3-03 M3, PhoBERT | Quân | [W3-01.md](W3-01.md), [W3-02.md](W3-02.md), [W3-03.md](W3-03.md) |
 | Kiểm tra sản phẩm task của Quang | Quân | [kiem_tra_ket_qua.md](kiem_tra_ket_qua.md) |
 

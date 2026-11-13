@@ -1,0 +1,65 @@
+{
+  "model": "E1",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 0,
+  "created_at": "2026-11-13T13:59:16",
+  "config": {
+    "ensemble": "PhoBERT S2, bỏ phiếu 3 seed",
+    "members": {
+      "M4 S2": [
+        42,
+        123,
+        2024
+      ]
+    },
+    "rule": "bỏ phiếu đa số 2 tầng, hòa theo macro-F1 dev"
+  },
+  "n": 2264,
+  "accuracy": 0.5477031802120141,
+  "macro_f1": 0.5482437391977689,
+  "per_class": {
+    "entailment": {
+      "precision": 0.46551724137931033,
+      "recall": 0.504,
+      "f1": 0.4839948783610755,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.5486033519553073,
+      "recall": 0.631917631917632,
+      "f1": 0.5873205741626795,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.6660682226211849,
+      "recall": 0.5033921302578019,
+      "f1": 0.5734157650695518,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        378,
+        254,
+        118
+      ],
+      [
+        218,
+        491,
+        68
+      ],
+      [
+        216,
+        150,
+        371
+      ]
+    ]
+  }
+}

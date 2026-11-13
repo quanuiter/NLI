@@ -19,9 +19,9 @@ import numpy as np
 
 from src.evaluate import RESULTS_DIR, summarize
 
-MODELS = [("M0", "M0"), ("M1", "M1"), ("M1h", "M1-h"), ("M2", "M2"), ("M3", "M3"), ("M4", "PhoBERT"), ("M5", "XLM-R")]
-SCENARIOS = [("S1", "S1: học XNLI"), ("S2", "S2: học ViANLI"), ("S3", "S3: XNLI → ViANLI")]
-COLORS = {"S1": "#2a78d6", "S2": "#eb6834", "S3": "#1baf7a"}   # bảng màu phân loại, đã kiểm tra khả năng phân biệt màu
+MODELS = [("M0", "M0"), ("M1", "M1"), ("M1h", "M1-h"), ("M2", "M2"), ("M3", "M3"), ("M4", "PhoBERT"), ("M5", "XLM-R"), ("M6", "M6 mDeBERTa")]
+SCENARIOS = [("S0", "S0: M6 chưa fine-tune"), ("S1", "S1: học XNLI"), ("S2", "S2: học ViANLI"), ("S3", "S3: XNLI → ViANLI")]
+COLORS = {"S0": "#8a6fd1", "S1": "#2a78d6", "S2": "#eb6834", "S3": "#1baf7a"}   # bảng màu phân loại, đã kiểm tra khả năng phân biệt màu
 SURFACE, TEXT, TEXT2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 
 
@@ -40,7 +40,7 @@ def main():
                 if row.empty:
                     continue
                 mean, std = row["accuracy_mean"].iloc[0] * 100, row["accuracy_std"].iloc[0] * 100
-                xpos = x[i] + (k - 1) * width
+                xpos = x[i] + (max(k, 1) - 2) * width   # S0 (chỉ M6) đứng ở chỗ của S1
                 ax.bar(xpos, mean, width - 0.03, color=COLORS[sc], label=label if i == 0 or not ax.containers else None,
                        zorder=3)
                 if not np.isnan(std):
@@ -58,7 +58,7 @@ def main():
     axes[0].set_ylabel("Accuracy (%)", color=TEXT)
     handles = [plt.Rectangle((0, 0), 1, 1, color=COLORS[s]) for s, _ in SCENARIOS]
     handles.append(plt.Line2D([0], [0], color=TEXT2, linestyle="--", linewidth=1))
-    fig.legend(handles, [l for _, l in SCENARIOS] + ["mức ngẫu nhiên 33,3%"], loc="upper center", ncol=4,
+    fig.legend(handles, [l for _, l in SCENARIOS] + ["mức ngẫu nhiên 33,3%"], loc="upper center", ncol=5,
                frameon=False, fontsize=9,
                labelcolor=TEXT, bbox_to_anchor=(0.5, 1.0))
     fig.text(0.5, -0.02, "M2, M3, PhoBERT ở S2 và PhoBERT ở S3: trung bình ± độ lệch chuẩn qua 3 seed; các cột khác: seed 42.",

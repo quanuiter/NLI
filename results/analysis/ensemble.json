@@ -1,0 +1,81 @@
+{
+  "note": "mỗi ensemble được cố định TRƯỚC khi nhìn kết quả test (danh sách ENSEMBLES dưới đây), không chọn theo test.\nBỏ phiếu 2 tầng:\n  1. Trong một mô hình chạy nhiều seed: nhãn được nhiều seed đoán nhất; hòa thì theo seed có macro-F1 dev cao nhất.\n  2. Giữa các mô hình: nhãn được nhiều mô hình đoán nhất; hòa thì theo mô hình có macro-F1 dev (trung bình seed) cao nhất.\nChỉ dùng macro-F1 dev (đã lưu trong file kết quả) để phá hòa, nên không dùng thông tin của tập test.\nEnsemble nào còn thiếu thành viên (ví dụ chưa chạy M6) thì bỏ qua, chạy lại script khi đủ.",
+  "results": [
+    {
+      "ensemble": "E1",
+      "mo_ta": "PhoBERT S2, bỏ phiếu 3 seed",
+      "test_set": "vianli_test",
+      "accuracy": 0.439,
+      "macro_f1": 0.4378,
+      "thanh_vien": {
+        "M4 S2": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.4548,
+          "test_accuracy_tb_seed": 0.4437
+        }
+      },
+      "hon_thanh_vien_tot_nhat": -0.0047
+    },
+    {
+      "ensemble": "E1",
+      "mo_ta": "PhoBERT S2, bỏ phiếu 3 seed",
+      "test_set": "vinli_test",
+      "accuracy": 0.5477,
+      "macro_f1": 0.5482,
+      "thanh_vien": {
+        "M4 S2": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.4548,
+          "test_accuracy_tb_seed": 0.5436
+        }
+      },
+      "hon_thanh_vien_tot_nhat": 0.0041
+    },
+    {
+      "ensemble": "E2",
+      "mo_ta": "PhoBERT S3, bỏ phiếu 3 seed",
+      "test_set": "vianli_test",
+      "accuracy": 0.448,
+      "macro_f1": 0.4455,
+      "thanh_vien": {
+        "M4 S3": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.489,
+          "test_accuracy_tb_seed": 0.4457
+        }
+      },
+      "hon_thanh_vien_tot_nhat": 0.0023
+    },
+    {
+      "ensemble": "E2",
+      "mo_ta": "PhoBERT S3, bỏ phiếu 3 seed",
+      "test_set": "vinli_test",
+      "accuracy": 0.7023,
+      "macro_f1": 0.6995,
+      "thanh_vien": {
+        "M4 S3": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.489,
+          "test_accuracy_tb_seed": 0.6986
+        }
+      },
+      "hon_thanh_vien_tot_nhat": 0.0037
+    }
+  ]
+}

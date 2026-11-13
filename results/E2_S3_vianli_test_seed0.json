@@ -1,0 +1,65 @@
+{
+  "model": "E2",
+  "scenario": "S3",
+  "test_set": "vianli_test",
+  "seed": 0,
+  "created_at": "2026-11-13T13:59:16",
+  "config": {
+    "ensemble": "PhoBERT S3, bỏ phiếu 3 seed",
+    "members": {
+      "M4 S3": [
+        42,
+        123,
+        2024
+      ]
+    },
+    "rule": "bỏ phiếu đa số 2 tầng, hòa theo macro-F1 dev"
+  },
+  "n": 1000,
+  "accuracy": 0.448,
+  "macro_f1": 0.44545751576130593,
+  "per_class": {
+    "entailment": {
+      "precision": 0.5,
+      "recall": 0.45209580838323354,
+      "f1": 0.4748427672955975,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.410958904109589,
+      "recall": 0.5405405405405406,
+      "f1": 0.4669260700389105,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.45,
+      "recall": 0.35135135135135137,
+      "f1": 0.3946037099494098,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        151,
+        113,
+        70
+      ],
+      [
+        80,
+        180,
+        73
+      ],
+      [
+        71,
+        145,
+        117
+      ]
+    ]
+  }
+}
