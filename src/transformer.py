@@ -121,7 +121,9 @@ def load_model(model_key: str, source: str | Path | None = None, cfg: dict | Non
         config.hidden_dropout_prob = cfg["hidden_dropout"]
         config.cls_dropout = config.classifier_dropout = cfg["classifier_dropout"]
     if spec.get("nli_head") and set(own) == set(LABELS):
-        model = AutoModelForSequenceClassification.from_pretrained(source, config=config)
+        # checkpoint M6 lưu trọng số fp16; transformers bản mới nạp nguyên kiểu đó làm Trainer fp16 báo lỗi
+        # "Attempting to unscale FP16 gradients". Trọng số gốc phải là fp32, fp16 chỉ dùng khi tính (autocast).
+        model = AutoModelForSequenceClassification.from_pretrained(source, config=config).float()
         order = [own[label] for label in LABELS]
         if order != list(range(len(LABELS))):
             layer = _classifier_layer(model)
@@ -131,7 +133,7 @@ def load_model(model_key: str, source: str | Path | None = None, cfg: dict | Non
         model.config.id2label, model.config.label2id = dict(ID2LABEL), dict(LABEL2ID)
         return model
     config.num_labels, config.id2label, config.label2id = len(LABELS), dict(ID2LABEL), dict(LABEL2ID)
-    return AutoModelForSequenceClassification.from_pretrained(source, config=config)
+    return AutoModelForSequenceClassification.from_pretrained(source, config=config).float()
 
 
 def zero_shot(model_key: str = "M6", seed: int = 42, test_limit: int | None = None, out_dir: Path = RESULTS_DIR,
