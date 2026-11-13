@@ -3,7 +3,7 @@
 Chạy: python scripts/plot_results.py
 Ra:   results/figures/so_sanh_mo_hinh.png
 Accuracy trên ViANLI test và ViNLI test, mỗi nhóm cột là một mô hình, màu cột là kịch bản.
-Mô hình nhiều seed: cột là trung bình, vạch là ± độ lệch chuẩn. Mô hình nào có kết quả thì tự được vẽ (M0, M1 khi Quang chạy xong).
+Mô hình nhiều seed: cột là trung bình, vạch là ± độ lệch chuẩn. Mô hình nào có kết quả thì tự được vẽ.
 """
 
 import sys
@@ -61,7 +61,7 @@ def main():
     fig.legend(handles, [l for _, l in SCENARIOS] + ["mức ngẫu nhiên 33,3%"], loc="upper center", ncol=4,
                frameon=False, fontsize=9,
                labelcolor=TEXT, bbox_to_anchor=(0.5, 1.0))
-    fig.text(0.5, -0.02, "PhoBERT S2, S3: trung bình ± độ lệch chuẩn qua 3 seed; các cột khác: seed 42.",
+    fig.text(0.5, -0.02, "M2, M3, PhoBERT ở S2 và PhoBERT ở S3: trung bình ± độ lệch chuẩn qua 3 seed; các cột khác: seed 42.",
              ha="center", fontsize=8, color=TEXT2)
     fig.tight_layout(rect=(0, 0, 1, 0.93))
     out = RESULTS_DIR / "figures" / "so_sanh_mo_hinh.png"
