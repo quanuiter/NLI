@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import inspect
 import shutil
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -27,6 +28,9 @@ from .evaluate import RESULTS_DIR, evaluate_and_save
 from .utils import load_json, save_json, set_seed, timer
 
 CHECKPOINT_DIR = ROOT / "checkpoints"
+# Checkpoint tạm sau mỗi epoch ghi ra ổ cục bộ (Colab: /tmp), không ghi vào Drive: ghi file 0,5–1 GB vào Drive
+# mỗi epoch vừa chậm vừa có thể lỗi "No such file or directory". Chỉ checkpoint giữ lại mới được lưu vào CHECKPOINT_DIR.
+WORK_DIR = Path(tempfile.gettempdir()) / "nli_checkpoints"
 
 MODELS = {
     "M4": {"name": "vinai/phobert-base", "segmented": True},
@@ -148,7 +152,7 @@ def zero_shot(model_key: str = "M6", seed: int = 42, test_limit: int | None = No
     tokenizer = AutoTokenizer.from_pretrained(spec["name"])
     model = load_model(model_key)
     fp16 = torch.cuda.is_available()
-    args = TrainingArguments(output_dir=str(CHECKPOINT_DIR / "_zero_shot_tmp"), per_device_eval_batch_size=64,
+    args = TrainingArguments(output_dir=str(WORK_DIR / "_zero_shot_tmp"), per_device_eval_batch_size=64,
                              fp16=fp16, report_to="none")
     trainer = Trainer(model=model, args=args, data_collator=DataCollatorWithPadding(tokenizer))
     info = {"pretrained": spec["name"], "fine_tuned": False, "fp16": fp16,
@@ -164,7 +168,7 @@ def zero_shot(model_key: str = "M6", seed: int = 42, test_limit: int | None = No
         results.append(evaluate_and_save(df["label"], pred, model=model_key, scenario="S0", test_set=test_name,
                                          seed=seed, config=dict(info), ids=df["id"], premise=df["premise"],
                                          hypothesis=df["hypothesis"], out_dir=out_dir, verbose=verbose))
-    shutil.rmtree(CHECKPOINT_DIR / "_zero_shot_tmp", ignore_errors=True)
+    shutil.rmtree(WORK_DIR / "_zero_shot_tmp", ignore_errors=True)
     return results
 
 
@@ -201,7 +205,7 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
     fp16 = torch.cuda.is_available() if fp16 is None else (fp16 and torch.cuda.is_available())
 
     tag = f"{model_key}_{scenario}_seed{seed}" + ("_smoke" if train_limit else "") + (f"_{ckpt_suffix}" if ckpt_suffix else "")
-    work_dir = CHECKPOINT_DIR / f"_{tag}_tmp"
+    work_dir = WORK_DIR / f"_{tag}_tmp"
     trainer = Trainer(
         model=model, args=_training_args(work_dir, cfg, seed, fp16),
         train_dataset=PairDataset(train_df, tokenizer, cfg["max_len"]),

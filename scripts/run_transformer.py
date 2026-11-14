@@ -78,7 +78,7 @@ def main():
             if len(args.config) > 1 and not args.smoke:
                 # nhiều cấu hình: so trên dev, giữ cấu hình tốt nhất (xem transformer.tune)
                 transformer.tune(args.model, scenario, args.config, seed, init_from=init_from,
-                                 **({"fp16": False} if args.no_fp16 else {}))
+                                 keep_checkpoint=scenario == "S1", **({"fp16": False} if args.no_fp16 else {}))
             else:
                 keep = {} if args.smoke else {"keep_checkpoint": scenario == "S1"}
                 for config in args.config:
