@@ -8,6 +8,8 @@ vianli_test,PhoBERT S3,3,47.0,46.3,39.6
 vianli_test,XLM-R S1,1,22.6,32.8,24.8
 vianli_test,XLM-R S2,1,55.8,46.0,21.0
 vianli_test,XLM-R S3,1,50.6,40.1,37.3
+vianli_test,M6 S0,1,40.5,41.1,32.3
+vianli_test,M6 S2,1,51.0,46.7,48.5
 vinli_test,M1 S2,1,23.4,34.2,23.8
 vinli_test,M2 S2,3,31.3,41.8,22.9
 vinli_test,M3 S2,3,37.7,44.7,29.6
@@ -17,3 +19,5 @@ vinli_test,PhoBERT S3,3,65.2,72.5,71.2
 vinli_test,XLM-R S1,1,66.1,70.7,65.4
 vinli_test,XLM-R S2,1,32.6,41.4,11.1
 vinli_test,XLM-R S3,1,61.3,65.7,62.9
+vinli_test,M6 S0,1,77.2,72.8,72.3
+vinli_test,M6 S2,1,68.7,70.7,73.9

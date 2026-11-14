@@ -1,0 +1,109 @@
+{
+  "model": "M6",
+  "scenario": "S2",
+  "seed": 42,
+  "chosen": "B",
+  "rule": "chọn cấu hình có macro-F1 dev cao nhất",
+  "results": [
+    {
+      "config": "A",
+      "dev_macro_f1": 0.507,
+      "best_epoch": 2,
+      "train_seconds": 663.15,
+      "history": [
+        {
+          "epoch": 1,
+          "dev_macro_f1": 0.4968,
+          "dev_accuracy": 0.498,
+          "train_loss": 0.8436
+        },
+        {
+          "epoch": 2,
+          "dev_macro_f1": 0.507,
+          "dev_accuracy": 0.512,
+          "train_loss": 0.5844
+        },
+        {
+          "epoch": 3,
+          "dev_macro_f1": 0.4994,
+          "dev_accuracy": 0.499,
+          "train_loss": 0.3978
+        }
+      ],
+      "dir": "results/tuning/M6_S2_seed42_A",
+      "checkpoint": null,
+      "settings": {
+        "lr": 2e-05,
+        "batch_size": 32,
+        "epochs": 3,
+        "max_len": 256,
+        "weight_decay": 0.01,
+        "warmup_ratio": 0.1,
+        "hidden_dropout": 0.1,
+        "classifier_dropout": 0.1
+      }
+    },
+    {
+      "config": "B",
+      "dev_macro_f1": 0.5105,
+      "best_epoch": 4,
+      "train_seconds": 2134.13,
+      "history": [
+        {
+          "epoch": 1,
+          "dev_macro_f1": 0.4914,
+          "dev_accuracy": 0.491,
+          "train_loss": 0.8844
+        },
+        {
+          "epoch": 2,
+          "dev_macro_f1": 0.4977,
+          "dev_accuracy": 0.501,
+          "train_loss": 0.6638
+        },
+        {
+          "epoch": 3,
+          "dev_macro_f1": 0.5024,
+          "dev_accuracy": 0.502,
+          "train_loss": 0.4753
+        },
+        {
+          "epoch": 4,
+          "dev_macro_f1": 0.5105,
+          "dev_accuracy": 0.51,
+          "train_loss": 0.3295
+        },
+        {
+          "epoch": 5,
+          "dev_macro_f1": 0.4827,
+          "dev_accuracy": 0.482,
+          "train_loss": 0.2321
+        },
+        {
+          "epoch": 6,
+          "dev_macro_f1": 0.4994,
+          "dev_accuracy": 0.5,
+          "train_loss": 0.1824
+        },
+        {
+          "epoch": 7,
+          "dev_macro_f1": 0.4923,
+          "dev_accuracy": 0.492,
+          "train_loss": 0.137
+        }
+      ],
+      "dir": "results/tuning/M6_S2_seed42_B",
+      "checkpoint": null,
+      "settings": {
+        "lr": 1e-05,
+        "batch_size": 16,
+        "epochs": 7,
+        "max_len": 256,
+        "weight_decay": 0.01,
+        "warmup_ratio": 0.1,
+        "hidden_dropout": 0.1,
+        "classifier_dropout": 0.4
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "model": "E3",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 0,
+  "created_at": "2026-11-14T04:55:07",
+  "config": {
+    "ensemble": "PhoBERT S2 + XLM-R S2 + M6 S2 (chỉ học ViANLI ở bước cuối)",
+    "members": {
+      "M4 S2": [
+        42,
+        123,
+        2024
+      ],
+      "M5 S2": [
+        42
+      ],
+      "M6 S2": [
+        42
+      ]
+    },
+    "rule": "bỏ phiếu đa số 2 tầng, hòa theo macro-F1 dev"
+  },
+  "n": 2264,
+  "accuracy": 0.6060070671378092,
+  "macro_f1": 0.6067774791931378,
+  "per_class": {
+    "entailment": {
+      "precision": 0.5456989247311828,
+      "recall": 0.5413333333333333,
+      "f1": 0.5435073627844712,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.5604838709677419,
+      "recall": 0.7155727155727156,
+      "f1": 0.6286037309214245,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.7765151515151515,
+      "recall": 0.5563093622795116,
+      "f1": 0.6482213438735178,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        406,
+        274,
+        70
+      ],
+      [
+        173,
+        556,
+        48
+      ],
+      [
+        165,
+        162,
+        410
+      ]
+    ]
+  }
+}

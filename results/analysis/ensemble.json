@@ -76,6 +76,138 @@
         }
       },
       "hon_thanh_vien_tot_nhat": 0.0037
+    },
+    {
+      "ensemble": "E3",
+      "mo_ta": "PhoBERT S2 + XLM-R S2 + M6 S2 (chỉ học ViANLI ở bước cuối)",
+      "test_set": "vianli_test",
+      "accuracy": 0.48,
+      "macro_f1": 0.4768,
+      "thanh_vien": {
+        "M4 S2": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.4548,
+          "test_accuracy_tb_seed": 0.4437
+        },
+        "M5 S2": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.415,
+          "test_accuracy_tb_seed": 0.436
+        },
+        "M6 S2": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.5105,
+          "test_accuracy_tb_seed": 0.487
+        }
+      },
+      "hon_thanh_vien_tot_nhat": -0.007
+    },
+    {
+      "ensemble": "E3",
+      "mo_ta": "PhoBERT S2 + XLM-R S2 + M6 S2 (chỉ học ViANLI ở bước cuối)",
+      "test_set": "vinli_test",
+      "accuracy": 0.606,
+      "macro_f1": 0.6068,
+      "thanh_vien": {
+        "M4 S2": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.4548,
+          "test_accuracy_tb_seed": 0.5436
+        },
+        "M5 S2": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.415,
+          "test_accuracy_tb_seed": 0.3246
+        },
+        "M6 S2": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.5105,
+          "test_accuracy_tb_seed": 0.7111
+        }
+      },
+      "hon_thanh_vien_tot_nhat": -0.1051
+    },
+    {
+      "ensemble": "E4",
+      "mo_ta": "PhoBERT S3 + XLM-R S3 + M6 S2 (đều học NLI trước rồi học ViANLI)",
+      "test_set": "vianli_test",
+      "accuracy": 0.472,
+      "macro_f1": 0.4705,
+      "thanh_vien": {
+        "M4 S3": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.489,
+          "test_accuracy_tb_seed": 0.4457
+        },
+        "M5 S3": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.4561,
+          "test_accuracy_tb_seed": 0.435
+        },
+        "M6 S2": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.5105,
+          "test_accuracy_tb_seed": 0.487
+        }
+      },
+      "hon_thanh_vien_tot_nhat": -0.015
+    },
+    {
+      "ensemble": "E4",
+      "mo_ta": "PhoBERT S3 + XLM-R S3 + M6 S2 (đều học NLI trước rồi học ViANLI)",
+      "test_set": "vinli_test",
+      "accuracy": 0.7253,
+      "macro_f1": 0.7244,
+      "thanh_vien": {
+        "M4 S3": {
+          "seeds": [
+            42,
+            123,
+            2024
+          ],
+          "dev_macro_f1": 0.489,
+          "test_accuracy_tb_seed": 0.6986
+        },
+        "M5 S3": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.4561,
+          "test_accuracy_tb_seed": 0.6325
+        },
+        "M6 S2": {
+          "seeds": [
+            42
+          ],
+          "dev_macro_f1": 0.5105,
+          "test_accuracy_tb_seed": 0.7111
+        }
+      },
+      "hon_thanh_vien_tot_nhat": 0.0141
     }
   ]
 }

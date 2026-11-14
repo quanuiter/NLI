@@ -19,7 +19,7 @@ import numpy as np
 
 from src.evaluate import RESULTS_DIR, summarize
 
-MODELS = [("M0", "M0"), ("M1", "M1"), ("M1h", "M1-h"), ("M2", "M2"), ("M3", "M3"), ("M4", "PhoBERT"), ("M5", "XLM-R"), ("M6", "M6 mDeBERTa")]
+MODELS = [("M0", "M0"), ("M1", "M1"), ("M1h", "M1-h"), ("M2", "M2"), ("M3", "M3"), ("M4", "PhoBERT"), ("M5", "XLM-R"), ("M6", "mDeBERTa")]
 SCENARIOS = [("S0", "S0: M6 chưa fine-tune"), ("S1", "S1: học XNLI"), ("S2", "S2: học ViANLI"), ("S3", "S3: XNLI → ViANLI")]
 COLORS = {"S0": "#8a6fd1", "S1": "#2a78d6", "S2": "#eb6834", "S3": "#1baf7a"}   # bảng màu phân loại, đã kiểm tra khả năng phân biệt màu
 SURFACE, TEXT, TEXT2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
@@ -28,7 +28,7 @@ SURFACE, TEXT, TEXT2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 def main():
     t = summarize()
     present = [(m, name) for m, name in MODELS if m in set(t["model"])]
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), sharey=True, facecolor=SURFACE)
+    fig, axes = plt.subplots(1, 2, figsize=(12.5, 4.2), sharey=True, facecolor=SURFACE)
     width = 0.26
     for ax, (test_set, title) in zip(axes, [("vianli_test", "ViANLI test (đối kháng)"),
                                             ("vinli_test", "ViNLI test (tiếng Việt gốc)")]):

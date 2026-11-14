@@ -1,0 +1,64 @@
+{
+  "model": "M6",
+  "scenario": "S0",
+  "test_set": "vinli_test",
+  "seed": 42,
+  "created_at": "2026-11-14T04:01:56",
+  "config": {
+    "pretrained": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+    "fine_tuned": false,
+    "fp16": true,
+    "device": "cuda",
+    "n_params": 278811651,
+    "predict_seconds_xnli_test": 19.45,
+    "predict_seconds_vianli_test": 5.51,
+    "predict_seconds_vinli_test": 12.69
+  },
+  "n": 2264,
+  "accuracy": 0.741166077738516,
+  "macro_f1": 0.7410964941273783,
+  "per_class": {
+    "entailment": {
+      "precision": 0.7788331071913162,
+      "recall": 0.7653333333333333,
+      "f1": 0.7720242098184263,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.6479438314944834,
+      "recall": 0.8314028314028314,
+      "f1": 0.7282976324689966,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.8641509433962264,
+      "recall": 0.621438263229308,
+      "f1": 0.7229676400947119,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        574,
+        141,
+        35
+      ],
+      [
+        94,
+        646,
+        37
+      ],
+      [
+        69,
+        210,
+        458
+      ]
+    ]
+  }
+}
