@@ -1,0 +1,121 @@
+{
+  "model": "M6",
+  "scenario": "S2",
+  "test_set": "vinli_test",
+  "seed": 123,
+  "created_at": "2026-11-16T15:47:05",
+  "config": {
+    "lr": 1e-05,
+    "batch_size": 16,
+    "epochs": 7,
+    "max_len": 256,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "hidden_dropout": 0.1,
+    "classifier_dropout": 0.4,
+    "config_name": "B",
+    "pretrained": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+    "n_train": 8012,
+    "n_dev": 1000,
+    "init_from": null,
+    "fp16": true,
+    "device": "cuda",
+    "train_seconds": 1263.06,
+    "best_epoch": 6,
+    "dev_macro_f1": 0.4951,
+    "history": [
+      {
+        "epoch": 1,
+        "dev_macro_f1": 0.4827,
+        "dev_accuracy": 0.482,
+        "train_loss": 0.8834
+      },
+      {
+        "epoch": 2,
+        "dev_macro_f1": 0.4912,
+        "dev_accuracy": 0.492,
+        "train_loss": 0.6598
+      },
+      {
+        "epoch": 3,
+        "dev_macro_f1": 0.4805,
+        "dev_accuracy": 0.482,
+        "train_loss": 0.4752
+      },
+      {
+        "epoch": 4,
+        "dev_macro_f1": 0.4817,
+        "dev_accuracy": 0.481,
+        "train_loss": 0.3313
+      },
+      {
+        "epoch": 5,
+        "dev_macro_f1": 0.4909,
+        "dev_accuracy": 0.491,
+        "train_loss": 0.2392
+      },
+      {
+        "epoch": 6,
+        "dev_macro_f1": 0.4951,
+        "dev_accuracy": 0.496,
+        "train_loss": 0.1745
+      },
+      {
+        "epoch": 7,
+        "dev_macro_f1": 0.4926,
+        "dev_accuracy": 0.493,
+        "train_loss": 0.1351
+      }
+    ],
+    "n_params": 278811651,
+    "predict_seconds_vianli_test": 5.67,
+    "predict_seconds_vinli_test": 12.92
+  },
+  "n": 2264,
+  "accuracy": 0.7031802120141343,
+  "macro_f1": 0.7028182514930396,
+  "per_class": {
+    "entailment": {
+      "precision": 0.7478991596638656,
+      "recall": 0.5933333333333334,
+      "f1": 0.6617100371747212,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.6262833675564682,
+      "recall": 0.7850707850707851,
+      "f1": 0.6967447173043975,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.7726618705035971,
+      "recall": 0.728629579375848,
+      "f1": 0.75,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        445,
+        223,
+        82
+      ],
+      [
+        91,
+        610,
+        76
+      ],
+      [
+        59,
+        141,
+        537
+      ]
+    ]
+  }
+}

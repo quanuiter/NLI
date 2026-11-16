@@ -177,20 +177,49 @@ tách văn bản bằng SentencePiece (bộ từ vựng 250.000), **nhận thẳ
 
 ---
 
+## 6b. M6 – mDeBERTa-v3-base đã học NLI (thêm ngày 13/11 để nâng điểm, task W4-10)
+
+**Kiến trúc:** DeBERTa-v3 (He và cộng sự, 2021, 2023), 12 lớp Transformer, 768 chiều, đọc cặp câu giống M4/M5, khác ở hai điểm:
+1. *Attention tách rời (disentangled attention):* mỗi token có hai vector riêng, một cho nội dung và một cho vị trí tương đối.
+   Điểm attention giữa token i và j = nội dung–nội dung + nội dung–vị trí + vị trí–nội dung, nên mô hình biết rõ hơn từ nào đứng
+   cách từ nào bao xa (hữu ích với phủ định, từ chỉ lượng đứng trước động từ).
+2. *Huấn luyện trước kiểu ELECTRA:* thay vì đoán từ bị che (như RoBERTa), mô hình đoán từng token có bị một mô hình nhỏ thay thế hay không,
+   nên học được từ mọi token chứ không chỉ 15% token bị che.
+
+Bản đa ngữ mDeBERTa-v3-base dùng SentencePiece (250.000 token, giống XLM-R), nhận văn bản thô, 279 triệu tham số.
+
+**Khác biệt chính so với M4, M5 – kiến thức NLI có sẵn:** checkpoint `MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7`
+đã được fine-tune NLI trên khoảng 2,7 triệu cặp câu ở 27 ngôn ngữ (có tiếng Việt): MNLI, ANLI, WANLI, LingNLI, FEVER-NLI dịch máy
+và XNLI dev. Nhóm giữ nguyên lớp phân loại 3 nhãn có sẵn (chỉ sắp lại thứ tự nhãn), rồi:
+- **S0:** đánh giá thẳng, không huấn luyện thêm;
+- **S2:** fine-tune thêm trên ViANLI train với cấu hình B (giống M4 S2), chọn trên dev.
+
+Đây là học chuyển tiếp từ một tác vụ đã học sẵn: giống S3 của nhóm (XNLI → ViANLI) nhưng bước đầu lớn hơn khoảng 27 lần và có cả
+dữ liệu đối kháng (ANLI).
+
+**Ví dụ:** cùng cặp câu Tim Cook ở trên, M6 đoán *contradiction* (đúng) ở cả S0 và S2, tức đúng ngay cả khi chưa học ViANLI.
+
+**Lý do chọn:** sau khi M1–M5 cho thấy mọi mô hình học XNLI đều dưới mức ngẫu nhiên trên ViANLI, nhóm thử một cách nâng điểm
+không cần tự gán nhãn thêm dữ liệu: dùng mô hình đã học NLI trên nhiều dữ liệu, gồm cả dữ liệu đối kháng.
+Kết quả: ViANLI 47,7 ± 0,9% (PhoBERT 44,4 ± 1,6%), ViNLI 70,9 ± 0,5% (xem `docs/ket_qua_m6.md`).
+
+---
+
 ## 7. Bảng tóm tắt (dùng cho mục 3 và bảng ưu/nhược điểm ở mục 5)
 
-| | M2 | M3 | M4 PhoBERT | M5 XLM-R |
-|---|---|---|---|---|
-| Đơn vị đầu vào | âm tiết | âm tiết | từ (đã tách) → BPE | SentencePiece |
-| Biểu diễn câu | trung bình embedding | BiLSTM + max-pooling | đọc cặp câu cùng lúc (self-attention) | như M4 |
-| Xét thứ tự từ | không | có | có | có |
-| So sánh hai câu | [u; v; \|u−v\|; u⊙v; cos] | [u; v; \|u−v\|; u⊙v] | attention giữa hai câu | như M4 |
-| Kiến thức có sẵn | fastText | fastText | huấn luyện trước trên 20 GB tiếng Việt | 2,5 TB, 100 ngôn ngữ |
-| Số tham số | 0,88 triệu | 8,97 triệu (0,97 triệu huấn luyện) | 135 triệu | 278 triệu |
-| Thời gian huấn luyện S2 | khoảng 2 giây (CPU) | khoảng 26 giây (GPU T4) | khoảng 7 phút (GPU T4) | khoảng 11 phút (GPU T4) |
-| ViANLI test, S2, seed 42 | 39,7% | 38,0% | 46,0% (3 seed: 44,4 ± 1,6) | 43,6% |
+| | M2 | M3 | M4 PhoBERT | M5 XLM-R | M6 mDeBERTa |
+|---|---|---|---|---|---|
+| Đơn vị đầu vào | âm tiết | âm tiết | từ (đã tách) → BPE | SentencePiece | SentencePiece |
+| Biểu diễn câu | trung bình embedding | BiLSTM + max-pooling | đọc cặp câu cùng lúc (self-attention) | như M4 | như M4, attention tách nội dung/vị trí |
+| Xét thứ tự từ | không | có | có | có | có |
+| So sánh hai câu | [u; v; \|u−v\|; u⊙v; cos] | [u; v; \|u−v\|; u⊙v] | attention giữa hai câu | như M4 | như M4 |
+| Kiến thức có sẵn | fastText | fastText | huấn luyện trước trên 20 GB tiếng Việt | 2,5 TB, 100 ngôn ngữ | 100 ngôn ngữ + đã học NLI 2,7 triệu cặp |
+| Số tham số | 0,88 triệu | 8,97 triệu (0,97 triệu huấn luyện) | 135 triệu | 278 triệu | 279 triệu |
+| Thời gian huấn luyện S2 | khoảng 2 giây (CPU) | khoảng 26 giây (GPU T4) | khoảng 7 phút (GPU T4) | khoảng 11 phút (GPU T4) | 21–36 phút (GPU T4) |
+| ViANLI test, S2, seed 42 | 39,7% | 38,0% | 46,0% (3 seed: 44,4 ± 1,6) | 43,6% | 48,7% (3 seed: 47,7 ± 0,9) |
 
 ## Tài liệu cần trích dẫn
 Conneau và cộng sự 2017 (InferSent); Grave và cộng sự 2018 (fastText 157 ngôn ngữ); Hochreiter & Schmidhuber 1997 (LSTM);
 Vaswani và cộng sự 2017 (Transformer); Liu và cộng sự 2019 (RoBERTa); Nguyen & Nguyen 2020 (PhoBERT); Conneau và cộng sự 2020 (XLM-R);
-Vu và cộng sự 2018 (VnCoreNLP); Huynh và cộng sự 2025 (ViANLI).
+Vu và cộng sự 2018 (VnCoreNLP); Huynh và cộng sự 2025 (ViANLI); He và cộng sự 2021 (DeBERTa), 2023 (DeBERTaV3);
+Laurer và cộng sự 2024 (checkpoint mDeBERTa NLI đa ngữ).
