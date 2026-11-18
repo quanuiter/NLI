@@ -1,6 +1,6 @@
 # Bản nháp báo cáo mục 4 – Cài đặt và đánh giá (W5-01)
 
-Bản đã điền đủ số liệu M0–M6 và ensemble (16/11). Chỉ còn **[CHỜ]** phiên bản thư viện trên Colab. Sau ngày chốt số liệu (W4-09)
+Bản đã điền đủ số liệu M0–M6, ensemble và phiên bản thư viện (18/11). Còn chờ M7 (LLM, W4-12). Sau ngày chốt số liệu (W4-09)
 chép vào mục 4 của BaoCao_NLI theo [quy ước báo cáo](huong_dan/quy_uoc_bao_cao.md).
 Cột "Nguồn" chỉ để đối chiếu, khi chép vào báo cáo thì chuyển thành nhận xét Google Tài liệu.
 
@@ -18,7 +18,7 @@ và một file dự đoán cho từng mẫu, nên mọi con số trong báo cáo
 |---|---|---|
 | Google Colab, GPU NVIDIA T4 (16 GB) | M3, M4, M5, M6 | Huấn luyện fp16 cho M4, M5, M6 |
 | CPU 4 nhân | M0, M1, M2 | Mô hình nhỏ, không cần GPU (M1 dùng scikit-learn 1.9) |
-| Thư viện | | PyTorch, Hugging Face Transformers, scikit-learn, Gensim (fastText), py_vncorenlp (tách từ). **[CHỜ: phiên bản trên Colab]** |
+| Thư viện | | PyTorch 2.14, Hugging Face Transformers 5.22, scikit-learn 1.6, Gensim 4.4 (fastText), bitsandbytes 0.50 (nạp LLM 4-bit), py_vncorenlp (tách từ). Phiên bản ghi trên Colab ngày 18/11; Colab tự cập nhật thư viện nên các lần chạy trước có thể khác bản phụ |
 | Mã nguồn | | github.com/quanuiter/NLI; dữ liệu đã xử lý, kết quả và checkpoint trên Google Drive của nhóm |
 
 Để lấy phiên bản thư viện, chạy một ô trên Colab:
