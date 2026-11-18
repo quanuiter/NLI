@@ -12,3 +12,4 @@ py_vncorenlp
 underthesea
 sentencepiece
 protobuf
+bitsandbytes

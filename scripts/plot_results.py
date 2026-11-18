@@ -19,16 +19,16 @@ import numpy as np
 
 from src.evaluate import RESULTS_DIR, summarize
 
-MODELS = [("M0", "M0"), ("M1", "M1"), ("M1h", "M1-h"), ("M2", "M2"), ("M3", "M3"), ("M4", "PhoBERT"), ("M5", "XLM-R"), ("M6", "mDeBERTa")]
-SCENARIOS = [("S0", "S0: M6 chưa fine-tune"), ("S1", "S1: học XNLI"), ("S2", "S2: học ViANLI"), ("S3", "S3: XNLI → ViANLI")]
-COLORS = {"S0": "#8a6fd1", "S1": "#2a78d6", "S2": "#eb6834", "S3": "#1baf7a"}   # bảng màu phân loại, đã kiểm tra khả năng phân biệt màu
+MODELS = [("M0", "M0"), ("M1", "M1"), ("M1h", "M1-h"), ("M2", "M2"), ("M3", "M3"), ("M4", "PhoBERT"), ("M5", "XLM-R"), ("M6", "mDeBERTa"), ("M7", "Qwen2.5-7B")]
+SCENARIOS = [("S0", "S0: không huấn luyện (M6, M7 zero-shot)"), ("FS", "FS: M7 few-shot"), ("S1", "S1: học XNLI"), ("S2", "S2: học ViANLI"), ("S3", "S3: XNLI → ViANLI")]
+COLORS = {"S0": "#8a6fd1", "FS": "#d4a017", "S1": "#2a78d6", "S2": "#eb6834", "S3": "#1baf7a"}   # bảng màu phân loại, đã kiểm tra khả năng phân biệt màu
 SURFACE, TEXT, TEXT2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 
 
 def main():
     t = summarize()
     present = [(m, name) for m, name in MODELS if m in set(t["model"])]
-    fig, axes = plt.subplots(1, 2, figsize=(12.5, 4.2), sharey=True, facecolor=SURFACE)
+    fig, axes = plt.subplots(1, 2, figsize=(13.5, 4.6), sharey=True, facecolor=SURFACE)
     width = 0.26
     for ax, (test_set, title) in zip(axes, [("vianli_test", "ViANLI test (đối kháng)"),
                                             ("vinli_test", "ViNLI test (tiếng Việt gốc)")]):
@@ -40,7 +40,8 @@ def main():
                 if row.empty:
                     continue
                 mean, std = row["accuracy_mean"].iloc[0] * 100, row["accuracy_std"].iloc[0] * 100
-                xpos = x[i] + (max(k, 1) - 2) * width   # S0 (chỉ M6) đứng ở chỗ của S1
+                slot = {"S0": 0, "FS": 1, "S1": 0, "S2": 1, "S3": 2}[sc]   # S0, FS chỉ có ở M6, M7: đứng ở chỗ của S1, S2
+                xpos = x[i] + (slot - 1) * width
                 ax.bar(xpos, mean, width - 0.03, color=COLORS[sc], label=label if i == 0 or not ax.containers else None,
                        zorder=3)
                 if not np.isnan(std):
@@ -58,12 +59,12 @@ def main():
     axes[0].set_ylabel("Accuracy (%)", color=TEXT)
     handles = [plt.Rectangle((0, 0), 1, 1, color=COLORS[s]) for s, _ in SCENARIOS]
     handles.append(plt.Line2D([0], [0], color=TEXT2, linestyle="--", linewidth=1))
-    fig.legend(handles, [l for _, l in SCENARIOS] + ["mức ngẫu nhiên 33,3%"], loc="upper center", ncol=5,
+    fig.legend(handles, [l for _, l in SCENARIOS] + ["mức ngẫu nhiên 33,3%"], loc="upper center", ncol=3,
                frameon=False, fontsize=9,
                labelcolor=TEXT, bbox_to_anchor=(0.5, 1.0))
-    fig.text(0.5, -0.02, "M2, M3, PhoBERT ở S2 và PhoBERT ở S3: trung bình ± độ lệch chuẩn qua 3 seed; các cột khác: seed 42.",
+    fig.text(0.5, -0.02, "M2, M3, PhoBERT, M6 ở S2, PhoBERT ở S3, M7 few-shot (3 bộ ví dụ): trung bình ± độ lệch chuẩn qua 3 seed; các cột khác: seed 42.",
              ha="center", fontsize=8, color=TEXT2)
-    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    fig.tight_layout(rect=(0, 0, 1, 0.88))
     out = RESULTS_DIR / "figures" / "so_sanh_mo_hinh.png"
     fig.savefig(out, dpi=200, bbox_inches="tight", facecolor=SURFACE)
     print("Đã lưu", out)
