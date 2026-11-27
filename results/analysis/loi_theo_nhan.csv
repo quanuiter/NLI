@@ -10,6 +10,8 @@ vianli_test,XLM-R S2,1,55.8,46.0,21.0
 vianli_test,XLM-R S3,1,50.6,40.1,37.3
 vianli_test,M6 S0,1,40.5,41.1,32.3
 vianli_test,M6 S2,3,49.5,46.6,47.1
+vianli_test,M7 S0,1,32.6,49.6,37.2
+vianli_test,M7 FS,3,48.8,49.4,33.7
 vinli_test,M1 S2,1,23.4,34.2,23.8
 vinli_test,M2 S2,3,31.3,41.8,22.9
 vinli_test,M3 S2,3,37.7,44.7,29.6
@@ -21,3 +23,5 @@ vinli_test,XLM-R S2,1,32.6,41.4,11.1
 vinli_test,XLM-R S3,1,61.3,65.7,62.9
 vinli_test,M6 S0,1,77.2,72.8,72.3
 vinli_test,M6 S2,3,67.3,70.8,74.4
+vinli_test,M7 S0,1,62.8,67.2,71.9
+vinli_test,M7 FS,3,80.9,70.5,66.8

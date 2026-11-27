@@ -1,6 +1,6 @@
 # Bản nháp báo cáo mục 4 – Cài đặt và đánh giá (W5-01)
 
-Bản đã điền đủ số liệu M0–M6, ensemble và phiên bản thư viện (18/11). Còn chờ M7 (LLM, W4-12). Sau ngày chốt số liệu (W4-09)
+Bản đã điền đủ số liệu M0–M7, ensemble và phiên bản thư viện (22/11). Sau ngày chốt số liệu (W4-09)
 chép vào mục 4 của BaoCao_NLI theo [quy ước báo cáo](huong_dan/quy_uoc_bao_cao.md).
 Cột "Nguồn" chỉ để đối chiếu, khi chép vào báo cáo thì chuyển thành nhận xét Google Tài liệu.
 
@@ -16,7 +16,7 @@ và một file dự đoán cho từng mẫu, nên mọi con số trong báo cáo
 
 | Thành phần | Dùng cho | Chi tiết |
 |---|---|---|
-| Google Colab, GPU NVIDIA T4 (16 GB) | M3, M4, M5, M6 | Huấn luyện fp16 cho M4, M5, M6 |
+| Google Colab, GPU NVIDIA T4 (16 GB) | M3–M7 | Huấn luyện fp16 cho M4, M5, M6; M7 nạp 4-bit (NF4) |
 | CPU 4 nhân | M0, M1, M2 | Mô hình nhỏ, không cần GPU (M1 dùng scikit-learn 1.9) |
 | Thư viện | | PyTorch 2.14, Hugging Face Transformers 5.22, scikit-learn 1.6, Gensim 4.4 (fastText), bitsandbytes 0.50 (nạp LLM 4-bit), py_vncorenlp (tách từ). Phiên bản ghi trên Colab ngày 18/11; Colab tự cập nhật thư viện nên các lần chạy trước có thể khác bản phụ |
 | Mã nguồn | | github.com/quanuiter/NLI; dữ liệu đã xử lý, kết quả và checkpoint trên Google Drive của nhóm |
@@ -73,12 +73,13 @@ Mọi siêu tham số được chọn theo macro-F1 trên tập dev. Kết quả
 | M2 | 2 lớp ẩn × 512, dropout 0,5, Adam lr 3·10⁻⁴, batch 128, dừng sớm (patience 3) | Lưới 16 cấu hình trên dev S2, kiểm tra lại 3 seed | `m2_tuning_S2.json` |
 | M3 | BiLSTM 128 mỗi chiều, FFNN 512, dropout 0,3, embedding đóng băng, Adam lr 10⁻³, batch 64 | Lưới 8 cấu hình trên dev S2 (kiểm tra lại 3 seed), thử đóng băng embedding trên dev S1 | `m3_tuning_S2.json`, `m3_seedcheck_S2.json`, `m3_tuning_S1.json` |
 | M6 | Bắt đầu từ `MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7` (đã học NLI), giữ lớp phân loại có sẵn. S2: cấu hình B như M4 (lr 10⁻⁵, batch 16, 7 epoch, dropout lớp phân loại 0,4) | So A và B trên dev S2: 0,507 và 0,511 | `M6_tuning_S2_seed42.json` |
+| M7 | `Qwen/Qwen2.5-7B-Instruct` 4-bit, không huấn luyện. Prompt trắc nghiệm A/B/C cố định (`src/llm.py`, phiên bản v1); zero-shot và few-shot 6 ví dụ (2 mỗi nhãn) từ ViANLI train | Prompt và k cố định trước, không thử trên test; 3 bộ ví dụ (seed 42, 123, 2024) | `M7_*.json` (trường `demo_ids`) |
 | M4, M5 | S1: lr 2·10⁻⁵, batch 32, 3 epoch. S2, S3: lr 10⁻⁵, batch 16, 7 epoch, dropout lớp phân loại 0,4. AdamW, weight decay 0,01, warmup 10%, tối đa 256 token | So 2 cấu hình trên dev S2 (0,444 và 0,448); S1 dùng cấu hình ngắn vì 100.000 cặp | `M4_tuning_S2_seed42.json`, `token_lengths.json` |
 
 ### 4.5. Kết quả chính
 
 **Bảng 4.x – Accuracy / macro-F1 (%) trên các tập test.** M2, M3, PhoBERT, M6 ở S2 và PhoBERT ở S3: trung bình ± độ lệch chuẩn 3 seed.
-M6 không có S1, S3; thay vào đó là S0 (đánh giá thẳng mô hình đã học NLI, không fine-tune), ghi ở cột S1 kèm dấu *.
+M6, M7 không có S1, S3; thay vào đó là S0 (không huấn luyện trên dữ liệu của nhóm), ghi ở cột S1 kèm dấu *. M7 few-shot (6 ví dụ ViANLI train, 3 bộ ví dụ) ghi ở cột S2 kèm dấu †.
 
 | Mô hình | S1 → XNLI | S1 → ViANLI | S1 → ViNLI | S2 → ViANLI | S2 → ViNLI | S3 → ViANLI | S3 → ViNLI |
 |---|---|---|---|---|---|---|---|
@@ -90,6 +91,7 @@ M6 không có S1, S3; thay vào đó là S0 (đánh giá thẳng mô hình đã 
 | M4 PhoBERT-base | **77,1 / 77,2** | 27,8 / 27,3 | **70,9 / 70,4** | **44,4 ± 1,6 / 44,1 ± 1,7** | **54,4 ± 1,6 / 54,4 ± 1,5** | **44,6 ± 0,5 / 44,3 ± 0,5** | **69,9 ± 1,4 / 69,6 ± 1,5** |
 | M5 XLM-R-base | 75,2 / 75,2 | 27,0 / 26,7 | 67,8 / 67,4 | 43,6 / 41,0 | 32,5 / 28,3 | 43,5 / 42,7 | 63,3 / 63,3 |
 | M6 mDeBERTa đã học NLI | 79,3 / 79,4* | 38,7 / 38,0* | 74,1 / 74,1* | **47,7 ± 0,9 / 47,7 ± 0,9** | **70,9 ± 0,5 / 70,8 ± 0,5** | – | – |
+| M7 Qwen2.5-7B (prompt) | 63,0 / 61,4* | 42,7 / 39,8* | 67,4 / 67,3* | 45,9 ± 0,2 / 44,0 ± 0,6† | **72,7 ± 1,0 / 72,7 ± 1,1**† | – | – |
 | E3 ensemble (M4 + M5 + M6, S2) | – | – | – | 47,1 / 46,8 | 60,2 / 60,3 | – | – |
 | E4 ensemble (M4 S3 + M5 S3 + M6 S2) | – | – | – | – | – | 46,7 / 46,6 | 72,6 / 72,5 |
 
@@ -116,6 +118,8 @@ Nhận xét ngắn cho mục 4 (phân tích chi tiết ở mục 5):
   đạt 47,7 ± 0,9%, hơn PhoBERT 3,3 điểm (kiểm định t trên 3 seed: p = 0,049), và vẫn đạt 70,9% trên ViNLI.
   Chưa fine-tune, M6 đã đạt 38,7% trên ViANLI, là mô hình duy nhất vượt mức ngẫu nhiên khi chưa học ViANLI.
   Kết hợp M6 với PhoBERT, XLM-R (E3, E4) không tăng điểm ViANLI vì hai mô hình yếu hơn thường cùng sai.
+- **LLM không huấn luyện (M7):** zero-shot thua rõ (XNLI 63,0%, ViANLI 42,7%, lệch về *neutral*), nhưng chỉ cần 6 ví dụ đã đạt 45,9% trên ViANLI
+  (ngang PhoBERT, p = 0,25) và 72,7% trên ViNLI, cao nhất nhóm. Đổi lại, dự đoán chậm hơn PhoBERT khoảng 150 lần.
 
 ### 4.6. So sánh với số liệu công bố
 
@@ -139,6 +143,7 @@ Kết quả của nhóm khớp với số công bố trong khoảng 1–2 điể
 | M4 PhoBERT | 135 triệu | 6,8 phút | 24,5 phút | 1,8 giây | GPU T4 |
 | M5 XLM-R | 278 triệu | 11,3 phút | 33,5 phút | 1,9 giây | GPU T4 |
 | M6 mDeBERTa | 279 triệu | 21–36 phút (cấu hình B) | – (không chạy S1) | 5,6 giây | GPU T4 |
+| M7 Qwen2.5-7B | 7,6 tỷ (4-bit) | 0 (không huấn luyện) | 0 | 262 giây (zero-shot) | GPU T4 |
 
 Nguồn: trường `train_seconds`, `predict_seconds_vianli_test`, `n_params` trong file kết quả seed 42. File kết quả M0, M1
 không ghi thời gian, nên nhóm đo lại bằng cách chạy lại đúng code của notebook `02_m1.ipynb` trên CPU (dự đoán trùng 100%

@@ -3,7 +3,7 @@
 **Đây là tài liệu nền, không chép nguyên văn vào báo cáo.** Quy định môn học: được dùng AI nhưng phải trình bày lại. Quang đọc, giữ số liệu,
 viết lại bằng lời của mình. Phần phân tích lỗi và 7 ví dụ đúng/sai ở `docs/phan_tich_loi_transformer.md`; kết quả M6, ensemble ở `docs/ket_qua_m6.md`.
 Mọi số liệu lấy từ `results/` (truy lại được); số accuracy (%), "±" là độ lệch chuẩn qua 3 seed.
-Chỗ **[CHỜ M7]** điền khi Quang chạy xong W4-12.
+Số M7 đầy đủ (22/11): `docs/ket_qua_m7.md`.
 
 ---
 
@@ -20,9 +20,9 @@ Chỗ **[CHỜ M7]** điền khi Quang chạy xong W4-12.
 | M4 PhoBERT | 77,1 | 44,4 ± 1,6 | 54,4 ± 1,6 | 135 triệu | 6,8 phút | 1,8 giây | rất thấp | nhiều (cần học trước) |
 | M5 XLM-R | 75,2 | 43,6 | 32,5 | 278 triệu | 11,3 phút | 1,9 giây | rất thấp | nhiều |
 | M6 mDeBERTa đã học NLI | 79,3* | **47,7 ± 0,9** | **70,9 ± 0,5** | 279 triệu | 21–36 phút | 5,6 giây | rất thấp | rất nhiều (2,7 triệu cặp NLI) |
-| M7 Qwen2.5-7B (prompt) | 63,0* | 42,7* / [CHỜ M7 FS] | [CHỜ M7] | 7,6 tỷ | 0 (không huấn luyện) | khoảng 260 giây | thấp | 0–6 ví dụ |
+| M7 Qwen2.5-7B (prompt) | 63,0* | 45,9 ± 0,2† | **72,7 ± 1,0**† | 7,6 tỷ | 0 (không huấn luyện) | khoảng 260 giây | thấp | 0–6 ví dụ |
 
-\* Không huấn luyện trên dữ liệu của nhóm (zero-shot). M7 ViANLI: 42,7 là zero-shot.
+\* Không huấn luyện trên dữ liệu của nhóm (zero-shot). † M7 few-shot: 6 ví dụ từ ViANLI train, 3 bộ ví dụ (zero-shot: ViANLI 42,7, ViNLI 67,4).
 
 **Ưu và nhược điểm, viết lại thành đoạn văn:**
 - **M0:** mốc so sánh. Mô hình nào không vượt được M0 thì coi như không học được gì.
@@ -39,7 +39,8 @@ Chỗ **[CHỜ M7]** điền khi Quang chạy xong W4-12.
   chậm hơn PhoBERT khoảng 3 lần khi dự đoán.
 - **M7:** không cần huấn luyện, chỉ cần viết prompt; đổi tác vụ dễ. Nhược: rất lớn (7,6 tỷ tham số), chậm nhất khi dự đoán (khoảng 0,26 giây mỗi cặp,
   chậm hơn PhoBERT khoảng 150 lần), lệch nhãn nặng (zero-shot đoán *neutral* cho 731/1.000 câu ViANLI), kém các mô hình fine-tune trên XNLI.
-  [CHỜ M7: few-shot có giảm lệch nhãn không.]
+  Few-shot 6 ví dụ giảm lệch nhãn (neutral còn 558–597/1.000) và kéo ViANLI lên 45,9%, ViNLI 72,7% (cao nhất nhóm), vẫn ít đoán contradiction (F1 31–35).
+  M7 không dùng mẹo trùng từ của ViANLI: nhóm câu trùng ít từ chỉ đúng 38,6%, trong khi mô hình học ViANLI đạt 47–58% nhờ mẹo.
 
 **Kết luận của bảng:** độ chính xác tăng theo kích thước và lượng kiến thức có sẵn, nhưng không tuyến tính: từ M3 lên PhoBERT tăng 13 điểm trên XNLI
 với chi phí gấp 15 lần; từ PhoBERT lên M6 tăng 3,3 điểm trên ViANLI với chi phí gấp 3–5 lần. Trên dữ liệu đối kháng, mô hình nhỏ (M1) có thể
@@ -90,8 +91,9 @@ với chi phí gấp 15 lần; từ PhoBERT lên M6 tăng 3,3 điểm trên ViAN
 - **M6** (mDeBERTa đã học 2,7 triệu cặp NLI, fine-tune thêm trên ViANLI): 47,7 ± 0,9%, hơn PhoBERT 3,3 điểm (kiểm định t trên 3 seed: p = 0,049).
   Chưa fine-tune đã đạt 38,7% trên ViANLI, là mô hình duy nhất vượt mức ngẫu nhiên khi chưa học ViANLI.
 - **Ensemble** (bỏ phiếu đa số): không tăng ViANLI (E3 47,1, E4 46,7 so với M6 47,7) vì các mô hình yếu hơn thường cùng sai; chỉ E4 tăng nhẹ trên ViNLI (72,6).
-- **M7 LLM:** zero-shot ViANLI 42,7%, XNLI 63,0%: thua mô hình fine-tune, lệch về *neutral*. [CHỜ M7: few-shot.]
-- **Bài học:** cách cải thiện hiệu quả là dữ liệu NLI nhiều và đa dạng (có dữ liệu đối kháng), không phải ghép mô hình hay dùng mô hình lớn hơn mà không huấn luyện.
+- **M7 LLM:** zero-shot thua mô hình fine-tune (XNLI 63,0%, ViANLI 42,7%, lệch về *neutral*). Few-shot 6 ví dụ: ViANLI 45,9 ± 0,2% (ngang PhoBERT, p = 0,25;
+  dưới M6 47,7%, p = 0,059), ViNLI 72,7 ± 1,0% (cao nhất nhóm), không cần huấn luyện nhưng dự đoán chậm hơn PhoBERT khoảng 150 lần.
+- **Bài học:** cách cải thiện hiệu quả là kiến thức NLI có sẵn từ dữ liệu lớn và đa dạng (M6) hoặc mô hình ngôn ngữ lớn kèm vài ví dụ (M7), không phải ghép các mô hình đã có.
 
 ---
 

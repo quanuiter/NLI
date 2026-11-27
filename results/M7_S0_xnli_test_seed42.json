@@ -1,0 +1,75 @@
+{
+  "model": "M7",
+  "scenario": "S0",
+  "test_set": "xnli_test",
+  "seed": 42,
+  "created_at": "2026-11-18T14:30:09",
+  "config": {
+    "pretrained": "Qwen/Qwen2.5-7B-Instruct",
+    "mode": "zero",
+    "k": 0,
+    "demo_ids": [],
+    "prompt_version": "v1",
+    "load_in_4bit": true,
+    "device": "cuda:0",
+    "n_params_in_memory": 4352972288,
+    "predict_seconds_xnli_test": 1098.7,
+    "pred_distribution": {
+      "entailment": 524,
+      "neutral": 3270,
+      "contradiction": 1216
+    },
+    "mean_prob": {
+      "entailment": 0.1039,
+      "neutral": 0.653,
+      "contradiction": 0.2432
+    }
+  },
+  "n": 5010,
+  "accuracy": 0.6295409181636726,
+  "macro_f1": 0.6139446448614995,
+  "per_class": {
+    "entailment": {
+      "precision": 0.9522900763358778,
+      "recall": 0.29880239520958085,
+      "f1": 0.45487693710118504,
+      "support": 1670
+    },
+    "neutral": {
+      "precision": 0.48073394495412847,
+      "recall": 0.9413173652694611,
+      "f1": 0.6364372469635627,
+      "support": 1670
+    },
+    "contradiction": {
+      "precision": 0.890625,
+      "recall": 0.6485029940119761,
+      "f1": 0.7505197505197505,
+      "support": 1670
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        499,
+        1116,
+        55
+      ],
+      [
+        20,
+        1572,
+        78
+      ],
+      [
+        5,
+        582,
+        1083
+      ]
+    ]
+  }
+}

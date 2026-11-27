@@ -1,0 +1,82 @@
+{
+  "model": "M7",
+  "scenario": "FS",
+  "test_set": "vianli_test",
+  "seed": 2024,
+  "created_at": "2026-11-19T10:21:07",
+  "config": {
+    "pretrained": "Qwen/Qwen2.5-7B-Instruct",
+    "mode": "few",
+    "k": 6,
+    "demo_ids": [
+      "uit_Adver_1195_2_21_06",
+      "uit_Adver_353_2_11_02",
+      "uit_Adver_1932_5_31_10",
+      "uit_Adver_984_4_21_05",
+      "uit_Adver_2004_1_31_11",
+      "uit_Adver_2080_2_11_11"
+    ],
+    "prompt_version": "v1",
+    "load_in_4bit": true,
+    "device": "cuda:0",
+    "n_params_in_memory": 4352972288,
+    "predict_seconds_vianli_test": 335.41,
+    "pred_distribution": {
+      "entailment": 323,
+      "neutral": 597,
+      "contradiction": 80
+    },
+    "mean_prob": {
+      "entailment": 0.3201,
+      "neutral": 0.5952,
+      "contradiction": 0.0847
+    }
+  },
+  "n": 1000,
+  "accuracy": 0.456,
+  "macro_f1": 0.4334645929993339,
+  "per_class": {
+    "entailment": {
+      "precision": 0.5015479876160991,
+      "recall": 0.48502994011976047,
+      "f1": 0.4931506849315068,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.38358458961474035,
+      "recall": 0.6876876876876877,
+      "f1": 0.4924731182795699,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.8125,
+      "recall": 0.19519519519519518,
+      "f1": 0.31476997578692495,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        162,
+        163,
+        9
+      ],
+      [
+        98,
+        229,
+        6
+      ],
+      [
+        63,
+        205,
+        65
+      ]
+    ]
+  }
+}

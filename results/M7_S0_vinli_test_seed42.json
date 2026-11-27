@@ -1,0 +1,75 @@
+{
+  "model": "M7",
+  "scenario": "S0",
+  "test_set": "vinli_test",
+  "seed": 42,
+  "created_at": "2026-11-19T09:33:10",
+  "config": {
+    "pretrained": "Qwen/Qwen2.5-7B-Instruct",
+    "mode": "zero",
+    "k": 0,
+    "demo_ids": [],
+    "prompt_version": "v1",
+    "load_in_4bit": true,
+    "device": "cuda:0",
+    "n_params_in_memory": 4352972288,
+    "predict_seconds_vinli_test": 586.87,
+    "pred_distribution": {
+      "entailment": 375,
+      "neutral": 1416,
+      "contradiction": 473
+    },
+    "mean_prob": {
+      "entailment": 0.165,
+      "neutral": 0.6264,
+      "contradiction": 0.2087
+    }
+  },
+  "n": 2264,
+  "accuracy": 0.6735865724381626,
+  "macro_f1": 0.6729008143031274,
+  "per_class": {
+    "entailment": {
+      "precision": 0.9413333333333334,
+      "recall": 0.4706666666666667,
+      "f1": 0.6275555555555555,
+      "support": 750
+    },
+    "neutral": {
+      "precision": 0.5204802259887006,
+      "recall": 0.9485199485199485,
+      "f1": 0.6721386228910169,
+      "support": 777
+    },
+    "contradiction": {
+      "precision": 0.919661733615222,
+      "recall": 0.5902306648575305,
+      "f1": 0.71900826446281,
+      "support": 737
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        353,
+        379,
+        18
+      ],
+      [
+        20,
+        737,
+        20
+      ],
+      [
+        2,
+        300,
+        435
+      ]
+    ]
+  }
+}
