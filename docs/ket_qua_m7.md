@@ -9,7 +9,7 @@ Few-shot (FS): 6 ví dụ từ ViANLI train, 2 mỗi nhãn, 3 bộ ví dụ khá
 | Thiết lập | XNLI test | ViANLI test | ViNLI test |
 |---|---|---|---|
 | M7 zero-shot (S0) | 63,0 / 61,4 | 42,7 / 39,8 | 67,4 / 67,3 |
-| M7 few-shot 6 ví dụ (FS, 3 bộ ví dụ) | – | 45,9 ± 0,2 / 44,0 ± 0,6 | 72,7 ± 1,0 / 72,7 ± 1,1 |
+| M7 few-shot 6 ví dụ (FS, 3 bộ ví dụ) | – | 45,9 ± 0,2 / 44,0 ± 0,5 | 72,7 ± 1,0 / 72,7 ± 1,1 |
 | PhoBERT S2 (3 seed) | – | 44,4 ± 1,6 | 54,4 ± 1,6 |
 | PhoBERT S3 (3 seed) | – | 44,6 ± 0,5 | 69,9 ± 1,4 |
 | M6 S2 (3 seed) | – | 47,7 ± 0,9 | 70,9 ± 0,5 |
