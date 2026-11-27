@@ -15,7 +15,7 @@ Mục tiêu: mọi con số trong báo cáo truy được về `results/`, và p
 
 | Mô hình | Cách chạy lại | Kết quả |
 |---|---|---|
-| M0, M1, M1-h, ablation M1 | Chạy nguyên văn các ô code của `notebooks/02_m1.ipynb` (trừ ô kết nối Colab) trong một bản sao repo | [ĐIỀN] |
+| M0, M1, M1-h, ablation M1 | Chạy nguyên văn các ô code của `notebooks/02_m1.ipynb` (trừ ô kết nối Colab) trong một bản sao repo đã xóa kết quả cũ (10,8 phút CPU) | **M0, M1 (S1, S2) và M1-h S2: trùng hoàn toàn** (dự đoán từng cặp, độ đo, siêu tham số được chọn): 12/15 file. **M1-h S1**: cùng C = 1, dự đoán trùng 98,5%, accuracy lệch tối đa 0,2 điểm (ViANLI 33,2 → 33,4). Bảng chọn siêu tham số và ablation: cấu hình được chọn không đổi, vài cấu hình **không được chọn** lệch ≤ 0,3 điểm dev (LR với C ≥ 1 trên 100.000 cặp). Nguyên nhân: scikit-learn 1.9 ở máy kiểm tra so với 1.6 trên Colab, bộ giải lbfgs dừng ở nghiệm hơi khác khi C lớn. Kết luận trong báo cáo không đổi. Lỗi phát hiện: notebook thiếu `import os` khi chạy ngoài Colab, đã sửa. |
 | Ensemble E1–E4, bảng tổng hợp, hình, phân tích lỗi | `ensemble.py`, `make_table.py`, `plot_results.py`, `error_analysis.py` | File kết quả giống hệt bản đã lưu, chỉ khác trường `created_at` |
 
 ## 3. Mô hình cần GPU (M2–M7): kiểm tra bằng file kết quả
