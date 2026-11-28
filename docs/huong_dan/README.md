@@ -54,7 +54,7 @@ Mỗi hướng dẫn có mục **Lưu và nộp** ghi rõ từng file. Quy tắc
 | W4-10 Chạy M6 (mDeBERTa đã học NLI) trên Colab | Quang | [W4-10.md](W4-10.md) |
 | W4-12 Chạy M7 (LLM Qwen2.5-7B, prompt) trên Colab | Quang | [W4-12.md](W4-12.md) |
 | W7-01 Khử mẹo trùng từ cho PhoBERT (PoE) | Quang | [W7-01.md](W7-01.md) |
-| W7-02 Thêm seed M2, M3, XLM-R | Quang | [W7-02.md](W7-02.md) |
+| W7-02 Thêm seed M2, M3, XLM-R | Quân | [W7-02.md](W7-02.md) |
 | W3-01, W3-02, W3-03 M3, PhoBERT | Quân | [W3-01.md](W3-01.md), [W3-02.md](W3-02.md), [W3-03.md](W3-03.md) |
 | Kiểm tra sản phẩm task của Quang | Quân | [kiem_tra_ket_qua.md](kiem_tra_ket_qua.md) |
 

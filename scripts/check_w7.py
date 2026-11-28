@@ -1,7 +1,7 @@
 """Kiểm tra kết quả các task bổ sung tuần 7. Chạy bằng lệnh riêng (!python ...) để thấy file vừa ghi vào Drive.
 
     python scripts/check_w7.py --task 01     # W7-01: PhoBERT khử mẹo (M4P) S1 3 seed + PhoBERT S1 seed 123, 2024
-    python scripts/check_w7.py --task 02     # W7-02: thêm seed M2, M3, XLM-R
+    python scripts/check_w7.py --task 02     # W7-02: thêm seed M2, M3 (S1), XLM-R (S1, S2, S3)
 """
 
 import argparse
@@ -18,7 +18,7 @@ S2 = ["vianli_test", "vinli_test"]
 NEED = {
     "01": [("M4P", "S1", t, s) for t in S1 for s in (42, 123, 2024)] + [("M4", "S1", t, s) for t in S1 for s in (123, 2024)],
     "02": [(m, "S1", t, s) for m in ("M2", "M3", "M5") for t in S1 for s in (123, 2024)]
-          + [("M5", "S2", t, s) for t in S2 for s in (123, 2024)],
+          + [("M5", sc, t, s) for sc in ("S2", "S3") for t in S2 for s in (123, 2024)],
 }
 
 ap = argparse.ArgumentParser()
