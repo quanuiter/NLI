@@ -36,6 +36,8 @@ MODELS = {
     "M4": {"name": "vinai/phobert-base", "segmented": True},
     "M5": {"name": "xlm-roberta-base", "segmented": False},
     "M6": {"name": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7", "segmented": False, "nli_head": True},
+    # W7-01: PhoBERT huấn luyện kèm mô hình mẹo (product of experts, src/debias.py); dự đoán như M4
+    "M4P": {"name": "vinai/phobert-base", "segmented": True, "debias": True},
 }
 
 # max_len 256: phủ gần hết cặp câu (PhoBERT: chỉ 17/100.000 cặp XNLI train dài hơn, xem results/analysis/token_lengths.json).
@@ -69,6 +71,54 @@ class PairDataset(torch.utils.data.Dataset):
         return item
 
 
+class BiasPairDataset(PairDataset):
+    """PairDataset kèm log-xác suất của mô hình mẹo cho từng cặp (chỉ dùng khi huấn luyện PoE)."""
+
+    def __init__(self, df, tokenizer, max_len: int, bias_logp: np.ndarray):
+        super().__init__(df, tokenizer, max_len)
+        self.bias_logp = bias_logp
+
+    def __getitem__(self, i):
+        item = super().__getitem__(i)
+        item["bias_logp"] = self.bias_logp[i].tolist()
+        return item
+
+
+class BiasCollator:
+    """Đệm như DataCollatorWithPadding, giữ riêng bias_logp thành tensor (batch, 3)."""
+
+    def __init__(self, tokenizer):
+        from transformers import DataCollatorWithPadding
+
+        self.base = DataCollatorWithPadding(tokenizer)
+
+    def __call__(self, features):
+        bias = [f.pop("bias_logp") for f in features] if "bias_logp" in features[0] else None
+        batch = self.base(features)
+        if bias is not None:
+            batch["bias_logp"] = torch.tensor(bias, dtype=torch.float32)
+        return batch
+
+
+def _poe_trainer_class():
+    from transformers import Trainer
+
+    class PoETrainer(Trainer):
+        """loss = CE(log_softmax(logits) + log p_mẹo); mẫu không có bias_logp (dev, test) dùng CE thường."""
+
+        def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+            bias = inputs.pop("bias_logp", None)
+            labels = inputs.get("labels")
+            outputs = model(**inputs)
+            logits = outputs.logits.float()
+            if bias is not None:
+                logits = torch.log_softmax(logits, dim=-1) + bias.to(logits.device)
+            loss = torch.nn.functional.cross_entropy(logits, labels)
+            return (loss, outputs) if return_outputs else loss
+
+    return PoETrainer
+
+
 def token_lengths(tokenizer, df) -> dict:
     """Phân bố độ dài (số token) của cặp câu, để chọn max_len."""
     lengths = np.array([len(x) for x in tokenizer(list(df["premise"]), list(df["hypothesis"]))["input_ids"]])
@@ -83,7 +133,7 @@ def _compute_metrics(eval_pred):
     return {"macro_f1": f1_score(labels, preds, average="macro"), "accuracy": float((preds == labels).mean())}
 
 
-def _training_args(out_dir: Path, cfg: dict, seed: int, fp16: bool):
+def _training_args(out_dir: Path, cfg: dict, seed: int, fp16: bool, keep_columns: bool = False):
     from transformers import TrainingArguments
 
     kwargs = dict(
@@ -92,6 +142,8 @@ def _training_args(out_dir: Path, cfg: dict, seed: int, fp16: bool):
         weight_decay=cfg["weight_decay"], save_strategy="epoch",
         load_best_model_at_end=True, metric_for_best_model="macro_f1", greater_is_better=True, save_total_limit=1,
         logging_strategy="epoch", seed=seed, data_seed=seed, fp16=fp16, report_to="none",
+        # PoE: không để Trainer bỏ cột bias_logp (mô hình không nhận cột này, PoETrainer tự lấy ra)
+        remove_unused_columns=not keep_columns,
     )
     # Tên tham số đổi giữa các phiên bản transformers: evaluation_strategy -> eval_strategy (4.41),
     # warmup_ratio -> warmup_steps nhận số thực trong [0, 1) (5.x)
@@ -204,18 +256,33 @@ def run(model_key: str, scenario: str, seed: int = 42, config: str = "A", cfg: d
     model = load_model(model_key, init_from, cfg)
     fp16 = torch.cuda.is_available() if fp16 is None else (fp16 and torch.cuda.is_available())
 
+    bias_info = {}
+    train_ds = PairDataset(train_df, tokenizer, cfg["max_len"])
+    trainer_cls, collator = Trainer, DataCollatorWithPadding(tokenizer)
+    if spec.get("debias"):
+        # Mô hình mẹo học trên văn bản thô của đúng tập train này (khớp theo id), rồi gắn log p_mẹo vào từng cặp
+        from .debias import FEATURES, BiasModel
+
+        raw = load_scenario(scenario, segmented=False)["train"].set_index("id").loc[train_df["id"]].reset_index()
+        bias = BiasModel().fit(raw)
+        logp = bias.predict_logp(raw)
+        train_ds = BiasPairDataset(train_df, tokenizer, cfg["max_len"], logp)
+        trainer_cls, collator = _poe_trainer_class(), BiasCollator(tokenizer)
+        bias_info = {"debias": "product of experts", "bias_features": FEATURES,
+                     "bias_train_accuracy": round(float((np.array(bias.predict(raw)) == raw["label"].values).mean()), 4)}
+
     tag = f"{model_key}_{scenario}_seed{seed}" + ("_smoke" if train_limit else "") + (f"_{ckpt_suffix}" if ckpt_suffix else "")
     work_dir = WORK_DIR / f"_{tag}_tmp"
-    trainer = Trainer(
-        model=model, args=_training_args(work_dir, cfg, seed, fp16),
-        train_dataset=PairDataset(train_df, tokenizer, cfg["max_len"]),
+    trainer = trainer_cls(
+        model=model, args=_training_args(work_dir, cfg, seed, fp16, keep_columns=bool(spec.get("debias"))),
+        train_dataset=train_ds,
         eval_dataset=PairDataset(dev_df, tokenizer, cfg["max_len"]),
-        data_collator=DataCollatorWithPadding(tokenizer), compute_metrics=_compute_metrics,
+        data_collator=collator, compute_metrics=_compute_metrics,
         **({"processing_class": tokenizer} if "processing_class" in inspect.signature(Trainer.__init__).parameters
            else {"tokenizer": tokenizer}),
     )
     info = {"n_train": len(train_df), "n_dev": len(dev_df), "init_from": str(init_from) if init_from else None,
-            "fp16": fp16, "device": "cuda" if torch.cuda.is_available() else "cpu"}
+            "fp16": fp16, "device": "cuda" if torch.cuda.is_available() else "cpu", **bias_info}
     if verbose:
         print(f"{model_key} ({spec['name']}) · {scenario} · seed {seed} · cấu hình {config}: "
               f"train {len(train_df)}, dev {len(dev_df)}, {info['device']}", flush=True)

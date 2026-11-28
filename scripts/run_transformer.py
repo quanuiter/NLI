@@ -9,11 +9,12 @@ Ví dụ:
     python scripts/run_transformer.py --token-lengths                           # đo độ dài token để chọn max_len
     python scripts/run_transformer.py --model M6 --scenario S0                  # W4-10: đánh giá thẳng, không fine-tune
     python scripts/run_transformer.py --model M6 --scenario S2 --config A B     # W4-10: fine-tune thêm trên ViANLI
+    python scripts/run_transformer.py --model M4P --scenario S1 --seeds 42 123 2024   # W7-01: PhoBERT khử mẹo (PoE)
 Cần GPU (Colab T4). PhoBERT dùng dữ liệu đã tách từ: chạy scripts/segment_data.py trước.
 Kết quả: results/M4_*.json (bản chạy thử: results/smoke/), checkpoint: checkpoints/<mô hình>_<kịch bản>_seed<seed>/
 
 Lần chạy nào đã có đủ file kết quả thì bỏ qua (Colab bị ngắt thì chạy lại lệnh là làm tiếp); --rerun để chạy lại.
-Chỉ giữ checkpoint của S1 (S3 cần để học tiếp); các kịch bản khác chỉ giữ file kết quả và file dự đoán, để Drive không đầy.
+Chỉ giữ checkpoint của S1 seed 42 (S3 cần để học tiếp); các kịch bản khác chỉ giữ file kết quả và file dự đoán, để Drive không đầy.
 """
 
 import argparse
@@ -78,9 +79,9 @@ def main():
             if len(args.config) > 1 and not args.smoke:
                 # nhiều cấu hình: so trên dev, giữ cấu hình tốt nhất (xem transformer.tune)
                 transformer.tune(args.model, scenario, args.config, seed, init_from=init_from,
-                                 keep_checkpoint=scenario == "S1", **({"fp16": False} if args.no_fp16 else {}))
+                                 keep_checkpoint=scenario == "S1" and seed == 42, **({"fp16": False} if args.no_fp16 else {}))
             else:
-                keep = {} if args.smoke else {"keep_checkpoint": scenario == "S1"}
+                keep = {} if args.smoke else {"keep_checkpoint": scenario == "S1" and seed == 42}
                 for config in args.config:
                     transformer.run(args.model, scenario, seed, config=config, init_from=init_from, **keep, **smoke)
 

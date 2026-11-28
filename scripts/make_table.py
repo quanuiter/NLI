@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # để import đ
 
 from src.evaluate import RESULTS_DIR, summarize
 
-THU_TU_MO_HINH = ["M0", "M1", "M1h", "M2", "M3", "M4", "M5", "M6", "M7", "E1", "E2", "E3", "E4"]   # E: ensemble (scripts/ensemble.py)
+THU_TU_MO_HINH = ["M0", "M1", "M1h", "M1s", "M2", "M3", "M4", "M4P", "M5", "M6", "M7", "E1", "E2", "E3", "E4"]   # E: ensemble (scripts/ensemble.py)
 THU_TU_COT = [("S0", "xnli_test"), ("S0", "vianli_test"), ("S0", "vinli_test"),   # S0: M6 không fine-tune
               ("FS", "vianli_test"), ("FS", "vinli_test"),                        # FS: M7 few-shot
               ("S1", "xnli_test"), ("S1", "vianli_test"), ("S1", "vinli_test"),

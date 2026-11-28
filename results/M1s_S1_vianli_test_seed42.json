@@ -1,0 +1,89 @@
+{
+  "model": "M1s",
+  "scenario": "S1",
+  "test_set": "vianli_test",
+  "seed": 42,
+  "created_at": "2026-11-28T16:11:00",
+  "config": {
+    "clf": "LR",
+    "C": 1.0,
+    "features": [
+      "overlap",
+      "neg_p",
+      "neg_h",
+      "do_dai",
+      "so_moi"
+    ],
+    "coef": {
+      "entailment": {
+        "overlap": 2.766,
+        "neg_p": 0.065,
+        "neg_h": -0.44,
+        "do_dai": -0.403,
+        "so_moi": -0.875
+      },
+      "neutral": {
+        "overlap": -2.078,
+        "neg_p": 0.075,
+        "neg_h": -0.292,
+        "do_dai": 0.16,
+        "so_moi": 0.483
+      },
+      "contradiction": {
+        "overlap": -0.689,
+        "neg_p": -0.14,
+        "neg_h": 0.732,
+        "do_dai": 0.243,
+        "so_moi": 0.392
+      }
+    },
+    "dung_lam": "mô hình mẹo cho PoE (src/debias.py)"
+  },
+  "n": 1000,
+  "accuracy": 0.214,
+  "macro_f1": 0.21676362390191617,
+  "per_class": {
+    "entailment": {
+      "precision": 0.16417910447761194,
+      "recall": 0.23053892215568864,
+      "f1": 0.1917808219178082,
+      "support": 334
+    },
+    "neutral": {
+      "precision": 0.215633423180593,
+      "recall": 0.24024024024024024,
+      "f1": 0.22727272727272727,
+      "support": 333
+    },
+    "contradiction": {
+      "precision": 0.35625,
+      "recall": 0.17117117117117117,
+      "f1": 0.23123732251521298,
+      "support": 333
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "entailment",
+      "neutral",
+      "contradiction"
+    ],
+    "matrix": [
+      [
+        77,
+        192,
+        65
+      ],
+      [
+        215,
+        80,
+        38
+      ],
+      [
+        177,
+        99,
+        57
+      ]
+    ]
+  }
+}
