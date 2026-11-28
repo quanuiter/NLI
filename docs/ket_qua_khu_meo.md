@@ -12,7 +12,7 @@ chênh lệch độ dài / 50, H có số mới), không có TF-IDF. Đây cũng
 
 (accuracy / macro-F1, %; mức ngẫu nhiên 33,3%)
 
-- Chỉ 5 con số bề mặt đã đạt 53,5% trên XNLI, tức gần 70% hiệu năng của PhoBERT S1 (77,1%) đến được bằng mẹo.
+- Chỉ 5 con số bề mặt đã đạt 53,5% trên XNLI, ngang M2 (53,0%) và hơn mức ngẫu nhiên 20 điểm: một phần lớn tín hiệu của XNLI nằm ở mẹo bề mặt.
 - Học trên XNLI thì mẹo **dưới mức ngẫu nhiên trên ViANLI (21,4%)**, đúng bằng M1 S1 (21,4%) và thấp hơn PhoBERT S1 (27,8%).
 - Học trên ViANLI thì mẹo đạt **46,4%, cao hơn PhoBERT S2 (44,4%)**, nhưng sang ViNLI chỉ 27,7%: quy luật trùng từ của hai bộ dữ liệu ngược nhau.
 - Hệ số học được trên XNLI (`config.coef` trong `results/M1s_S1_*.json`): trùng từ +2,77 cho entailment, −2,08 cho neutral;
